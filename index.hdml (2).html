@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Income Lab — Personal Learning Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #111111;
+    --bg-card: #141414;
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.18);
+    --ink: #f5f5f0;
+    --ink-mute: #a8a89e;
+    --ink-faint: #5a5a52;
+    --accent: #c4ff3d;
+    --accent-warm: #ff7849;
+    --accent-cool: #7aa7ff;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+  .ticker { position: fixed; top: 0; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--line); z-index: 100; overflow: hidden; height: 32px; display: flex; align-items: center; }
+  .ticker-inner { display: flex; gap: 48px; white-space: nowrap; font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.08em; text-transform: uppercase; animation: scroll 60s linear infinite; padding-left: 100%; }
+  .ticker-inner span { display: inline-flex; align-items: center; gap: 8px; }
+  .ticker-inner .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  nav.main { position: fixed; top: 32px; left: 0; right: 0; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); z-index: 99; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+  .logo-box { width: 22px; height: 22px; background: var(--accent); color: #000; display: grid; place-items: center; font-weight: 700; border-radius: 2px; font-size: 12px; }
+  .nav-links { display: flex; gap: 28px; list-style: none; counter-reset: navc; }
+  .nav-links a { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mute); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a::before { content: "0" counter(navc) " /"; counter-increment: navc; margin-right: 6px; color: var(--ink-faint); }
+  @media (max-width: 720px) { nav.main { padding: 14px 16px; } .nav-links { display: none; } }
+  .hero { position: relative; height: 100vh; min-height: 680px; overflow: hidden; padding-top: 96px; border-bottom: 1px solid var(--line); }
+  .shader-bg { position: absolute; inset: 0; z-index: 0; }
+  .shader-bg canvas { display: block; width: 100% !important; height: 100% !important; }
+  .hero-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(10,10,10,0.5) 80%, rgba(10,10,10,0.95) 100%), linear-gradient(180deg, rgba(10,10,10,0.4) 0%, transparent 25%, transparent 70%, rgba(10,10,10,0.9) 100%); pointer-events: none; z-index: 1; }
+  .hero-content { position: relative; z-index: 2; height: 100%; display: grid; grid-template-rows: 1fr auto; padding: 48px 32px 32px; max-width: 1400px; margin: 0 auto; }
+  .hero-meta { display: flex; justify-content: space-between; align-items: flex-start; font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.1em; text-transform: uppercase; }
+  .hero-meta-block { display: flex; flex-direction: column; gap: 6px; }
+  .hero-meta-block .label { color: var(--ink-faint); }
+  .hero-meta-block .value { color: var(--ink); }
+  .hero-main { align-self: end; max-width: 920px; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; padding: 6px 12px; border: 1px solid var(--accent); border-radius: 999px; }
+  .hero-tag::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  h1.hero-title { font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 9vw, 132px); line-height: 0.92; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 28px; }
+  h1.hero-title em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: clamp(15px, 1.4vw, 18px); color: var(--ink-mute); max-width: 580px; line-height: 1.6; margin-bottom: 36px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; cursor: pointer; transition: all 0.2s ease; border: none; }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { background: #d4ff5d; transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line-strong); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn .arrow { display: inline-block; transition: transform 0.2s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .section-wrap { position: relative; border-bottom: 1px solid var(--line); overflow: hidden; }
+  .section-wrap .shader-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.35; }
+  .section-wrap .section-veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.7) 50%, rgba(10,10,10,0.95) 100%); z-index: 1; pointer-events: none; }
+  section { position: relative; z-index: 2; padding: 96px 32px; max-width: 1400px; margin: 0 auto; }
+  .section-header { display: grid; grid-template-columns: 200px 1fr; gap: 48px; margin-bottom: 64px; align-items: start; }
+  .section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); padding-top: 12px; border-top: 1px solid var(--accent); display: inline-block; }
+  .section-title { font-family: var(--serif); font-size: clamp(36px, 5vw, 68px); font-weight: 400; line-height: 1.02; letter-spacing: -0.02em; color: var(--ink); }
+  .section-title em { font-style: italic; color: var(--ink-mute); }
+  .section-intro { font-size: 17px; color: var(--ink-mute); max-width: 640px; margin-top: 24px; line-height: 1.65; }
+  @media (max-width: 720px) { section { padding: 64px 16px; } .section-header { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; } }
+  .image-strip { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; margin: 48px 0; height: 260px; }
+  .image-strip .img-cell { position: relative; overflow: hidden; border-radius: 4px; background: var(--bg-elev); border: 1px solid var(--line); }
+  .image-strip img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.3) contrast(1.05); transition: filter 0.5s, transform 0.6s; }
+  .image-strip .img-cell:hover img { filter: grayscale(0) contrast(1.1); transform: scale(1.04); }
+  .image-strip .img-cell::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(10,10,10,0.6) 100%); pointer-events: none; }
+  .image-strip .img-label { position: absolute; bottom: 14px; left: 16px; font-family: var(--mono); font-size: 10px; color: var(--ink); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 2px; backdrop-filter: blur(8px); }
+  @media (max-width: 720px) { .image-strip { grid-template-columns: 1fr 1fr; height: 200px; } .image-strip .img-cell:nth-child(3) { display: none; } }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .stat { padding: 36px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(17,17,17,0.7); backdrop-filter: blur(8px); position: relative; overflow: hidden; transition: background 0.3s; }
+  .stat:hover { background: rgba(20,20,20,0.9); }
+  .stat-num { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--accent); margin-bottom: 8px; letter-spacing: -0.03em; }
+  .stat-unit { font-size: 28px; color: var(--ink-mute); margin-left: 4px; }
+  .stat-desc { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.5; margin-top: 16px; }
+  .stat-tag { position: absolute; top: 18px; right: 18px; font-family: var(--mono); font-size: 10px; color: var(--ink-faint); }
+  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .stats-grid { grid-template-columns: 1fr; } .stat-num { font-size: 48px; } }
+  .methods { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .method { background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); padding: 36px 32px; position: relative; transition: background 0.25s; cursor: pointer; }
+  .method:hover { background: rgba(20,20,20,0.95); }
+  .method-num { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-bottom: 18px; letter-spacing: 0.1em; }
+  .method-name { font-family: var(--serif); font-size: 30px; line-height: 1.1; color: var(--ink); margin-bottom: 12px; letter-spacing: -0.02em; }
+  .method-desc { color: var(--ink-mute); font-size: 14.5px; line-height: 1.65; margin-bottom: 24px; }
+  .method-foot { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 10px; border-radius: 2px; }
+  .chip-level { background: rgba(196,255,61,0.1); color: var(--accent); border: 1px solid rgba(196,255,61,0.3); }
+  .chip-pay { background: rgba(255,255,255,0.04); color: var(--ink-mute); border: 1px solid var(--line); }
+  .method-tools { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.05em; border-top: 1px dashed var(--line); padding-top: 16px; }
+  .method-tools strong { color: var(--ink); font-weight: 500; }
+  @media (max-width: 720px) { .methods { grid-template-columns: 1fr; } }
+  .toolkit { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tool { background: rgba(17,17,17,0.8); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 4px; padding: 20px; transition: all 0.2s; }
+  .tool:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tool-cat { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint); margin-bottom: 12px; }
+  .tool-name { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .tool-purpose { font-size: 13px; color: var(--ink-mute); line-height: 1.5; }
+  @media (max-width: 900px) { .toolkit { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .toolkit { grid-template-columns: 1fr; } }
+  .roadmap { border-top: 1px solid var(--line); }
+  .phase { display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding: 40px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .phase-meta { display: flex; flex-direction: column; gap: 6px; }
+  .phase-num { font-family: var(--serif); font-size: 88px; line-height: 0.9; color: var(--accent); letter-spacing: -0.04em; }
+  .phase-week { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint); }
+  .phase-body h3 { font-family: var(--serif); font-size: 32px; color: var(--ink); margin-bottom: 14px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; }
+  .phase-body p { color: var(--ink-mute); font-size: 15.5px; line-height: 1.7; margin-bottom: 18px; max-width: 720px; }
+  .phase-tasks { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .phase-tasks li { font-family: var(--mono); font-size: 12.5px; color: var(--ink); padding-left: 24px; position: relative; }
+  .phase-tasks li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+  @media (max-width: 720px) { .phase { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; } .phase-num { font-size: 60px; } }
+  .warnings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .warn { background: rgba(17,17,17,0.85); backdrop-filter: blur(8px); border-left: 3px solid var(--accent-warm); padding: 24px 28px; border-radius: 0 4px 4px 0; }
+  .warn-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-warm); margin-bottom: 12px; }
+  .warn h4 { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 8px; font-weight: 400; letter-spacing: -0.01em; }
+  .warn p { color: var(--ink-mute); font-size: 14px; line-height: 1.6; }
+  @media (max-width: 720px) { .warnings { grid-template-columns: 1fr; } }
+  .footer-wrap { position: relative; border-top: 1px solid var(--line); overflow: hidden; }
+  .footer-wrap .shader-bg { opacity: 0.45; }
+  .footer-wrap .section-veil { background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.95) 100%); }
+  footer { position: relative; z-index: 2; padding: 80px 32px 32px; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 64px; }
+  .foot-brand h3 { font-family: var(--serif); font-size: 48px; line-height: 1; color: var(--ink); margin-bottom: 16px; font-weight: 400; letter-spacing: -0.02em; }
+  .foot-brand h3 em { color: var(--accent); font-style: italic; }
+  .foot-brand p { color: var(--ink-mute); font-size: 14px; max-width: 400px; }
+  .foot-col h5 { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-faint); margin-bottom: 16px; font-weight: 500; }
+  .foot-col ul { list-style: none; }
+  .foot-col li { color: var(--ink-mute); font-size: 14px; margin-bottom: 8px; }
+  .foot-bottom { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 24px 32px 48px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+  @media (max-width: 720px) { footer { grid-template-columns: 1fr; gap: 40px; padding: 60px 16px 24px; } .foot-bottom { flex-direction: column; gap: 8px; padding: 24px 16px 32px; } .foot-brand h3 { font-size: 36px; } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span><i class="dot"></i> Global gig economy hit $674B in 2026</span>
+    <span><i class="dot"></i> 70% of companies are increasing AI spending</span>
+    <span><i class="dot"></i> AI consulting rates: $100–$300 / hour</span>
+    <span><i class="dot"></i> 300% growth in AI job postings since 2023</span>
+    <span><i class="dot"></i> Prompt engineering: $50–$150 / hour</span>
+    <span><i class="dot"></i> Most digital products on Gumroad take days, not weeks</span>
+    <span><i class="dot"></i> AI projected to add $15.7T to global economy by 2030</span>
+  </div>
+</div>
+
+<nav class="main">
+  <div class="logo">
+    <div class="logo-box">AI</div>
+    <span>INCOME LAB / personal notebook</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#stats">market</a></li>
+    <li><a href="#methods">methods</a></li>
+    <li><a href="#toolkit">toolkit</a></li>
+    <li><a href="#roadmap">roadmap</a></li>
+    <li><a href="#warnings">caveats</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="shader-bg" data-shader="aurora"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="hero-meta">
+      <div class="hero-meta-block">
+        <span class="label">// Field manual</span>
+        <span class="value">Edition 01 — May 2026</span>
+      </div>
+      <div class="hero-meta-block" style="text-align: right;">
+        <span class="label">// Operator</span>
+        <span class="value">Personal study log</span>
+      </div>
+    </div>
+    <div class="hero-main">
+      <div class="hero-tag">Live transmission — AI economy 2026</div>
+      <h1 class="hero-title">Making money online,<br>powered by <em>artificial intelligence</em>.</h1>
+      <p class="hero-sub">A working notebook of the methods, platforms, and tools that actually generate income in 2026 — researched, tested, and documented for personal study. No hype, no get-rich-quick. Just leverage.</p>
+      <div class="hero-actions">
+        <a href="#methods" class="btn btn-primary">Open the playbook<span class="arrow">→</span></a>
+        <a href="#roadmap" class="btn btn-ghost">See the 60-day plan<span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="section-wrap">
+  <div class="shader-bg" data-shader="grid"></div>
+  <div class="section-veil"></div>
+  <section id="stats">
+    <div class="section-header">
+      <span class="section-label">01 / Market</span>
+      <div>
+        <h2 class="section-title">The opportunity, <em>by the numbers</em>.</h2>
+        <p class="section-intro">Why now matters. The gap between tools and the people who know how to wield them is the largest it has ever been — and businesses are paying to close it.</p>
+      </div>
+    </div>
+    <div class="image-strip">
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80" alt="abstract neural network" loading="lazy">
+        <span class="img-label">// Neural / abstract</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=900&q=80" alt="ai chip macro" loading="lazy">
+        <span class="img-label">// Compute</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" alt="circuit board" loading="lazy">
+        <span class="img-label">// Infrastructure</span>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-tag">$ — global</div>
+        <div class="stat-num">674<span class="stat-unit">B</span></div>
+        <div class="stat-desc">Size of the global gig economy in 2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-tag">% — companies</div>
+        <div class="stat-num">70<span class="stat-unit">%</span></div>
+        <div class="stat-desc">Of firms increasing AI spending this year</div>
+      </div>
+      <div class="stat">
+        <div class="stat-tag">$ — projection</div>
+        <div class="stat-num">15.7<span class="stat-unit">T</span></div>
+        <div class="stat-desc">AI's projected contribution by 2030</div>
+      </div>
+      <div class="stat">
+        <div class="stat-tag">% — growth</div>
+        <div class="stat-num">300<span class="stat-unit">%</span></div>
+        <div class="stat-desc">Increase in AI job listings since 2023</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="section-wrap">
+  <div class="shader-bg" data-shader="waves"></div>
+  <div class="section-veil"></div>
+  <section id="methods">
+    <div class="section-header">
+      <span class="section-label">02 / Methods</span>
+      <div>
+        <h2 class="section-title">Ten ways to earn, <em>ranked by leverage</em>.</h2>
+        <p class="section-intro">Every method below pairs a real human skill with an AI tool that multiplies output. The goal isn't to be a "prompt engineer" — it's to deliver outcomes that businesses already pay for, just faster.</p>
+      </div>
+    </div>
+    <div class="image-strip">
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80" alt="remote work" loading="lazy">
+        <span class="img-label">// Remote work</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=900&q=80" alt="creative workspace" loading="lazy">
+        <span class="img-label">// Studio</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80" alt="dashboard analytics" loading="lazy">
+        <span class="img-label">// Analytics</span>
+      </div>
+    </div>
+    <div class="methods">
+      <article class="method">
+        <div class="method-num">001 — content & writing</div>
+        <h3 class="method-name">AI-powered content services</h3>
+        <p class="method-desc">Ghost-writing blogs, newsletters, and landing copy for businesses. AI handles research and first drafts. You handle voice, strategy, and quality control. The fastest path to first revenue.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Beginner</span>
+          <span class="chip chip-pay">$40–$100 / hr</span>
+        </div>
+        <div class="method-tools">Stack — <strong>ChatGPT, Surfer SEO, Grammarly</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">002 — visual design</div>
+        <h3 class="method-name">AI art &amp; print-on-demand</h3>
+        <p class="method-desc">Generate distinctive visuals with Midjourney, then sell them as prints, T-shirts, or downloadable art on Etsy, Redbubble, and Printify. Pick a narrow niche — generic art doesn't sell.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Beginner</span>
+          <span class="chip chip-pay">$500–$3K / mo</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Midjourney, DALL·E, Printify, Etsy</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">003 — digital products</div>
+        <h3 class="method-name">Templates, prompt packs &amp; eBooks</h3>
+        <p class="method-desc">Build once, sell forever. Notion templates, prompt libraries, spreadsheet trackers, resume kits. The clearest path to genuinely semi-passive income.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Beginner</span>
+          <span class="chip chip-pay">Semi-passive</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Notion, Gumroad, Canva, Etsy</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">004 — video</div>
+        <h3 class="method-name">Faceless YouTube channels</h3>
+        <p class="method-desc">Scripted with AI, narrated with ElevenLabs, edited with Pictory or Descript. Best for educational, list-style, or storytelling content. Long ramp, but compounds powerfully.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Intermediate</span>
+          <span class="chip chip-pay">$150–$2K / mo</span>
+        </div>
+        <div class="method-tools">Stack — <strong>ChatGPT, ElevenLabs, Pictory, CapCut</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">005 — voice</div>
+        <h3 class="method-name">Voiceover &amp; localization</h3>
+        <p class="method-desc">Sell narration, dubbing, and translation as a service for short-form video, audiobooks, and ads. High-margin work that AI completes in minutes.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Intermediate</span>
+          <span class="chip chip-pay">$50–$500 / project</span>
+        </div>
+        <div class="method-tools">Stack — <strong>ElevenLabs, Murf, Descript</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">006 — marketing</div>
+        <h3 class="method-name">Affiliate marketing with AI SEO</h3>
+        <p class="method-desc">Build niche review sites or YouTube channels. Use AI to research keywords, draft content, and generate B-roll. Best after you have your own audience or media asset.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Intermediate</span>
+          <span class="chip chip-pay">20–50% commission</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Surfer SEO, Ahrefs, ChatGPT, WordPress</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">007 — education</div>
+        <h3 class="method-name">Online courses &amp; cohorts</h3>
+        <p class="method-desc">Teach one skill exceptionally well. AI compresses curriculum design, slide creation, and marketing copy. The highest-margin product in this entire list.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Intermediate</span>
+          <span class="chip chip-pay">$1K–$10K / course</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Thinkific, Coursebox, Loom, Notion</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">008 — agents</div>
+        <h3 class="method-name">Custom GPTs &amp; AI agents</h3>
+        <p class="method-desc">Build narrow-purpose AI agents for small businesses — customer support bots, lead qualifiers, internal knowledge bases. Sell to a single industry to compound expertise.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Advanced</span>
+          <span class="chip chip-pay">$75–$200 / hr</span>
+        </div>
+        <div class="method-tools">Stack — <strong>OpenAI Assistants, Voiceflow</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">009 — automation</div>
+        <h3 class="method-name">Business workflow automation</h3>
+        <p class="method-desc">Wire AI into operations. Email triage, meeting notes, lead routing, content pipelines. Service businesses pay 4-figure retainers for systems that save them hours weekly.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Advanced</span>
+          <span class="chip chip-pay">$75–$200 / hr</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Make, n8n, Zapier, Airtable</strong></div>
+      </article>
+      <article class="method">
+        <div class="method-num">010 — consulting</div>
+        <h3 class="method-name">AI consulting &amp; training</h3>
+        <p class="method-desc">Help organizations identify where AI creates real ROI. Run workshops. Audit their workflows. The highest hourly rate in the entire field — built on trust and credibility.</p>
+        <div class="method-foot">
+          <span class="chip chip-level">Advanced</span>
+          <span class="chip chip-pay">$100–$300 / hr</span>
+        </div>
+        <div class="method-tools">Stack — <strong>Your expertise + Loom + slides</strong></div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<div class="section-wrap">
+  <div class="shader-bg" data-shader="mesh"></div>
+  <div class="section-veil"></div>
+  <section id="toolkit">
+    <div class="section-header">
+      <span class="section-label">03 / Toolkit</span>
+      <div>
+        <h2 class="section-title">The working stack, <em>nothing more</em>.</h2>
+        <p class="section-intro">Most operators run on fewer than five tools. Mastery over a small set beats shallow familiarity with twenty. Start with the first four.</p>
+      </div>
+    </div>
+    <div class="image-strip">
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="code on screen" loading="lazy">
+        <span class="img-label">// Code</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" alt="hardware close up" loading="lazy">
+        <span class="img-label">// Hardware</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=80" alt="abstract data" loading="lazy">
+        <span class="img-label">// Data</span>
+      </div>
+    </div>
+    <div class="toolkit">
+      <div class="tool"><div class="tool-cat">Language model</div><div class="tool-name">ChatGPT</div><div class="tool-purpose">Daily driver for writing, research, and ideation.</div></div>
+      <div class="tool"><div class="tool-cat">Language model</div><div class="tool-name">Gemini</div><div class="tool-purpose">Long documents, multimodal input, analysis.</div></div>
+      <div class="tool"><div class="tool-cat">Image gen</div><div class="tool-name">Midjourney</div><div class="tool-purpose">High-end visuals, brand imagery, product art.</div></div>
+      <div class="tool"><div class="tool-cat">Image gen</div><div class="tool-name">DALL·E</div><div class="tool-purpose">Quick illustrations, mockups, social content.</div></div>
+      <div class="tool"><div class="tool-cat">Voice</div><div class="tool-name">ElevenLabs</div><div class="tool-purpose">Realistic narration in any language.</div></div>
+      <div class="tool"><div class="tool-cat">Video</div><div class="tool-name">Pictory</div><div class="tool-purpose">Turn articles into short-form video, fast.</div></div>
+      <div class="tool"><div class="tool-cat">Design</div><div class="tool-name">Canva AI</div><div class="tool-purpose">Templates, social posts, simple branding.</div></div>
+      <div class="tool"><div class="tool-cat">Workspace</div><div class="tool-name">Notion AI</div><div class="tool-purpose">Your second brain — research, drafts, planning.</div></div>
+      <div class="tool"><div class="tool-cat">Automation</div><div class="tool-name">Make</div><div class="tool-purpose">Visual workflows linking AI into your apps.</div></div>
+      <div class="tool"><div class="tool-cat">Storefront</div><div class="tool-name">Gumroad</div><div class="tool-purpose">Sell digital products in under an hour.</div></div>
+      <div class="tool"><div class="tool-cat">Marketplace</div><div class="tool-name">Etsy</div><div class="tool-purpose">Templates, printables, and AI art with traffic.</div></div>
+      <div class="tool"><div class="tool-cat">Freelance</div><div class="tool-name">Upwork &amp; Fiverr</div><div class="tool-purpose">First five clients without an audience.</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="section-wrap">
+  <div class="shader-bg" data-shader="tunnel"></div>
+  <div class="section-veil"></div>
+  <section id="roadmap">
+    <div class="section-header">
+      <span class="section-label">04 / Roadmap</span>
+      <div>
+        <h2 class="section-title">A 60-day field plan, <em>step by step</em>.</h2>
+        <p class="section-intro">The single biggest mistake new operators make: switching methods. Pick one column from above and run this protocol for two months before evaluating.</p>
+      </div>
+    </div>
+    <div class="image-strip">
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80" alt="road horizon" loading="lazy">
+        <span class="img-label">// The path</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=900&q=80" alt="planner calendar" loading="lazy">
+        <span class="img-label">// Plan</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=900&q=80" alt="focused work" loading="lazy">
+        <span class="img-label">// Execution</span>
+      </div>
+    </div>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">01</span><span class="phase-week">Week 1</span></div>
+        <div class="phase-body">
+          <h3>Pick a single lane and commit</h3>
+          <p>Match a skill you already have with a method from section 02. Writing background? Method 001 or 007. Visual eye? Method 002 or 003. Engineering brain? Method 008 or 009. Write it on paper. No switching for sixty days.</p>
+          <ul class="phase-tasks">
+            <li>List your top 3 existing skills</li>
+            <li>Cross-reference with the ten methods</li>
+            <li>Pick one. Close the other tabs.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">02</span><span class="phase-week">Week 1–2</span></div>
+        <div class="phase-body">
+          <h3>Master two tools, deeply</h3>
+          <p>Deep fluency with two tools is worth more than passing knowledge of ten. Run thirty minutes a day for fourteen days. Build a personal prompt library as you go.</p>
+          <ul class="phase-tasks">
+            <li>Pick your primary language model</li>
+            <li>Pick one secondary tool from the toolkit</li>
+            <li>Save every prompt that produced a good result</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">03</span><span class="phase-week">Week 2–3</span></div>
+        <div class="phase-body">
+          <h3>Ship a small first deliverable</h3>
+          <p>A prompt pack. A Notion template. Five sample articles. The goal is proof — to yourself and to the market — that you can deliver, not a perfect product launch.</p>
+          <ul class="phase-tasks">
+            <li>Define the smallest possible deliverable</li>
+            <li>Build it in under a week</li>
+            <li>Publish it somewhere public</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">04</span><span class="phase-week">Week 3–4</span></div>
+        <div class="phase-body">
+          <h3>First three clients at a low rate</h3>
+          <p>Trade price for testimonials. Three real clients with written feedback unlocks your real pricing tier. Don't skip this — it's the only stage that makes the rest possible.</p>
+          <ul class="phase-tasks">
+            <li>Set up Upwork, Fiverr, or LinkedIn profile</li>
+            <li>Send 10 personalized pitches per day</li>
+            <li>Collect a testimonial after every job</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">05</span><span class="phase-week">Week 5–6</span></div>
+        <div class="phase-body">
+          <h3>Daily outreach + daily content</h3>
+          <p>Inbound deal flow comes from being visible. One platform, one post format, daily. Same for outreach — ten conversations a day. Consistency beats brilliance.</p>
+          <ul class="phase-tasks">
+            <li>Pick one platform — LinkedIn or X</li>
+            <li>One post per day, same format</li>
+            <li>Ten outbound conversations daily</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">06</span><span class="phase-week">Week 6–7</span></div>
+        <div class="phase-body">
+          <h3>Sell outcomes, not hours</h3>
+          <p>"A blog that brings 10 qualified leads a month" is worth more than "a 1,000-word article." Reframe every offer around the business result. Raise rates accordingly.</p>
+          <ul class="phase-tasks">
+            <li>Rewrite your offer as an outcome</li>
+            <li>Productize at three price points</li>
+            <li>Test the new framing on five prospects</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-meta"><span class="phase-num">07</span><span class="phase-week">Week 7–8</span></div>
+        <div class="phase-body">
+          <h3>Layer automation into operations</h3>
+          <p>Once delivery is repeatable, wire it together. Make or Zapier. Pre-built prompt chains. Templated proposals. This is the step that lets you double income without doubling time.</p>
+          <ul class="phase-tasks">
+            <li>Map your service as a flowchart</li>
+            <li>Identify the three slowest steps</li>
+            <li>Automate or templatize each one</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="section-wrap">
+  <div class="shader-bg" data-shader="static"></div>
+  <div class="section-veil"></div>
+  <section id="warnings">
+    <div class="section-header">
+      <span class="section-label">05 / Caveats</span>
+      <div>
+        <h2 class="section-title">What no one selling courses <em>will tell you</em>.</h2>
+        <p class="section-intro">Real friction lives in places the influencers skip past. Internalize these before you spend a dollar on a "passive income" program.</p>
+      </div>
+    </div>
+    <div class="image-strip">
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=1200&q=80" alt="warning signal" loading="lazy">
+        <span class="img-label">// Caution</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80" alt="contract documents" loading="lazy">
+        <span class="img-label">// Fine print</span>
+      </div>
+      <div class="img-cell">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=80" alt="abstract red" loading="lazy">
+        <span class="img-label">// Risk</span>
+      </div>
+    </div>
+    <div class="warnings">
+      <div class="warn">
+        <div class="warn-label">Caveat 01</div>
+        <h4>"Easy money" is the red flag</h4>
+        <p>Anyone promising $10K/month passive without effort is selling you a course about earning $10K/month passive. Real businesses take 3 to 6 months of focused work before meaningful revenue.</p>
+      </div>
+      <div class="warn">
+        <div class="warn-label">Caveat 02</div>
+        <h4>Fact-check every AI output</h4>
+        <p>Generative models confabulate. Numbers, quotes, and citations must be verified before they reach a client. The single fastest way to destroy a reputation is one hallucinated statistic.</p>
+      </div>
+      <div class="warn">
+        <div class="warn-label">Caveat 03</div>
+        <h4>The market is flooded with slop</h4>
+        <p>Generic AI output is already a commodity. Winning means narrow niche + deep insight + production quality — not volume. Compete on taste and judgment, not throughput.</p>
+      </div>
+      <div class="warn">
+        <div class="warn-label">Caveat 04</div>
+        <h4>Read the licensing terms</h4>
+        <p>Commercial-use rights on AI-generated content shift frequently across tools and jurisdictions. Verify your right to sell before you list a single product.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="footer-wrap">
+  <div class="shader-bg" data-shader="aurora"></div>
+  <div class="section-veil"></div>
+  <footer>
+    <div class="foot-brand">
+      <h3>Start small. Ship daily. <em>Compound monthly.</em></h3>
+      <p>This site is a personal learning notebook — a living document built to help me think clearly about how to use AI to create real income. It will get updated as the landscape shifts.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Sections</h5>
+      <ul><li>Market</li><li>Methods</li><li>Toolkit</li><li>Roadmap</li><li>Caveats</li></ul>
+    </div>
+    <div class="foot-col">
+      <h5>Reference</h5>
+      <ul><li>Shopify · AI side hustles</li><li>Printify · 15 strategies</li><li>Hostinger · 15+ ways</li><li>Dan Martell · 25 ways</li><li>Motley Fool · 7 frameworks</li></ul>
+    </div>
+  </footer>
+  <div class="foot-bottom">
+    <span>// AI Income Lab — Personal study site</span>
+    <span>Built May 2026 · v0.2</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const SHADERS = {
+  aurora: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    void main(void) {
+      vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+      float t = time * 0.05;
+      float lineWidth = 0.002;
+      vec3 color = vec3(0.0);
+      for(int j = 0; j < 3; j++){
+        for(int i = 0; i < 5; i++){
+          color[j] += lineWidth * float(i*i) / abs(fract(t - 0.01*float(j) + float(i)*0.01) * 5.0 - length(uv) + mod(uv.x + uv.y, 0.2));
+        }
+      }
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `,
+  grid: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    void main(void) {
+      vec2 uv = (gl_FragCoord.xy - resolution.xy * 0.5) / min(resolution.x, resolution.y);
+      uv *= 4.0;
+      float t = time * 0.3;
+      vec2 grid = abs(fract(uv + vec2(t * 0.1, 0.0)) - 0.5);
+      float line = smoothstep(0.48, 0.5, max(grid.x, grid.y));
+      float fade = exp(-length(uv) * 0.4);
+      vec3 col = vec3(0.4, 0.8, 0.2) * line * fade * 0.6;
+      col += vec3(0.1, 0.3, 0.5) * (1.0 - line) * fade * 0.2;
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+  waves: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    void main(void) {
+      vec2 uv = (gl_FragCoord.xy - resolution.xy * 0.5) / resolution.y;
+      float t = time * 0.4;
+      vec3 col = vec3(0.0);
+      for (int i = 0; i < 5; i++) {
+        float fi = float(i);
+        float wave = sin(uv.x * 3.0 + t + fi * 0.8) * 0.15;
+        float d = abs(uv.y - wave - fi * 0.05 + 0.1);
+        col += vec3(0.5, 0.9, 0.3) * 0.002 / d;
+      }
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+  mesh: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    void main(void) {
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      float t = time * 0.15;
+      float r = sin(uv.x * 6.0 + t) * 0.5 + 0.5;
+      float g = sin(uv.y * 6.0 + t * 1.3 + 2.0) * 0.5 + 0.5;
+      float b = sin((uv.x + uv.y) * 4.0 + t * 0.7 + 4.0) * 0.5 + 0.5;
+      vec3 col = vec3(r * 0.2, g * 0.5, b * 0.3);
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+  tunnel: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    void main(void) {
+      vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+      float r = length(uv);
+      float a = atan(uv.y, uv.x);
+      float t = time * 0.2;
+      float pattern = sin(1.0 / max(r, 0.01) * 4.0 + t * 3.0) * 0.5 + 0.5;
+      float angular = sin(a * 6.0 + t) * 0.5 + 0.5;
+      vec3 col = vec3(0.4, 0.9, 0.3) * pattern * angular * 0.4;
+      col += vec3(0.0, 0.2, 0.4) * (1.0 - r) * 0.3;
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+  static: `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    float rand(vec2 c) { return fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453); }
+    void main(void) {
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      float t = floor(time * 6.0);
+      float band = floor(uv.y * 40.0);
+      float n = rand(vec2(band, t));
+      float scan = sin(uv.y * resolution.y * 1.5) * 0.05;
+      vec3 col = vec3(0.5, 0.2, 0.1) * n * 0.3 + scan;
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `
+};
+
+const VERTEX = `void main() { gl_Position = vec4(position, 1.0); }`;
+
+function mountShader(container, fragSrc) {
+  if (typeof THREE === 'undefined') return;
+  const camera = new THREE.Camera();
+  camera.position.z = 1;
+  const scene = new THREE.Scene();
+  const geometry = new THREE.PlaneGeometry(2, 2);
+  const uniforms = {
+    time: { value: Math.random() * 100 },
+    resolution: { value: new THREE.Vector2() }
+  };
+  const material = new THREE.ShaderMaterial({
+    uniforms, vertexShader: VERTEX, fragmentShader: fragSrc
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  container.appendChild(renderer.domElement);
+  let running = true;
+  function resize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    if (w === 0 || h === 0) return;
+    renderer.setSize(w, h);
+    uniforms.resolution.value.x = renderer.domElement.width;
+    uniforms.resolution.value.y = renderer.domElement.height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { running = e.isIntersecting; });
+  }, { threshold: 0 });
+  io.observe(container);
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!running) return;
+    uniforms.time.value += 0.05;
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+
+document.querySelectorAll('[data-shader]').forEach(el => {
+  const key = el.getAttribute('data-shader');
+  const src = SHADERS[key] || SHADERS.aurora;
+  mountShader(el, src);
+});
+
+(function() {
+  const targets = document.querySelectorAll('.stat, .method, .tool, .phase, .warn, .img-cell');
+  targets.forEach(el => el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  targets.forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
