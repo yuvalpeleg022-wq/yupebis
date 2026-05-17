@@ -124,14 +124,14 @@ const variants = {
     translateZ: 0,
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.7, ease: "easeOut" as const },
   },
   exit: (dir: number) => ({
     rotateY: dir > 0 ? -90 : 90,
     translateZ: -600,
     opacity: 0,
     scale: 0.7,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   }),
 };
 
@@ -154,7 +154,7 @@ function TitleSlide() {
       <motion.div
         initial={{ opacity: 0, y: 60, rotateX: 30 }}
         animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, ease: "easeOut" as const }}
         style={{ transformStyle: "preserve-3d" }}
       >
         <p className="text-cyan-400 font-bold uppercase tracking-[0.4em] text-sm mb-6">
@@ -246,7 +246,7 @@ function PlayerSlide({ slide }: { slide: (typeof slides)[number] & { type: "play
 
           {/* stats row */}
           <div className="flex gap-6">
-            {slide.stats.map((s) => (
+            {(slide.stats ?? []).map((s) => (
               <motion.div
                 key={s.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -286,7 +286,7 @@ function PlayerSlide({ slide }: { slide: (typeof slides)[number] & { type: "play
           alt={slide.name}
           initial={{ opacity: 0, scale: 0.85, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: "easeOut" as const }}
           className="relative z-10 h-full max-h-[85%] w-auto object-cover object-top"
           style={{
             filter: `drop-shadow(0 0 40px ${slide.glow}88)`,
