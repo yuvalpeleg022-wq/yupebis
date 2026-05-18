@@ -67,12 +67,18 @@ def grad_rect(slide, l, t, w, h, stops, ang=90):
 def shadow(s, blur=28, dist=5, ang=135, al=75):
     sp = s._element.spPr
     for e in sp.findall(f'{{{A_NS}}}effectLst'): sp.remove(e)
-    el = etree.SubElement(sp, f'{{{A_NS}}}effectLst')
-    os = etree.SubElement(el, f'{{{A_NS}}}outerShdw')
-    os.set('blurRad', str(int(Pt(blur)))); os.set('dist', str(int(Pt(dist))))
-    os.set('dir', str(int(ang*60000))); os.set('algn','tl'); os.set('rotWithShape','0')
-    sc = etree.SubElement(os, f'{{{A_NS}}}srgbClr'); sc.set('val','000000')
-    etree.SubElement(sc, f'{{{A_NS}}}alpha').set('val', str(int(al*1000)))
+    el_xml = (f'<a:effectLst xmlns:a="{A_NS}">'
+              f'<a:outerShdw blurRad="{int(Pt(blur))}" dist="{int(Pt(dist))}"'
+              f' dir="{int(ang*60000)}" rotWithShape="0">'
+              f'<a:srgbClr val="000000"><a:alpha val="{int(al*1000)}"/></a:srgbClr>'
+              f'</a:outerShdw></a:effectLst>')
+    el = etree.fromstring(el_xml)
+    # Insert AFTER a:ln per OOXML schema (spPr: xfrm → geom → fill → ln → effectLst)
+    ln = sp.find(f'{{{A_NS}}}ln')
+    if ln is not None:
+        sp.insert(list(sp).index(ln) + 1, el)
+    else:
+        sp.append(el)
 
 def txb(slide, txt, l, t, w, h, font='Impact', sz=52, col=WHITE,
         bold=True, italic=False, align=PP_ALIGN.CENTER, wrap=True):
@@ -92,11 +98,18 @@ def glow_txb(b, gc=AMBER, rad_pt=8):
             rPr = run._r.find(f'{{{A_NS}}}rPr')
             if rPr is None: continue
             for e in rPr.findall(f'{{{A_NS}}}effectLst'): rPr.remove(e)
-            ef = etree.SubElement(rPr, f'{{{A_NS}}}effectLst')
-            gw = etree.SubElement(ef, f'{{{A_NS}}}glow')
-            gw.set('rad', str(int(Pt(rad_pt))))
-            sc = etree.SubElement(gw, f'{{{A_NS}}}srgbClr'); sc.set('val', rh(gc))
-            etree.SubElement(sc, f'{{{A_NS}}}alpha').set('val','70000')
+            # Build effectLst element
+            ef_xml = (f'<a:effectLst xmlns:a="{A_NS}">'
+                      f'<a:glow rad="{int(Pt(rad_pt))}">'
+                      f'<a:srgbClr val="{rh(gc)}"><a:alpha val="70000"/></a:srgbClr>'
+                      f'</a:glow></a:effectLst>')
+            ef = etree.fromstring(ef_xml)
+            # Insert BEFORE a:latin to satisfy OOXML schema ordering
+            latin = rPr.find(f'{{{A_NS}}}latin')
+            if latin is not None:
+                rPr.insert(list(rPr).index(latin), ef)
+            else:
+                rPr.append(ef)
 
 def hline(slide, l, t, w, col=COPPER):
     r = rect(slide, l, t, w, Emu(19050), fc=col); r.line.fill.background()
