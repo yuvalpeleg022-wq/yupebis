@@ -330,3 +330,197 @@ def slide_to_rgb(slide_img):
     bg = Image.new('RGB', (W, H), (0, 0, 0))
     bg.paste(slide_img.convert('RGB'), (0, 0))
     return bg
+
+# ── ADVANCED DESIGN ELEMENTS ──────────────────────────────────────────────────
+
+def hex_grid(img, color=COPPER, alpha=22, size=60, x0=0, y0=0, w=None, h=None):
+    """Draw MCU-style hexagonal grid overlay."""
+    if w is None: w = W
+    if h is None: h = H
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    hs = int(size * SCALE)
+    cols = w // (hs * 2) + 2
+    rows = h // int(hs * 1.75) + 2
+    fill_c = (*rgb(color), alpha)
+    for row in range(rows):
+        for col in range(cols):
+            cx = x0 + col * hs * 2 + (hs if row % 2 else 0)
+            cy = y0 + row * int(hs * 1.75)
+            pts = []
+            for angle in range(0, 360, 60):
+                rad = math.radians(angle)
+                pts.append((int(cx + hs * 0.95 * math.cos(rad)),
+                             int(cy + hs * 0.95 * math.sin(rad))))
+            d.polygon(pts, outline=fill_c, width=2)
+    img.alpha_composite(overlay)
+
+def energy_ring(img, cx, cy, r, color, thickness=4, dashes=24, alpha=160):
+    """Dashed energy ring."""
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    dash_len = 2 * math.pi / dashes
+    for i in range(dashes):
+        if i % 2 == 0:
+            a1 = i * dash_len
+            a2 = a1 + dash_len * 0.7
+            pts = []
+            steps = 12
+            for j in range(steps + 1):
+                a = a1 + (a2 - a1) * j / steps
+                pts.append((int(cx + r * math.cos(a)), int(cy + r * math.sin(a))))
+            if len(pts) >= 2:
+                d.line(pts, fill=(*rgb(color), alpha), width=thickness)
+    img.alpha_composite(overlay)
+
+def circuit_lines(img, color=COPPER, alpha=18, count=12):
+    """Horizontal/vertical PCB-style circuit trace decorations."""
+    import random
+    random.seed(77)
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    c = (*rgb(color), alpha)
+    for _ in range(count):
+        x = random.randint(0, W)
+        y = random.randint(0, H)
+        segs = random.randint(3, 7)
+        px, py = x, y
+        for _ in range(segs):
+            dir_ = random.choice(['h','v'])
+            length = random.randint(80, 400) * int(SCALE)
+            if dir_ == 'h':
+                nx, ny = px + random.choice([-1,1])*length, py
+            else:
+                nx, ny = px, py + random.choice([-1,1])*length
+            d.line([(px,py),(nx,ny)], fill=c, width=2)
+            if random.random() > 0.6:
+                d.ellipse([nx-6,ny-6,nx+6,ny+6], fill=(*rgb(color), alpha*2))
+            px, py = nx, ny
+    img.alpha_composite(overlay)
+
+def doom_rune_border(img, color=AMBER):
+    """Decorative rune-pattern border around the entire slide."""
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    bw = int(8 * SCALE)
+    c = (*rgb(color), 180)
+    d.rectangle([bw, bw, W-bw, H-bw], outline=c, width=bw)
+    # Corner diamonds
+    csz = int(30 * SCALE)
+    for cx2, cy2 in [(bw,bw),(W-bw,bw),(bw,H-bw),(W-bw,H-bw)]:
+        d.polygon([(cx2-csz,cy2),(cx2,cy2-csz),(cx2+csz,cy2),(cx2,cy2+csz)], fill=c)
+    # Tick marks along edges
+    tick_c = (*rgb(color), 100)
+    for xi in range(200, W-200, 200):
+        for yi in [bw*2, H-bw*2]:
+            d.line([(xi, yi-12),(xi, yi+12)], fill=tick_c, width=3)
+    for yi in range(200, H-200, 200):
+        for xi in [bw*2, W-bw*2]:
+            d.line([(xi-12, yi),(xi+12, yi)], fill=tick_c, width=3)
+    img.alpha_composite(overlay)
+
+def scan_lines(img, alpha=6):
+    """Subtle CRT scan-line overlay for cinematic feel."""
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    for y in range(0, H, 6):
+        d.line([(0,y),(W,y)], fill=(0,0,0,alpha), width=2)
+    img.alpha_composite(overlay)
+
+def gradient_vignette(img, strength=120):
+    """Dark vignette around edges of image."""
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    steps = 40
+    sw = max(W, H) // steps + 1
+    for i in range(steps):
+        t = i / steps
+        alpha = int(strength * (1 - t) ** 2)
+        m = int(i * max(W, H) / (steps * 1.5))
+        x0, y0 = m, m
+        x1, y1 = W - m, H - m
+        if x1 > x0 and y1 > y0:
+            d.rectangle([x0, y0, x1, y1], outline=(0,0,0,alpha), width=sw)
+    img.alpha_composite(overlay)
+
+def doom_mask_icon(img, cx, cy, size=200, color=AMBER, eye_color=None):
+    """Draw a detailed geometric Doom mask centered at (cx,cy)."""
+    if eye_color is None:
+        eye_color = RED_AC
+    d = draw(img)
+    s = size
+    # Outer helm glow
+    for r, a in [(s+60,18),(s+40,30),(s+20,45)]:
+        d.ellipse([cx-r, cy-r, cx+r, cy+r], outline=(*rgb(color), a), width=4)
+    # Helm top (rounded)
+    d.ellipse([cx-s, cy-s, cx+s, cy+int(s*0.4)], fill=(*rgb(DARK_CARD), 240), outline=(*rgb(color), 220), width=6)
+    # Face plate (rectangle with rounded bottom)
+    d.rounded_rectangle([cx-int(s*0.8), cy-int(s*0.2), cx+int(s*0.8), cy+int(s*1.1)],
+                        radius=int(s*0.15), fill=(*rgb(DARK_CARD), 240), outline=(*rgb(color), 220), width=6)
+    # Brow ridge
+    d.rectangle([cx-int(s*0.8), cy-int(s*0.2), cx+int(s*0.8), cy+int(s*0.05)],
+                fill=(*rgb(color), 80), outline=(*rgb(color), 150), width=3)
+    # Eye slits
+    for ex in [cx-int(s*0.32), cx+int(s*0.32)]:
+        ey = cy + int(s*0.05)
+        d.ellipse([ex-int(s*0.17), ey-int(s*0.12), ex+int(s*0.17), ey+int(s*0.12)], fill=(*rgb(eye_color), 255))
+        d.ellipse([ex-int(s*0.09), ey-int(s*0.07), ex+int(s*0.09), ey+int(s*0.07)], fill=(*rgb(GLOW_ORG), 255))
+    # Nose bridge line
+    d.line([(cx, cy+int(s*0.18)), (cx, cy+int(s*0.55))], fill=(*rgb(color), 100), width=4)
+    # Mouth slit
+    d.rounded_rectangle([cx-int(s*0.35), cy+int(s*0.60), cx+int(s*0.35), cy+int(s*0.72)],
+                         radius=6, fill=(*rgb(color), 160))
+    # Chin ridge
+    d.line([(cx-int(s*0.5), cy+int(s*0.85)), (cx+int(s*0.5), cy+int(s*0.85))],
+           fill=(*rgb(color), 120), width=4)
+    # Vertical rune lines on faceplate
+    for rx in [-int(s*0.55), -int(s*0.27), int(s*0.27), int(s*0.55)]:
+        d.line([(cx+rx, cy+int(s*0.15)), (cx+rx, cy+int(s*0.9))], fill=(*rgb(color), 50), width=3)
+    # Cheek armor plates
+    for side in [-1, 1]:
+        pts = [(cx+side*int(s*0.6), cy+int(s*0.1)),
+               (cx+side*int(s*0.85), cy+int(s*0.05)),
+               (cx+side*int(s*0.9), cy+int(s*0.55)),
+               (cx+side*int(s*0.65), cy+int(s*0.6))]
+        d.polygon(pts, fill=(*rgb(color), 60), outline=(*rgb(color), 160), width=4)
+
+def marvel_logo_bar(img, y=None, text='MARVEL STUDIOS'):
+    """Red Marvel Studios bar at top."""
+    if y is None:
+        y = 0
+    d = draw(img)
+    bh = int(55 * SCALE)
+    d.rectangle([0, y, W, y+bh], fill=(178, 34, 34, 255))
+    d.text((W//2, y+bh//2), text, font=font(22, bold=True), fill=WHITE, anchor='mm')
+
+def diagonal_stripe(img, x, y, w, h, color, alpha=30, stripe_w=60):
+    """Diagonal stripes decoration."""
+    overlay = Image.new('RGBA', (W, H), (0,0,0,0))
+    d = ImageDraw.Draw(overlay, 'RGBA')
+    c = (*rgb(color), alpha)
+    step = stripe_w * 2
+    for ox in range(-h, w + h, step):
+        pts = [(x+ox, y), (x+ox+stripe_w, y), (x+ox+stripe_w+h, y+h), (x+ox+h, y+h)]
+        d.polygon(pts, fill=c)
+    img.alpha_composite(overlay)
+
+def neon_text(img, text, x, y, fnt, color, anchor='mm', passes=5, blur=15):
+    """Neon-tube style glowing text."""
+    glow = Image.new('RGBA', (W, H), (0,0,0,0))
+    gd = ImageDraw.Draw(glow, 'RGBA')
+    gd.text((x, y), text, font=fnt, fill=(*rgb(color), 200), anchor=anchor)
+    for radius in [blur, blur//2, blur//4]:
+        blurred = glow.filter(ImageFilter.GaussianBlur(radius))
+        for _ in range(2):
+            img.alpha_composite(blurred)
+    d = draw(img)
+    d.text((x, y), text, font=fnt, fill=(*rgb(WHITE), 255), anchor=anchor)
+
+def badge(img, x, y, w, h, text, color, text_color=None):
+    """Filled rounded badge with centered text."""
+    if text_color is None:
+        text_color = BLACK
+    d = draw(img)
+    d.rounded_rectangle([x, y, x+w, y+h], radius=int(h*0.3), fill=color)
+    d.text((x+w//2, y+h//2), text, font=font(int(h*0.38/SCALE), bold=True),
+           fill=text_color, anchor='mm')
