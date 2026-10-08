@@ -199,6 +199,13 @@
   @keyframes infoIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .st-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; font: 400 12.5px var(--sans); color: var(--faint); }
   .cards.three { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .st-list { list-style: none; margin-top: 22px; display: grid; gap: 12px; }
+  .st-list li { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; padding: 16px 20px; border-inline-start: 2px solid var(--green-2); background: linear-gradient(90deg, rgba(5,16,9,.85), rgba(5,16,9,.35)); border-radius: 4px; }
+  .st-list .n { font-family: var(--latin); font-size: 30px; line-height: 1; color: var(--green); text-shadow: 0 0 20px rgba(57,255,122,.45); }
+  .st-list h4 { font-family: var(--royal); font-weight: 400; font-size: 23px; line-height: 1.2; margin-bottom: 4px; }
+  .st-list p { font-size: 17px; color: #d3ddd6; margin: 0; }
+  .st-meta { justify-content: flex-start; }
+
   @media (max-width: 860px) {
     .hot { width: 28px; height: 28px; margin: -14px 0 0 -14px; font-size: 12px; }
     .hot::before { inset: -6px; }
@@ -345,7 +352,7 @@
     <h2>הכוחות של דום</h2>
     <div class="text">
       <p class="lead">לדום אין כוחות-על מלידה. כל מה שיש לו, הוא בנה, למד או לקח בעצמו.</p>
-      <p>הוא לא נחשף לקרינה ולא ננשך על ידי עכביש. דום הפך לאחד האנשים החזקים ביקום בזכות שלושה דברים: המוח שלו, הכישוף שלמד, והשריון שבנה. לחצו על הנקודות הירוקות בתמונה כדי להכיר את השריון מקרוב.</p>
+      <p>הוא לא נחשף לקרינה ולא ננשך על ידי עכביש. דום הפך לאחד האנשים החזקים ביקום בזכות שלושה דברים: המוח שלו, הכישוף שלמד, והשריון שבנה. מתחת לתמונה: מה רואים בה, ומה זה אומר על השריון.</p>
     </div>
     <div class="station wide" data-station="gauntlet"></div>
     <div class="cards three">
@@ -537,20 +544,10 @@ document.querySelectorAll('.station').forEach(el => {
       <div class="st-shadow"></div><div class="st-glow"></div>
       <div class="st-img"><img src="${st.img}" alt="${st.alt}" loading="lazy"></div>
       <div class="st-shine"></div>
-      ${st.hots.map((h, i) => `<button class="hot${h.y < 24 ? ' below' : ''}${h.x > 80 ? ' end' : ''}" style="--x:${h.x}%;--y:${h.y}%" data-i="${i}" aria-label="${h.t}">${i + 1}<span class="lbl">${h.t}</span></button>`).join('')}
     </div>
-    <div class="st-info" aria-live="polite"></div>
-    <div class="st-meta"><span>לחצו על הנקודות הירוקות</span><span>${st.credit}</span></div>`;
-  const card = el.querySelector('.st-card'), img = el.querySelector('.st-img'), info = el.querySelector('.st-info');
-  const hots = [...el.querySelectorAll('.hot')];
-  const show = i => {
-    const h = st.hots[i];
-    hots.forEach((b, k) => b.classList.toggle('on', k === i));
-    info.innerHTML = `<div class="n">${String(i + 1).padStart(2, '0')}</div><div class="body"><h4>${h.t}</h4><p>${h.d}</p></div>`;
-    img.style.setProperty('--fx', h.x + '%'); img.style.setProperty('--fy', h.y + '%');
-  };
-  hots.forEach((b, i) => { b.addEventListener('click', () => show(i)); b.addEventListener('mouseenter', () => show(i)); });
-  show(0);
+    <div class="st-meta"><span>${st.credit}</span></div>
+    <ol class="st-list">${st.hots.map((h, i) => `<li><span class="n">${String(i + 1).padStart(2, '0')}</span><div><h4>${h.t}</h4><p>${h.d}</p></div></li>`).join('')}</ol>`;
+  const card = el.querySelector('.st-card'), img = el.querySelector('.st-img');
   if (!reduce) {
     el.addEventListener('pointermove', e => {
       const r = card.getBoundingClientRect();
