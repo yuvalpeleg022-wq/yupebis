@@ -1,0 +1,4 @@
+# Netlify: set "Base directory" to doom when creating the site
+[build]
+  publish = "."
+  command = ""
