@@ -481,8 +481,10 @@ const store = {
 let watched = new Set(store.get('watched', []));
 let myReviews = store.get('reviews', {});
 
-// ===== פוסטרים מוויקיפדיה =====
+// ===== פוסטרים =====
+// סדר הניסיונות: קובץ מקומי posters/<id>.jpg → ויקיפדיה (pageimages) → ויקיפדיה (REST) → פוסטר מעוצב
 const posters = {};
+const restTried = {};
 async function loadPosters() {
   const titles = FILMS.map(f => f.wiki);
   for (let i = 0; i < titles.length; i += 45) {
@@ -498,24 +500,50 @@ async function loadPosters() {
       Object.values(q.pages || {}).forEach(p => {
         if (p.thumbnail) posters[map[p.title] || p.title] = p.thumbnail.source;
       });
-    } catch (e) { /* אין רשת? נשארים עם הפוסטרים המעוצבים */ }
+    } catch (e) { /* ננסה את ה-REST לכל סרט בנפרד */ }
   }
-  document.querySelectorAll('[data-wiki]').forEach(applyPoster);
+  await Promise.all(FILMS.filter(f => !posters[f.wiki]).map(restPoster));
+  refreshPosters();
+}
+async function restPoster(f) {
+  if (restTried[f.wiki]) return;
+  restTried[f.wiki] = true;
+  try {
+    const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(f.wiki.replace(/ /g, '_')));
+    const d = await r.json();
+    const src = (d.thumbnail || d.originalimage || {}).source;
+    if (src) posters[f.wiki] = src;
+  } catch (e) {}
 }
 function applyPoster(el) {
-  const src = posters[el.dataset.wiki];
-  if (!src || el.querySelector('img')) return;
+  if (el.querySelector('img')) return;
+  const f = FILMS.find(x => x.id === el.dataset.id);
   const img = new Image();
   img.alt = '';
-  img.loading = 'lazy';
+  img.decoding = 'async';
   img.onload = () => img.classList.add('loaded');
-  img.src = src;
+  img.onerror = () => {
+    // הקובץ המקומי לא קיים? עוברים לוויקיפדיה כשהיא זמינה
+    if (posters[f.wiki] && img.src !== posters[f.wiki]) img.src = posters[f.wiki];
+    else img.remove();
+  };
+  img.dataset.local = '1';
+  img.src = 'posters/' + f.id + '.jpg';
   el.appendChild(img);
+}
+// כשהכתובות מוויקיפדיה מגיעות, מעדכנים פוסטרים שהקובץ המקומי שלהם לא נמצא
+function refreshPosters() {
+  document.querySelectorAll('[data-wiki]').forEach(el => {
+    const img = el.querySelector('img');
+    const f = FILMS.find(x => x.id === el.dataset.id);
+    if (!img) { applyPoster(el); return; }
+    if (!img.classList.contains('loaded') && img.complete && posters[f.wiki]) img.src = posters[f.wiki];
+  });
 }
 function posterHTML(f, extra = '') {
   const badge = f.soon ? '<span class="badge soon">בקרוב</span>'
     : f.score != null ? `<span class="badge score">★ ${f.score}</span>` : '';
-  return `<div class="poster" data-wiki="${f.wiki}" style="--c1:${f.c[0]};--c2:${f.c[1]}">
+  return `<div class="poster" data-id="${f.id}" data-wiki="${f.wiki}" style="--c1:${f.c[0]};--c2:${f.c[1]}">
     ${badge}${f.must ? '<span class="badge must">חובה</span>' : ''}${extra}
     <div class="poster-fallback"><div class="pf-title">${f.he}</div><div class="pf-en">${f.en}</div></div>
   </div>`;
