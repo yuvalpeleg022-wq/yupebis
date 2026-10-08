@@ -1,4 +1,4 @@
-# Netlify publishes the Marvel Gikim site from the marvel/ folder
+# Netlify publishes marvel/ or doom/ depending on the project name (see netlify-build.sh)
 [build]
-  publish = "marvel"
-  command = ""
+  command = "bash netlify-build.sh"
+  publish = "dist"
