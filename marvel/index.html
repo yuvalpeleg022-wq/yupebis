@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>מארוול גיקים — מתכוננים לדומסדיי</title>
+<meta name="description" content="אתר הקהילה של מארוול גיקים: כל סרטי מארוול, ביקורות, קטגוריות ומסלול הכנה לנוקמים: דומסדיי." />
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06120a;
+    --bg-2: #0b1d10;
+    --card: #102616;
+    --line: rgba(160,255,120,0.12);
+    --ink: #f1fbe9;
+    --mute: #a3bf9a;
+    --faint: #648a5c;
+    --lime: #8be22b;
+    --lime-deep: #2f7d14;
+    --purple: #9b6bff;
+    --gold: #f5c542;
+    --green: #8be22b;
+    --display: 'Secular One', 'Heebo', sans-serif;
+    --sans: 'Heebo', system-ui, sans-serif;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
+  a { color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(11,11,14,0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 20px; text-decoration: none; }
+  .logo-box { background: var(--lime); color: #0a1a05; padding: 2px 10px; border-radius: 4px; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 22px; font-size: 15px; }
+  .nav-links a { text-decoration: none; color: var(--mute); transition: color .2s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* hero */
+  .hero { position: relative; padding: 80px 0 70px; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero::before { content: ""; position: absolute; inset: -40% -10% auto; height: 140%; background: radial-gradient(ellipse at 70% 30%, rgba(126,211,33,0.32), transparent 55%), radial-gradient(ellipse at 20% 60%, rgba(47,125,20,0.35), transparent 55%), radial-gradient(ellipse at 10% 95%, rgba(155,107,255,0.14), transparent 45%); pointer-events: none; }
+  .hero .wrap { position: relative; }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--lime); background: rgba(126,211,33,0.12); border: 1px solid rgba(126,211,33,0.35); padding: 4px 12px; border-radius: 999px; margin-bottom: 20px; }
+  .hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 8vw, 92px); line-height: 1.02; margin-bottom: 18px; }
+  .hero h1 .doom { color: var(--lime); }
+  .hero p.lead { font-size: clamp(17px, 2.2vw, 21px); color: var(--mute); max-width: 640px; margin-bottom: 36px; }
+  .countdown { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .cd-box { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; min-width: 92px; text-align: center; }
+  .cd-num { font-family: var(--display); font-size: 40px; line-height: 1; }
+  .cd-lbl { font-size: 13px; color: var(--mute); margin-top: 6px; }
+  .cd-note { font-size: 14px; color: var(--faint); }
+  .hero-cta { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 15px; text-decoration: none; border: 1px solid transparent; }
+  .btn-red { background: linear-gradient(180deg, #a6f04a, var(--lime-deep)); color: #06120a; box-shadow: 0 5px 0 #1a4a0b, 0 10px 24px rgba(139,226,43,0.3); transform: translateY(0); transition: transform .15s, box-shadow .15s; }
+  .btn-red:active { transform: translateY(4px); box-shadow: 0 1px 0 #1a4a0b; }
+  .btn-red:hover { filter: brightness(1.08); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); }
+
+  section { padding: 70px 0; }
+  .sec-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+  .sec-head h2 { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4.5vw, 44px); line-height: 1.1; }
+  .sec-head p { color: var(--mute); max-width: 560px; }
+
+  /* prep path */
+  .progress { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 22px; }
+  .progress-top { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+  .progress-top span:last-child { color: var(--green); }
+  .bar { height: 10px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--green), #d4ff9a); border-radius: 999px; transition: width .4s; }
+  .path { display: grid; gap: 10px; counter-reset: step; }
+  .step { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; cursor: pointer; transition: border-color .2s, opacity .2s; }
+  .step:hover { border-color: rgba(255,255,255,0.22); }
+  .step-num { counter-increment: step; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); background: rgba(255,255,255,0.06); }
+  .step-num::before { content: counter(step); }
+  .step.done .step-num { background: var(--green); color: #052; }
+  .step.done .step-num::before { content: "✓"; }
+  .step h3 { font-size: 17px; font-weight: 700; }
+  .step h3 small { color: var(--faint); font-weight: 400; margin-inline-start: 6px; }
+  .step p { color: var(--mute); font-size: 14px; }
+  .step.done h3 { text-decoration: line-through; text-decoration-color: var(--green); }
+  .check { width: 26px; height: 26px; border-radius: 7px; border: 2px solid var(--faint); display: grid; place-items: center; font-size: 15px; color: transparent; }
+  .step.done .check { background: var(--green); border-color: var(--green); color: #052; }
+
+  /* filters */
+  .tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); color: var(--mute); font-size: 14px; font-weight: 500; }
+  .chip:hover { color: var(--ink); }
+  .chip.on { background: var(--lime); border-color: var(--lime); color: #06120a; font-weight: 700; }
+  .tools-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .search, .sort { background: var(--bg-2); border: 1px solid var(--line); color: var(--ink); border-radius: 10px; padding: 10px 14px; font-family: inherit; font-size: 15px; }
+  .search { flex: 1 1 240px; }
+  .search:focus, .sort:focus { outline: 2px solid var(--lime); outline-offset: 1px; }
+  .count { color: var(--faint); font-size: 14px; align-self: center; }
+
+  /* grid & posters */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 22px; }
+  .card { background: none; border: 0; color: inherit; text-align: right; display: flex; flex-direction: column; gap: 10px; }
+  .poster { position: relative; aspect-ratio: 2 / 3; border-radius: 10px; overflow: hidden; background: linear-gradient(160deg, var(--c1), var(--c2)); box-shadow: 0 10px 30px rgba(0,0,0,0.45); transition: transform .25s, box-shadow .25s; }
+  .card:hover .poster, .card:focus-visible .poster { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 0 0 2px var(--lime); }
+  .poster-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 50%); }
+  .poster-fallback .pf-title { font-family: var(--display); font-size: 21px; line-height: 1.1; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  .poster-fallback .pf-en { font-size: 11px; opacity: .75; direction: ltr; text-align: left; margin-top: 4px; }
+  .poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s; }
+  .poster img.loaded { opacity: 1; }
+  .badge { position: absolute; top: 8px; z-index: 2; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+  .badge.score { inset-inline-start: 8px; background: rgba(0,0,0,0.75); color: var(--gold); }
+  .badge.must { inset-inline-end: 8px; background: var(--purple); color: #fff; }
+  .badge.soon { inset-inline-start: 8px; background: var(--lime); color: #06120a; }
+  .card-title { font-weight: 700; font-size: 15px; line-height: 1.3; }
+  .card-meta { font-size: 13px; color: var(--faint); }
+  .empty { color: var(--mute); padding: 40px 0; text-align: center; grid-column: 1 / -1; }
+
+  /* modal */
+  .modal { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); }
+  .modal.open { display: flex; }
+  .sheet { background: var(--bg-2); border: 1px solid var(--line); border-radius: 18px; max-width: 860px; width: 100%; max-height: 92vh; overflow-y: auto; display: grid; grid-template-columns: 260px 1fr; position: relative; }
+  .sheet .poster { border-radius: 18px 0 0 18px; border-radius: 0; height: 100%; aspect-ratio: auto; min-height: 390px; box-shadow: none; }
+  .sheet-body { padding: 28px; }
+  .close { position: absolute; top: 12px; inset-inline-end: 12px; z-index: 5; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,0.6); color: #fff; font-size: 20px; }
+  .sheet h2 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.1; }
+  .sheet .en { color: var(--faint); direction: ltr; text-align: right; font-size: 14px; margin-bottom: 12px; }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+  .tag { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: rgba(255,255,255,0.07); color: var(--mute); }
+  .tag.green { background: rgba(155,107,255,0.18); color: #c4a8ff; }
+  .verdict { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .big-score { font-family: var(--display); font-size: 46px; color: var(--gold); line-height: 1; }
+  .big-score small { font-size: 18px; color: var(--faint); }
+  .verdict-text { font-weight: 700; }
+  .review { color: #d9d7de; margin-bottom: 16px; }
+  .doom-box { background: rgba(155,107,255,0.1); border: 1px solid rgba(155,107,255,0.35); border-radius: 12px; padding: 12px 14px; margin-bottom: 20px; font-size: 15px; }
+  .doom-box b { color: #c4a8ff; }
+  .mine { border-top: 1px solid var(--line); padding-top: 18px; }
+  .mine h3 { font-size: 16px; margin-bottom: 8px; }
+  .stars { display: flex; gap: 2px; direction: ltr; justify-content: flex-end; margin-bottom: 10px; }
+  .star { background: none; border: 0; font-size: 26px; color: #3a3942; line-height: 1; padding: 0 1px; }
+  .star.on { color: var(--gold); }
+  .mine textarea { width: 100%; min-height: 80px; resize: vertical; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); padding: 10px 12px; font-family: inherit; font-size: 15px; }
+  .mine textarea:focus { outline: 2px solid var(--lime); }
+  .mine-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .saved { font-size: 13px; color: var(--green); opacity: 0; transition: opacity .3s; }
+  .saved.show { opacity: 1; }
+  .hint { font-size: 12px; color: var(--faint); margin-top: 8px; }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0 50px; color: var(--faint); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* ===== 3D ===== */
+  body { background-color: var(--bg); background-image: radial-gradient(rgba(139,226,43,0.07) 1.2px, transparent 1.4px); background-size: 14px 14px; background-attachment: fixed; }
+  .logo img { width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 0 2px var(--lime-deep), 0 4px 14px rgba(139,226,43,0.35); }
+  .x3d { text-shadow: 1px 1px 0 #5fb81c, 2px 2px 0 #4c9a16, 3px 3px 0 #3c8012, 4px 4px 0 #2f6a0e, 5px 5px 0 #24560a, 6px 6px 0 #1a4207, 10px 14px 22px rgba(0,0,0,0.6); }
+  [dir="rtl"] .x3d { text-shadow: -1px 1px 0 #5fb81c, -2px 2px 0 #4c9a16, -3px 3px 0 #3c8012, -4px 4px 0 #2f6a0e, -5px 5px 0 #24560a, -6px 6px 0 #1a4207, -10px 14px 22px rgba(0,0,0,0.6); }
+  .hero h1 { color: #e9ffd6; }
+  .sec-head h2 { color: #e9ffd6; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 30px; }
+  .hero-grid > * { min-width: 0; }
+  .stage { position: relative; height: 540px; overflow: hidden; perspective: 1100px; perspective-origin: 50% 35%; }
+  .scene { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--sx, -14deg)) rotateY(var(--sy, 0deg)); transition: transform .3s ease-out; }
+  .ring { position: absolute; left: 50%; top: 56%; width: 0; height: 0; transform-style: preserve-3d; animation: spin 36s linear infinite; }
+  .ring-item { position: absolute; width: 104px; height: 156px; margin: -78px 0 0 -52px; transform: rotateY(var(--a)) translateZ(270px); }
+  .ring-item .poster { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 8px; box-shadow: 0 0 0 1px rgba(139,226,43,0.35), 0 10px 26px rgba(0,0,0,0.6); }
+  .ring-item .pf-title { font-size: 14px; }
+  .ring-item .pf-en, .ring-item .badge { display: none; }
+  @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+  .coin { position: absolute; left: 50%; top: 31%; width: 250px; height: 250px; margin: -125px 0 0 -125px; transform-style: preserve-3d; animation: float 5s ease-in-out infinite; }
+  .coin-face, .coin-edge { position: absolute; inset: 0; border-radius: 50%; }
+  .coin-face { background: url('logo.webp') center / cover; transform: translateZ(9px); box-shadow: 0 0 60px rgba(139,226,43,0.45); }
+  .coin-back { transform: rotateY(180deg) translateZ(9px); background: radial-gradient(circle at 35% 30%, #a6f04a, #1f5a0c); display: grid; place-items: center; font-family: var(--display); font-size: 30px; color: #06120a; }
+  .coin-edge { background: #1b4d0a; }
+  .coin-edge:nth-child(3) { transform: translateZ(6px); } .coin-edge:nth-child(4) { transform: translateZ(3px); }
+  .coin-edge:nth-child(5) { transform: translateZ(0); } .coin-edge:nth-child(6) { transform: translateZ(-3px); } .coin-edge:nth-child(7) { transform: translateZ(-6px); }
+  @keyframes float { 0%,100% { transform: translateY(-8px) rotateY(-18deg); } 50% { transform: translateY(8px) rotateY(18deg); } }
+  .floor { position: absolute; left: 50%; bottom: 40px; width: 420px; height: 90px; margin-left: -210px; border-radius: 50%; background: radial-gradient(ellipse, rgba(139,226,43,0.35), transparent 70%); filter: blur(6px); transform: rotateX(75deg); }
+
+  /* tilt cards */
+  .grid { perspective: 1000px; }
+  .card .poster { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0); transform-style: preserve-3d; transition: transform .2s ease-out, box-shadow .25s; }
+  .card:hover .poster, .card:focus-visible .poster { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(30px); box-shadow: 0 24px 44px rgba(0,0,0,0.65), 0 0 0 2px var(--lime); }
+  .card .poster::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .2s; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255,255,255,0.35), transparent 55%); }
+  .card:hover .poster::after { opacity: 1; }
+  .step { transform: perspective(800px) rotateX(0); transition: transform .25s, border-color .2s; }
+  .step:hover { transform: perspective(800px) rotateX(6deg) translateY(-2px); }
+  .cd-box { box-shadow: 0 6px 0 #071a0b, 0 12px 24px rgba(0,0,0,0.45); border-color: rgba(139,226,43,0.25); background: linear-gradient(180deg, #143019, #0b1d10); }
+  .cd-num { color: var(--lime); }
+  .modal { perspective: 1400px; }
+  .modal.open .sheet { animation: flipIn .45s cubic-bezier(.2,.9,.3,1.2); }
+  @keyframes flipIn { from { opacity: 0; transform: rotateX(-28deg) translateY(60px) scale(.94); } to { opacity: 1; transform: none; } }
+
+  /* social */
+  .socials { display: flex; gap: 12px; flex-wrap: wrap; }
+  .social { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 14px; text-decoration: none; font-weight: 700; background: var(--card); border: 1px solid var(--line); box-shadow: 0 5px 0 #040c06; transition: transform .15s; }
+  .social:hover { transform: translateY(-3px); }
+  .social b { color: #c4a8ff; direction: ltr; }
+  .about-grid { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; }
+  .about-grid img { width: 200px; height: 200px; border-radius: 50%; box-shadow: 0 0 0 4px var(--lime-deep), 0 20px 50px rgba(139,226,43,0.25); }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .stage { height: 360px; order: -1; margin: 0 -20px; }
+    .scene { transform: scale(.62) rotateX(-14deg) !important; }
+    .about-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .about-grid .socials { justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ring, .coin { animation: none; }
+    .modal.open .sheet { animation: none; }
+    .card .poster, .step, .step:hover { transform: none !important; }
+  }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .sheet { grid-template-columns: 1fr; }
+    .sheet .poster { min-height: 0; aspect-ratio: 2 / 3; max-height: 340px; }
+    .sheet-body { padding: 20px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+    .step { grid-template-columns: auto 1fr; }
+    .step .check { display: none; }
+    .cd-box { min-width: 72px; padding: 12px; }
+    .cd-num { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo"><img src="logo.webp" alt=""><span><span class="logo-box">מארוול</span> גיקים</span></a>
+    <div class="nav-links">
+      <a href="#prep">מסלול הכנה</a>
+      <a href="#library">כל הסרטים</a>
+      <a href="#about">על הקהילה</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+   <div>
+    <span class="eyebrow">הקהילה של מארוול גיקים</span>
+    <h1 class="x3d">מתכוננים ל<br><span class="doom">נוקמים: דומסדיי</span></h1>
+    <p class="lead">כל סרטי מארוול, מהישנים ועד החדשים, עם ביקורות, ציונים וקטגוריות, ומסלול צפייה שיגיע אתכם מוכנים לגמרי לקולנוע.</p>
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+    <div class="cd-note">בכורה מתוכננת: 18 בדצמבר 2026</div>
+    <div class="hero-cta">
+      <a href="#prep" class="btn btn-red">למסלול ההכנה ←</a>
+      <a href="#library" class="btn btn-ghost">לכל הביקורות</a>
+    </div>
+   </div>
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="scene" id="scene">
+        <div class="floor"></div>
+        <div class="ring" id="ring"></div>
+        <div class="coin">
+          <div class="coin-face"></div>
+          <div class="coin-face coin-back">MG</div>
+          <div class="coin-edge"></div><div class="coin-edge"></div><div class="coin-edge"></div><div class="coin-edge"></div><div class="coin-edge"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="prep">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="x3d">מסלול ההכנה לדומסדיי</h2>
+      <p>אין זמן לראות 40 סרטים? אלה הסרטים שהכי חשוב להשלים. סמנו כל סרט שראיתם, וההתקדמות נשמרת בדפדפן.</p>
+    </div>
+    <div class="progress">
+      <div class="progress-top"><span>ההתקדמות שלך</span><span id="prog-label">0/0</span></div>
+      <div class="bar"><i id="prog-bar"></i></div>
+    </div>
+    <div class="path" id="path"></div>
+  </div>
+</section>
+
+<section id="library" style="background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="x3d">כל הסרטים</h2>
+      <p>לחצו על פוסטר כדי לקרוא את הביקורת, לראות למה הסרט חשוב לדומסדיי ולתת ציון משלכם.</p>
+    </div>
+    <div class="tools">
+      <div class="chips" id="chips" role="tablist"></div>
+      <div class="tools-row">
+        <input class="search" id="search" type="search" placeholder="חיפוש סרט, בעברית או באנגלית…" aria-label="חיפוש סרט">
+        <select class="sort" id="sort" aria-label="מיון">
+          <option value="release">לפי שנת יציאה</option>
+          <option value="release-desc">מהחדש לישן</option>
+          <option value="score">לפי ציון</option>
+        </select>
+        <span class="count" id="count"></span>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="x3d">על מארוול גיקים</h2>
+    </div>
+    <div class="about-grid">
+      <img src="logo.webp" alt="הלוגו של מארוול גיקים">
+      <div>
+        <p style="color:var(--mute); font-size:18px; margin-bottom:20px; max-width:620px">הקהילה הישראלית של מעריצי מארוול. פה לא צופים בסרטים, פה מדברים עליהם: ביקורות, דירוגים, תיאוריות, והרבה ציפייה לדומסדיי. עקבו אחרינו:</p>
+        <div class="socials">
+          <a class="social" href="https://www.tiktok.com/search/user?q=marvel%20gikim" target="_blank" rel="noopener">טיקטוק <b>Marvel Gikim</b></a>
+          <a class="social" href="https://www.instagram.com/marv.elgikim/" target="_blank" rel="noopener">אינסטגרם <b>@marv.elgikim</b></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© מארוול גיקים · TikTok: Marvel Gikim · Instagram: @marv.elgikim</span>
+    <span>אתר מעריצים לא רשמי, ללא קשר ל-Marvel Studios או ל-Disney. הפוסטרים נטענים מוויקיפדיה ושייכים לבעלי הזכויות.</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+// ===== נתוני הסרטים =====
+// cat: קטגוריות לסינון · must: חובה לפני דומסדיי · score: ציון מערכת מתוך 10 (null = עוד לא דורג)
+const FILMS = [
+  // לגאסי
+  { id:'xmen', he:'אקס-מן', en:'X-Men', year:2000, wiki:'X-Men (film)', cat:['legacy'], score:7, c:['#1d3557','#0b1320'],
+    review:'הסרט שהתחיל את עידן סרטי גיבורי העל המודרני. נראה קצת מיושן היום, אבל פטריק סטיוארט ואיאן מקלן כקסבייר ומגנטו פשוט מושלמים.',
+    doom:'פטריק סטיוארט, איאן מקלן וחברי צוות האקס-מן המקורי חוזרים בדומסדיי. כדאי להכיר את הגרסה שלהם.' },
+  { id:'spiderman02', he:'ספיידרמן', en:'Spider-Man', year:2002, wiki:'Spider-Man (2002 film)', cat:['legacy'], score:8, c:['#b3121c','#1b2b6b'],
+    review:'הקלאסיקה של סם ריימי: לב גדול, וילם דפו מטורף כגובלין וטובי מגווייר שלא נשכח לעולם.',
+    doom:'הבסיס לכל רעיון המולטיוורס של ספיידרמן, וחובה להבנת "אין דרך הביתה".' },
+  { id:'x2', he:'אקס-מן 2', en:'X2', year:2003, wiki:'X2 (film)', cat:['legacy'], score:8, c:['#2b2d42','#0d0e15'],
+    review:'מהסרטים הטובים של העידן: פתיחת נייטקרולר בבית הלבן, וולברין במיטבו והרבה דרמה פוליטית.', doom:'' },
+  { id:'dofp', he:'אקס-מן: העתיד שהיה', en:'X-Men: Days of Future Past', year:2014, wiki:'X-Men: Days of Future Past', cat:['legacy','multiverse'], score:8, c:['#3a506b','#0b132b'],
+    review:'חיבור מוצלח בין הצוות הישן לחדש, עם מסע בזמן וסצנת קוויקסילבר שעדיין מדוברת.',
+    doom:'סיפור על עתיד אפל ומסע בזמן כדי למנוע אותו. נשמע מוכר? זה טיזר מושלם לרוח של דומסדיי.' },
+  { id:'logan', he:'לוגן', en:'Logan', year:2017, wiki:'Logan (film)', cat:['legacy','street'], score:9, c:['#6b4f2a','#1a120b'],
+    review:'מערבון אכזרי ומרגש שהוא בכלל לא "סרט גיבורי על". הפרידה של יו ג\'קמן מוולברין, עד שחזר.', doom:'' },
+
+  // שלב 1
+  { id:'im1', he:'איירון מן', en:'Iron Man', year:2008, wiki:'Iron Man (2008 film)', phase:1, cat:['p1','origin'], score:8, c:['#a4161a','#e0a526'],
+    review:'הסרט שהתחיל הכול. רוברט דאוני ג\'וניור נולד לתפקיד, והסוף "I am Iron Man" שינה את ז\'אנר הקולנוע.',
+    doom:'דאוני ג\'וניור חוזר בדומסדיי, הפעם כדוקטור דום. זה מתחיל כאן.', must:true },
+  { id:'hulk', he:'הענק הירוק המופלא', en:'The Incredible Hulk', year:2008, wiki:'The Incredible Hulk (film)', phase:1, cat:['p1','origin'], score:6, c:['#2d6a4f','#081c15'],
+    review:'הילד החורג של היקום. אקשן סביר ואדוארד נורטון בתפקיד, אבל נשכח די מהר.', doom:'' },
+  { id:'im2', he:'איירון מן 2', en:'Iron Man 2', year:2010, wiki:'Iron Man 2', phase:1, cat:['p1'], score:6, c:['#9d0208','#370617'],
+    review:'כיף אבל עמוס. מכין את הקרקע לנוקמים יותר משהוא מספר סיפור משלו.', doom:'' },
+  { id:'thor1', he:'ת\'ור', en:'Thor', year:2011, wiki:'Thor (film)', phase:1, cat:['p1','origin','cosmic'], score:6, c:['#274c77','#0b2545'],
+    review:'שייקספיר באסגארד. כריס המסוורת\' וטום הידלסטון מצוינים מהרגע הראשון.', doom:'' },
+  { id:'cap1', he:'קפטן אמריקה: הנוקם הראשון', en:'Captain America: The First Avenger', year:2011, wiki:'Captain America: The First Avenger', phase:1, cat:['p1','origin'], score:7, c:['#1d3557','#a8201a'],
+    review:'הרפתקה רטרו מקסימה עם לב גדול. סטיב רוג\'רס הוא הלב של כל היקום.', doom:'' },
+  { id:'av1', he:'הנוקמים', en:'The Avengers', year:2012, wiki:'The Avengers (2012 film)', phase:1, cat:['p1','avengers'], score:9, c:['#14213d','#c1121f'],
+    review:'אף אחד לא האמין שזה יעבוד, וזה עבד. הקרב בניו יורק וההאלק שתופס את לוקי הם קולנוע פופקורן במיטבו.',
+    doom:'הפעם הראשונה שהצוות מתאחד. בלי זה אין משמעות לשם "נוקמים".', must:true },
+
+  // שלב 2
+  { id:'im3', he:'איירון מן 3', en:'Iron Man 3', year:2013, wiki:'Iron Man 3', phase:2, cat:['p2'], score:7, c:['#7f0000','#2a0a0a'],
+    review:'טוני סטארק עם פוסט-טראומה. מפתיע ומפלג, עם טוויסט שאנשים עדיין מתווכחים עליו.', doom:'' },
+  { id:'thor2', he:'ת\'ור: העולם האפל', en:'Thor: The Dark World', year:2013, wiki:'Thor: The Dark World', phase:2, cat:['p2','cosmic'], score:5, c:['#3d2c2e','#0f0a0b'],
+    review:'החלש בסדרה. לוקי מציל כל סצנה שהוא נמצא בה.', doom:'' },
+  { id:'cap2', he:'קפטן אמריקה: חייל החורף', en:'Captain America: The Winter Soldier', year:2014, wiki:'Captain America: The Winter Soldier', phase:2, cat:['p2','street'], score:9, c:['#1b263b','#415a77'],
+    review:'מותחן ריגול מבריק שהפך את הרוסו לבמאי הבית של מארוול. סצנת המעלית בלתי נשכחת.',
+    doom:'בוקי (סבסטיאן סטן) והאחים רוסו, שמביימים גם את דומסדיי, מתחילים כאן.', must:true },
+  { id:'gotg1', he:'שומרי הגלקסיה', en:'Guardians of the Galaxy', year:2014, wiki:'Guardians of the Galaxy (film)', phase:2, cat:['p2','cosmic'], score:9, c:['#5a189a','#ff6d00'],
+    review:'הימור מטורף שהצליח בגדול. מצחיק, מרגש, ועם פסקול שהפך לאגדה.', doom:'' },
+  { id:'av2', he:'הנוקמים: עידן אולטרון', en:'Avengers: Age of Ultron', year:2015, wiki:'Avengers: Age of Ultron', phase:2, cat:['p2','avengers'], score:7, c:['#2b2d42','#8d99ae'],
+    review:'פחות מהודק מהראשון, אבל מציג את וונדה, ויז\'ן ואת הפחד של טוני שיוביל ל"מלחמת האזרחים".', doom:'' },
+  { id:'antman1', he:'אנט-מן', en:'Ant-Man', year:2015, wiki:'Ant-Man (film)', phase:2, cat:['p2','origin'], score:7, c:['#9b2226','#001219'],
+    review:'סרט שוד קטן ומקסים, ופול ראד הכי חמוד ביקום.', doom:'' },
+
+  // שלב 3
+  { id:'cw', he:'קפטן אמריקה: מלחמת האזרחים', en:'Captain America: Civil War', year:2016, wiki:'Captain America: Civil War', phase:3, cat:['p3','avengers'], score:9, c:['#0d1b2a','#a4161a'],
+    review:'נוקמים 2.5 בכל מובן. קרב שדה התעופה מושלם, והעימות בין סטיב לטוני בסוף פשוט כואב.',
+    doom:'השבר בין הנוקמים מסביר למה הם צריכים להתאחד מחדש עכשיו.', must:true },
+  { id:'ds1', he:'דוקטור סטריינג\'', en:'Doctor Strange', year:2016, wiki:'Doctor Strange (2016 film)', phase:3, cat:['p3','origin','multiverse'], score:7, c:['#3c096c','#ff9e00'],
+    review:'ויזואליה מטורפת ומבוכים של מימדים. מבנה של סרט מקור קלאסי, אבל עם סוף מבריק.', doom:'' },
+  { id:'gotg2', he:'שומרי הגלקסיה 2', en:'Guardians of the Galaxy Vol. 2', year:2017, wiki:'Guardians of the Galaxy Vol. 2', phase:3, cat:['p3','cosmic'], score:8, c:['#ff006e','#3a0ca3'],
+    review:'צבעוני ומשפחתי יותר. יונדו גונב את ההצגה.', doom:'' },
+  { id:'homecoming', he:'ספיידרמן: השיבה הביתה', en:'Spider-Man: Homecoming', year:2017, wiki:'Spider-Man: Homecoming', phase:3, cat:['p3','street'], score:8, c:['#d00000','#03045e'],
+    review:'סרט תיכון כיפי עם הנבל הכי מוצלח של התקופה, מייקל קיטון כנשר.', doom:'' },
+  { id:'ragnarok', he:'ת\'ור: ראגנרוק', en:'Thor: Ragnarok', year:2017, wiki:'Thor: Ragnarok', phase:3, cat:['p3','cosmic'], score:8, c:['#f72585','#4361ee'],
+    review:'טאיקה וואיטיטי הציל את ת\'ור. מצחיק לאללה וצבעוני כמו אלבום רוק משנות ה-80.', doom:'' },
+  { id:'bp1', he:'הפנתר השחור', en:'Black Panther', year:2018, wiki:'Black Panther (film)', phase:3, cat:['p3','origin'], score:8, c:['#240046','#7b2cbf'],
+    review:'וואקנדה לנצח! קילמונגר הוא אחד הנבלים הכי טובים במארוול.', doom:'' },
+  { id:'iw', he:'הנוקמים: מלחמת האינסוף', en:'Avengers: Infinity War', year:2018, wiki:'Avengers: Infinity War', phase:3, cat:['p3','avengers','cosmic'], score:10, c:['#3c096c','#e85d04'],
+    review:'תאנוס הוא הגיבור של הסרט הזה, והסוף עדיין מצמרר. אירוע קולנועי אמיתי.',
+    doom:'אותם במאים, אותו קנה מידה. דומסדיי מתוכנן להיות "מלחמת האינסוף" של העידן החדש.', must:true },
+  { id:'antman2', he:'אנט-מן והצרעה', en:'Ant-Man and the Wasp', year:2018, wiki:'Ant-Man and the Wasp', phase:3, cat:['p3','multiverse'], score:6, c:['#e63946','#1d3557'],
+    review:'פסק זמן קליל אחרי מלחמת האינסוף. מציג את הממד הקוונטי.', doom:'' },
+  { id:'cm', he:'קפטן מארוול', en:'Captain Marvel', year:2019, wiki:'Captain Marvel (film)', phase:3, cat:['p3','origin','cosmic'], score:6, c:['#003566','#c1121f'],
+    review:'מסע לשנות ה-90 עם סמואל ל. ג\'קסון צעיר וחתול שגונב את ההצגה.', doom:'' },
+  { id:'eg', he:'הנוקמים: סוף המשחק', en:'Avengers: Endgame', year:2019, wiki:'Avengers: Endgame', phase:3, cat:['p3','avengers','multiverse'], score:10, c:['#1a1a2e','#b8860b'],
+    review:'סיום של 11 שנים ו-22 סרטים. "Avengers… assemble" עדיין גורם לצמרמורת.',
+    doom:'הסוף של טוני וסטיב, והמסע בזמן שפתח את הדלת לכל מה שבא אחריו.', must:true },
+  { id:'ffh', he:'ספיידרמן: רחוק מהבית', en:'Spider-Man: Far From Home', year:2019, wiki:'Spider-Man: Far From Home', phase:3, cat:['p3','street'], score:7, c:['#1d4e89','#f72585'],
+    review:'אפילוג קליל לסוף המשחק עם מיסטריו מצוין, וסצנת סיום שמשנה הכול.', doom:'' },
+
+  // שלב 4
+  { id:'bw', he:'האלמנה השחורה', en:'Black Widow', year:2021, wiki:'Black Widow (2021 film)', phase:4, cat:['p4','street'], score:6, c:['#2b2d42','#ef233c'],
+    review:'פרידה מאוחרת מנטשה, אבל מציג את יילנה (פלורנס פיו) ואת הגרדיאן האדום.',
+    doom:'יילנה והרד גרדיאן הם עכשיו חלק מהת\'אנדרבולטס, שמגיעים לדומסדיי.' },
+  { id:'shangchi', he:'שאנג-צ\'י והאגדה של עשר הטבעות', en:'Shang-Chi and the Legend of the Ten Rings', year:2021, wiki:'Shang-Chi and the Legend of the Ten Rings', phase:4, cat:['p4','origin'], score:8, c:['#9d0208','#ffba08'],
+    review:'סצנות קרב מהטובות ביקום (האוטובוס!) וטוני לונג כנבל עם לב.', doom:'סימו ליו כשאנג-צ\'י חלק מצוות דומסדיי.' },
+  { id:'eternals', he:'הנצחיים', en:'Eternals', year:2021, wiki:'Eternals (film)', phase:4, cat:['p4','cosmic'], score:5, c:['#e9c46a','#264653'],
+    review:'שאפתני ויפה לעין, אבל איטי ועמוס מדי בדמויות.', doom:'' },
+  { id:'nwh', he:'ספיידרמן: אין דרך הביתה', en:'Spider-Man: No Way Home', year:2021, wiki:'Spider-Man: No Way Home', phase:4, cat:['p4','street','multiverse'], score:9, c:['#7209b7','#d00000'],
+    review:'מכתב אהבה ל-20 שנה של ספיידרמן. כשהדלת נפתחת, כל אולם הקולנוע צעק.',
+    doom:'הפעם הראשונה שהמולטיוורס פורץ באמת לסרט קולנוע. זו בדיוק הנוסחה שדומסדיי לוקח לקצה.', must:true },
+  { id:'mom', he:'דוקטור סטריינג\' בממדי הטירוף', en:'Doctor Strange in the Multiverse of Madness', year:2022, wiki:'Doctor Strange in the Multiverse of Madness', phase:4, cat:['p4','multiverse'], score:7, c:['#3a0ca3','#4cc9f0'],
+    review:'סם ריימי משחרר את צד האימה שלו. וונדה מפחידה באמת, וה"אילומינטי" הם רגע של פאן-סרביס טהור.',
+    doom:'אינקורז\'נים (התנגשויות בין יקומים) הם הבסיס הקומיקסי של דומסדיי ושל מלחמות סודיות.', must:true },
+  { id:'lat', he:'ת\'ור: אהבה ורעם', en:'Thor: Love and Thunder', year:2022, wiki:'Thor: Love and Thunder', phase:4, cat:['p4','cosmic'], score:5, c:['#ff5d8f','#2d00f7'],
+    review:'ראגנרוק על סטרואידים, ולא לטובה. כריסטיאן בייל כגור שוחט האלים הוא החלק הכי טוב.', doom:'' },
+  { id:'wf', he:'הפנתר השחור: וואקנדה לנצח', en:'Black Panther: Wakanda Forever', year:2022, wiki:'Black Panther: Wakanda Forever', phase:4, cat:['p4'], score:7, c:['#10002b','#5a189a'],
+    review:'סרט אבל מרגש על פרידה מצ\'דוויק בוזמן. נמור הוא נבל חזק ומרשים.', doom:'שורי ונמור (טנוך הוארטה) צפויים להופיע בדומסדיי.' },
+
+  // שלב 5
+  { id:'quantumania', he:'אנט-מן והצרעה: קוונטומניה', en:'Ant-Man and the Wasp: Quantumania', year:2023, wiki:'Ant-Man and the Wasp: Quantumania', phase:5, cat:['p5','multiverse'], score:5, c:['#06d6a0','#3a0ca3'],
+    review:'עמוס CGI ומבולגן, אבל מציג את כאנג, שנחשב אז לנבל הגדול הבא.', doom:'הסרט שבו התוכנית המקורית (כאנג) התחילה לפני שמארוול שינתה כיוון לדום.' },
+  { id:'gotg3', he:'שומרי הגלקסיה 3', en:'Guardians of the Galaxy Vol. 3', year:2023, wiki:'Guardians of the Galaxy Vol. 3', phase:5, cat:['p5','cosmic'], score:9, c:['#ff7b00','#3c096c'],
+    review:'הסיפור של רוקט שובר לבבות. סיום מושלם לטרילוגיה.', doom:'' },
+  { id:'marvels', he:'המארוולס', en:'The Marvels', year:2023, wiki:'The Marvels', phase:5, cat:['p5','cosmic'], score:6, c:['#ffbe0b','#3a86ff'],
+    review:'קצר, קליל וחמוד, אבל לא משאיר הרבה. סצנת אחרי הכותרות מעניינת במיוחד.', doom:'סצנת אחרי הכותרות רומזת לאקס-מן, וכדאי לראות אותה.' },
+  { id:'dw', he:'דדפול וולברין', en:'Deadpool & Wolverine', year:2024, wiki:'Deadpool & Wolverine', phase:5, cat:['p5','multiverse','legacy'], score:8, c:['#c1121f','#ffd60a'],
+    review:'מלא בדיחות על מארוול ועל פוקס, הופעות אורח מטורפות ויו ג\'קמן סוף-סוף בתלבושת הצהובה.',
+    doom:'סוגר את יקום פוקס ומחבר אותו ל-MCU. הדלת לאקס-מן פתוחה.', must:true },
+  { id:'bnw', he:'קפטן אמריקה: עולם חדש ואמיץ', en:'Captain America: Brave New World', year:2025, wiki:'Captain America: Brave New World', phase:5, cat:['p5','street'], score:6, c:['#14213d','#e5e5e5'],
+    review:'סם וילסון כקפטן אמריקה בתפקיד הראשי, והאריסון פורד כהאלק האדום. בטוח מדי, אבל סביר.',
+    doom:'סם וילסון (אנתוני מאקי) הוא קפטן אמריקה של דומסדיי.', must:true },
+  { id:'tb', he:'ת\'אנדרבולטס*', en:'Thunderbolts*', year:2025, wiki:'Thunderbolts*', phase:5, cat:['p5','street','avengers'], score:8, c:['#2b2d42','#adb5bd'],
+    review:'הפתעה נעימה: סרט על בדידות ודיכאון שמתחפש לסרט אקשן. פלורנס פיו מצוינת, והכוכבית מוסברת בסוף.',
+    doom:'הצוות הזה מגיע ישר לדומסדיי, והסוף של הסרט חשוב מאוד להבנת המצב.', must:true },
+
+  // שלב 6
+  { id:'ff', he:'ארבעת המופלאים: צעדים ראשונים', en:'The Fantastic Four: First Steps', year:2025, wiki:'The Fantastic Four: First Steps', phase:6, cat:['p6','cosmic','multiverse','origin'], score:8, c:['#0077b6','#ffb703'],
+    review:'רטרו-פוטוריזם מהמם ומשפחה שבאמת מרגישה כמו משפחה. גלקטוס עצום, ופדרו פסקל מצוין כריד ריצ\'רדס.',
+    doom:'ארבעת המופלאים ודוקטור דום שלובים זה בזה בקומיקס. הסרט הכי חשוב לפני דומסדיי, כולל סצנת אחרי הכותרות.', must:true },
+  { id:'bnd', he:'ספיידרמן: יום חדש לגמרי', en:'Spider-Man: Brand New Day', year:2026, wiki:'Spider-Man: Brand New Day', phase:6, cat:['p6','street'], score:null, c:['#e63946','#0b090a'],
+    review:'פיטר פרקר אחרי שכל העולם שכח אותו. ביקורת המערכת בדרך. בינתיים כתבו לנו מה חשבתם!',
+    doom:'הסרט האחרון לפני דומסדיי, ולכן מומלץ להשלים אותו קרוב לבכורה.', must:true },
+  { id:'doomsday', he:'הנוקמים: דומסדיי', en:'Avengers: Doomsday', year:2026, wiki:'Avengers: Doomsday', phase:6, cat:['p6','avengers','multiverse'], score:null, soon:true, c:['#0b3d20','#050505'],
+    review:'בבימוי האחים רוסו, עם רוברט דאוני ג\'וניור כדוקטור דום, ולצדו נוקמים, ת\'אנדרבולטס, ארבעת המופלאים ואקס-מן. האירוע הגדול ביותר מאז סוף המשחק.',
+    doom:'זה הסרט! הבכורה מתוכננת ל-18 בדצמבר 2026. ההמשך, "מלחמות סודיות", מתוכנן לדצמבר 2027.' },
+];
+
+const CATS = [
+  { k:'all', label:'הכול' },
+  { k:'must', label:'⭐ חובה לדומסדיי' },
+  { k:'avengers', label:'סרטי הנוקמים' },
+  { k:'multiverse', label:'מולטיוורס' },
+  { k:'cosmic', label:'קוסמי' },
+  { k:'street', label:'גיבורי רחוב וריגול' },
+  { k:'origin', label:'סרטי מקור' },
+  { k:'legacy', label:'הקלאסיקות (פוקס/סוני)' },
+  { k:'p1', label:'שלב 1' }, { k:'p2', label:'שלב 2' }, { k:'p3', label:'שלב 3' },
+  { k:'p4', label:'שלב 4' }, { k:'p5', label:'שלב 5' }, { k:'p6', label:'שלב 6' },
+];
+
+const VERDICT = s => s == null ? 'עוד לא דורג' : s >= 9 ? 'יצירת מופת' : s >= 8 ? 'מומלץ בחום' : s >= 7 ? 'טוב מאוד' : s >= 6 ? 'סביר' : 'אפשר לדלג';
+
+// ===== אחסון מקומי (עטוף ב-try כדי שהאתר יעבוד גם בלעדיו) =====
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('mg_' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('mg_' + k, JSON.stringify(v)); } catch {} },
+};
+let watched = new Set(store.get('watched', []));
+let myReviews = store.get('reviews', {});
+
+// ===== פוסטרים מוויקיפדיה =====
+const posters = {};
+async function loadPosters() {
+  const titles = FILMS.map(f => f.wiki);
+  for (let i = 0; i < titles.length; i += 45) {
+    const chunk = titles.slice(i, i + 45);
+    const url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&pilicense=any&pithumbsize=500&titles='
+      + encodeURIComponent(chunk.join('|'));
+    try {
+      const data = await (await fetch(url)).json();
+      const q = data.query || {};
+      const map = {};
+      (q.normalized || []).forEach(n => map[n.to] = n.from);
+      (q.redirects || []).forEach(r => map[r.to] = map[r.from] || r.from);
+      Object.values(q.pages || {}).forEach(p => {
+        if (p.thumbnail) posters[map[p.title] || p.title] = p.thumbnail.source;
+      });
+    } catch (e) { /* אין רשת? נשארים עם הפוסטרים המעוצבים */ }
+  }
+  document.querySelectorAll('[data-wiki]').forEach(applyPoster);
+}
+function applyPoster(el) {
+  const src = posters[el.dataset.wiki];
+  if (!src || el.querySelector('img')) return;
+  const img = new Image();
+  img.alt = '';
+  img.loading = 'lazy';
+  img.onload = () => img.classList.add('loaded');
+  img.src = src;
+  el.appendChild(img);
+}
+function posterHTML(f, extra = '') {
+  const badge = f.soon ? '<span class="badge soon">בקרוב</span>'
+    : f.score != null ? `<span class="badge score">★ ${f.score}</span>` : '';
+  return `<div class="poster" data-wiki="${f.wiki}" style="--c1:${f.c[0]};--c2:${f.c[1]}">
+    ${badge}${f.must ? '<span class="badge must">חובה</span>' : ''}${extra}
+    <div class="poster-fallback"><div class="pf-title">${f.he}</div><div class="pf-en">${f.en}</div></div>
+  </div>`;
+}
+
+// ===== ספירה לאחור =====
+const PREMIERE = new Date('2026-12-18T00:00:00+02:00');
+function tick() {
+  const el = document.getElementById('countdown');
+  let ms = PREMIERE - new Date();
+  if (ms <= 0) { el.innerHTML = '<div class="cd-box"><div class="cd-num">🎬</div><div class="cd-lbl">דומסדיי בקולנוע!</div></div>'; return; }
+  const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, s = Math.floor(ms / 1e3) % 60;
+  el.innerHTML = [[d,'ימים'],[h,'שעות'],[m,'דקות'],[s,'שניות']]
+    .map(([n,l]) => `<div class="cd-box"><div class="cd-num">${String(n).padStart(2,'0')}</div><div class="cd-lbl">${l}</div></div>`).join('');
+}
+tick(); setInterval(tick, 1000);
+
+// ===== מסלול הכנה =====
+function renderPath() {
+  const list = FILMS.filter(f => f.must);
+  document.getElementById('path').innerHTML = list.map(f => `
+    <div class="step ${watched.has(f.id) ? 'done' : ''}" data-id="${f.id}" role="checkbox" tabindex="0" aria-checked="${watched.has(f.id)}">
+      <div class="step-num"></div>
+      <div><h3>${f.he}<small>${f.year}</small></h3><p>${f.doom}</p></div>
+      <div class="check">✓</div>
+    </div>`).join('');
+  const done = list.filter(f => watched.has(f.id)).length;
+  document.getElementById('prog-label').textContent = done === list.length ? `${done}/${list.length} · אתם מוכנים לדומסדיי! 🟢` : `${done}/${list.length} סרטים`;
+  document.getElementById('prog-bar').style.width = (done / list.length * 100) + '%';
+}
+function toggleWatched(id) {
+  watched.has(id) ? watched.delete(id) : watched.add(id);
+  store.set('watched', [...watched]);
+  renderPath();
+}
+const pathEl = document.getElementById('path');
+pathEl.addEventListener('click', e => { const s = e.target.closest('.step'); if (s) toggleWatched(s.dataset.id); });
+pathEl.addEventListener('keydown', e => { const s = e.target.closest('.step'); if (s && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleWatched(s.dataset.id); } });
+
+// ===== ספרייה =====
+let cat = 'all';
+function renderChips() {
+  document.getElementById('chips').innerHTML = CATS.map(c =>
+    `<button class="chip ${c.k === cat ? 'on' : ''}" data-k="${c.k}" role="tab" aria-selected="${c.k === cat}">${c.label}</button>`).join('');
+}
+function renderGrid() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const sort = document.getElementById('sort').value;
+  let list = FILMS.filter(f =>
+    (cat === 'all' || (cat === 'must' ? f.must : f.cat.includes(cat))) &&
+    (!q || f.he.toLowerCase().includes(q) || f.en.toLowerCase().includes(q)));
+  list = list.map((f, i) => ({ f, i }));
+  if (sort === 'release-desc') list.reverse();
+  if (sort === 'score') list.sort((a, b) => (b.f.score ?? -1) - (a.f.score ?? -1) || a.i - b.i);
+  list = list.map(x => x.f);
+  document.getElementById('count').textContent = `${list.length} סרטים`;
+  document.getElementById('grid').innerHTML = list.length ? list.map(f => `
+    <button class="card" data-id="${f.id}" aria-label="${f.he}, ${f.year}">
+      ${posterHTML(f)}
+      <div><div class="card-title">${f.he}</div><div class="card-meta">${f.year}${f.phase ? ' · שלב ' + f.phase : ' · קלאסיקה'}</div></div>
+    </button>`).join('') : '<div class="empty">לא נמצאו סרטים. נסו חיפוש אחר.</div>';
+  document.querySelectorAll('#grid [data-wiki]').forEach(applyPoster);
+}
+document.getElementById('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  cat = b.dataset.k; renderChips(); renderGrid();
+});
+document.getElementById('search').addEventListener('input', renderGrid);
+document.getElementById('sort').addEventListener('change', renderGrid);
+document.getElementById('grid').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) openFilm(c.dataset.id); });
+
+// ===== חלון ביקורת =====
+const modal = document.getElementById('modal');
+let lastFocus = null;
+function openFilm(id) {
+  const f = FILMS.find(x => x.id === id);
+  const mine = myReviews[id] || { stars: 0, text: '' };
+  const catLabels = f.cat.map(k => (CATS.find(c => c.k === k) || {}).label).filter(Boolean);
+  document.getElementById('sheet').innerHTML = `
+    <button class="close" aria-label="סגירה">✕</button>
+    ${posterHTML(f)}
+    <div class="sheet-body">
+      <h2 id="m-title">${f.he}</h2>
+      <div class="en">${f.en} · ${f.year}</div>
+      <div class="tags">${f.must ? '<span class="tag green">חובה לפני דומסדיי</span>' : ''}${catLabels.map(l => `<span class="tag">${l}</span>`).join('')}</div>
+      <div class="verdict">
+        <div class="big-score">${f.score ?? '—'}<small>/10</small></div>
+        <div><div class="verdict-text">${VERDICT(f.score)}</div><div class="card-meta">ציון מערכת מארוול גיקים</div></div>
+      </div>
+      <p class="review">${f.review}</p>
+      ${f.doom ? `<div class="doom-box"><b>הקשר לדומסדיי:</b> ${f.doom}</div>` : ''}
+      <div class="mine">
+        <h3>הביקורת שלך</h3>
+        <div class="stars" id="stars">${[1,2,3,4,5].map(n => `<button class="star ${n <= mine.stars ? 'on' : ''}" data-n="${n}" aria-label="${n} כוכבים">★</button>`).join('')}</div>
+        <textarea id="my-text" placeholder="מה חשבתם על הסרט?">${mine.text.replace(/</g, '&lt;')}</textarea>
+        <div class="mine-row">
+          <button class="btn btn-red" id="save-review">שמירת ביקורת</button>
+          <span class="saved" id="saved">נשמר ✓</span>
+        </div>
+        <div class="hint">הביקורת נשמרת כרגע בדפדפן שלך בלבד.</div>
+      </div>
+    </div>`;
+  document.querySelectorAll('#sheet [data-wiki]').forEach(applyPoster);
+  let stars = mine.stars;
+  const sheet = document.getElementById('sheet');
+  sheet.querySelector('.close').onclick = closeFilm;
+  sheet.querySelector('#stars').onclick = e => {
+    const b = e.target.closest('.star'); if (!b) return;
+    stars = +b.dataset.n;
+    sheet.querySelectorAll('.star').forEach(s => s.classList.toggle('on', +s.dataset.n <= stars));
+  };
+  sheet.querySelector('#save-review').onclick = () => {
+    myReviews[id] = { stars, text: sheet.querySelector('#my-text').value };
+    store.set('reviews', myReviews);
+    const s = sheet.querySelector('#saved'); s.classList.add('show'); setTimeout(() => s.classList.remove('show'), 1600);
+  };
+  lastFocus = document.activeElement;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  sheet.querySelector('.close').focus();
+}
+function closeFilm() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+modal.addEventListener('click', e => { if (e.target === modal) closeFilm(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeFilm(); });
+
+// ===== תלת מימד =====
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function buildRing() {
+  const picks = FILMS.filter(f => f.must || f.cat.includes('legacy')).slice(0, 12);
+  const step = 360 / picks.length;
+  document.getElementById('ring').innerHTML = picks.map((f, i) =>
+    `<div class="ring-item" style="--a:${i * step}deg">${posterHTML(f)}</div>`).join('');
+})();
+if (!reduceMotion) {
+  const scene = document.getElementById('scene');
+  document.getElementById('top').addEventListener('pointermove', e => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    scene.style.setProperty('--sy', (x * 24) + 'deg');
+    scene.style.setProperty('--sx', (-14 - y * 12) + 'deg');
+  });
+  const grid = document.getElementById('grid');
+  grid.addEventListener('pointermove', e => {
+    const card = e.target.closest('.card'); if (!card) return;
+    const p = card.querySelector('.poster'), r = p.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    p.style.setProperty('--ry', ((x - 0.5) * 22) + 'deg');
+    p.style.setProperty('--rx', ((0.5 - y) * 22) + 'deg');
+    p.style.setProperty('--gx', (x * 100) + '%');
+    p.style.setProperty('--gy', (y * 100) + '%');
+  });
+  grid.addEventListener('pointerout', e => {
+    const card = e.target.closest('.card');
+    if (card && !card.contains(e.relatedTarget)) { const p = card.querySelector('.poster'); p.style.removeProperty('--rx'); p.style.removeProperty('--ry'); }
+  });
+}
+
+renderPath(); renderChips(); renderGrid(); loadPosters();
+</script>
+</body>
+</html>
