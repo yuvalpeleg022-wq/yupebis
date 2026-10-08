@@ -1,0 +1,4 @@
+# Netlify publishes the Marvel Gikim site from the marvel/ folder
+[build]
+  publish = "marvel"
+  command = ""
