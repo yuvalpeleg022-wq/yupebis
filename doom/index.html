@@ -168,6 +168,46 @@
   footer { position: relative; z-index: 2; text-align: center; padding: 40px 24px calc(var(--bar) + 40px); color: var(--faint); font-size: 13px; }
   footer a { color: var(--green); text-decoration: none; }
 
+  /* ===== image stations ===== */
+  .scene-bg.blur { filter: blur(34px) saturate(1.3); opacity: .28; inset: -15%; }
+  .scene-bg.blur::after { background: radial-gradient(ellipse at center, rgba(3,7,5,.2), rgba(3,7,5,.9) 75%); }
+  .split.stack { display: flex; flex-direction: column; gap: 10px; }
+  .split.stack > .station { order: -1; margin-bottom: 30px; }
+  .station { perspective: 1600px; margin-top: 34px; }
+  .station.wide { margin-top: 40px; }
+  .st-card { position: relative; transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .st-glow { position: absolute; inset: -16px; border: 1px solid rgba(57,255,122,.28); border-radius: 14px; transform: translateZ(-60px); box-shadow: 0 0 80px rgba(57,255,122,.14), inset 0 0 40px rgba(57,255,122,.06); pointer-events: none; }
+  .st-shadow { position: absolute; inset: 8% 6% -6%; background: #000; filter: blur(40px); transform: translateZ(-120px); opacity: .9; pointer-events: none; }
+  .st-img { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 0 0 1px rgba(57,255,122,.25), 0 30px 80px rgba(0,0,0,.7); }
+  .st-img img { width: 100%; transform: scale(calc(1.05 + var(--p, 0) * .05)); transform-origin: var(--fx, 50%) var(--fy, 50%); transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+  .st-img::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,.25), transparent 22%, transparent 70%, rgba(0,0,0,.45)), radial-gradient(circle at var(--gx, 50%) var(--gy, 40%), rgba(255,255,255,.10), transparent 45%); }
+  .st-shine { position: absolute; inset: 0; border-radius: 8px; pointer-events: none; transform: translateZ(1px); background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.07) 50%, transparent 60%); background-size: 250% 100%; background-position: calc(var(--sh, 50) * 1%) 0; }
+  .hot { position: absolute; left: var(--x); top: var(--y); width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 2px solid var(--green); background: rgba(3,14,7,.72); color: var(--green); font: 700 15px var(--latin); display: grid; place-items: center; transform: translateZ(80px); box-shadow: 0 0 22px rgba(57,255,122,.55); transition: background .25s, color .25s, transform .25s; padding: 0; }
+  .hot::before { content: ""; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(57,255,122,.7); animation: ping 2.2s ease-out infinite; }
+  @keyframes ping { 0% { transform: scale(.7); opacity: 1; } 100% { transform: scale(1.7); opacity: 0; } }
+  .hot:hover, .hot.on { background: var(--green); color: #031208; transform: translateZ(80px) scale(1.12); }
+  .hot .lbl { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); white-space: nowrap; font: 500 13px var(--sans); color: #eafff1; background: rgba(2,8,4,.82); border: 1px solid rgba(57,255,122,.35); padding: 4px 12px; border-radius: 999px; pointer-events: none; opacity: .92; }
+  .hot.on .lbl { border-color: var(--green); color: var(--green); }
+  .hot.below .lbl { bottom: auto; top: 50px; }
+  .hot.end .lbl { left: auto; right: -6px; transform: none; }
+  .hot.end.below .lbl, .hot.end .lbl { right: -6px; }
+  .st-info { margin-top: 26px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; padding: 20px 24px; border: 1px solid rgba(57,255,122,.22); border-inline-start: 3px solid var(--green); background: linear-gradient(90deg, rgba(5,16,9,.9), rgba(5,16,9,.7)); border-radius: 8px; min-height: 120px; }
+  .st-info .n { font-family: var(--latin); font-size: 46px; line-height: 1; color: var(--green); text-shadow: 0 0 24px rgba(57,255,122,.5); }
+  .st-info h4 { font-family: var(--royal); font-weight: 400; font-size: 26px; line-height: 1.2; margin-bottom: 6px; }
+  .st-info p { font-size: 17.5px; color: #d3ddd6; margin: 0; }
+  .st-info .body { animation: infoIn .5s ease; }
+  @keyframes infoIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .st-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; font: 400 12.5px var(--sans); color: var(--faint); }
+  .cards.three { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  @media (max-width: 860px) {
+    .hot { width: 28px; height: 28px; margin: -14px 0 0 -14px; font-size: 12px; }
+    .hot::before { inset: -6px; }
+    .hot .lbl { display: none; }
+    .st-info { grid-template-columns: 1fr; gap: 6px; }
+    .st-info .n { font-size: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .hot::before { animation: none; } .st-card { transform: none !important; } }
+
   @media (max-width: 860px) {
     :root { --bar: 5vh; }
     .split { grid-template-columns: 1fr; gap: 36px; }
@@ -216,7 +256,6 @@
 
 <!-- ===== 01 ===== -->
 <section class="scene" id="origin" data-title="ויקטור לפני דום">
-  <div class="scene-bg" style="background-image:url('img/battlefield.webp'); opacity:.25"></div>
   <div class="wrap stage3d">
     <div class="chapter-no"><span>CHAPTER I</span><span class="he">פרק 1</span></div>
     <h2>ויקטור לפני דום</h2>
@@ -255,6 +294,7 @@
 
 <!-- ===== 03 ===== -->
 <section class="scene" id="mask" data-title="המסיכה">
+  <div class="scene-bg blur" style="background-image:url('img/mask-eye-of-uatu.webp')"></div>
   <div class="wrap stage3d">
     <div class="split">
       <div>
@@ -292,20 +332,37 @@
         </div>
         <div class="src"><span><b>מקור</b>Fantastic Four Annual #2 (1964)</span><span><b>מקור</b>Fantastic Four #278 (1985), ג'ון ביירן</span><span><b>להרחבה</b>Books of Doom #1–6 (2005–2006)</span></div>
       </div>
-      <figure class="frame3d">
-        <img src="img/mask-eye-of-uatu.webp" alt="דוקטור דום במסיכה ובברדס ירוק, מושיט יד" loading="lazy">
-        <figcaption>תמונה: Eye of Uatu</figcaption>
-      </figure>
+      <div class="station" data-station="mask"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== הכוחות ===== -->
+<section class="scene" id="powers" data-title="הכוחות של דום">
+  <div class="scene-bg blur" style="background-image:url('img/gauntlet.webp')"></div>
+  <div class="wrap stage3d">
+    <div class="chapter-no"><span>CHAPTER IV</span><span class="he">פרק 4</span></div>
+    <h2>הכוחות של דום</h2>
+    <div class="text">
+      <p class="lead">לדום אין כוחות-על מלידה. כל מה שיש לו, הוא בנה, למד או לקח בעצמו.</p>
+      <p>הוא לא נחשף לקרינה ולא ננשך על ידי עכביש. דום הפך לאחד האנשים החזקים ביקום בזכות שלושה דברים: המוח שלו, הכישוף שלמד, והשריון שבנה. לחצו על הנקודות הירוקות בתמונה כדי להכיר את השריון מקרוב.</p>
+    </div>
+    <div class="station wide" data-station="gauntlet"></div>
+    <div class="cards three">
+      <div class="card"><div class="ico">I</div><h3>השריון</h3><p>חליפת שריון מטיטניום שדום תכנן ושיפר במשך שנים. היא יורה קרני אנרגיה, יוצרת שדה כוח, מעצימה את כוחו הפיזי ומאפשרת לו לטוס.</p></div>
+      <div class="card"><div class="ico">II</div><h3>הכישוף</h3><p>הוא ירש את הספרים של אמו המכשפה והשלים את לימודיו אצל נזירי טיבט. בטורניר על התואר "המכשף העליון" הוא הגיע למקום השני, אחרי דוקטור סטריינג' בלבד.</p><div class="src"><span>Doctor Strange and Doctor Doom: Triumph and Torment (1989)</span></div></div>
+      <div class="card"><div class="ico">III</div><h3>מכונת הזמן</h3><p>כבר בהופעה הראשונה שלו, ב-1962, דום השתמש במכונת זמן כדי לשלוח את ארבעת המופלאים אל העבר. הגאונות שלו מתחרה בזו של ריד ריצ'רדס, ולפעמים עולה עליה.</p><div class="src"><span>Fantastic Four #5 (1962)</span></div></div>
     </div>
   </div>
 </section>
 
 <!-- ===== 04 ===== -->
 <section class="scene" id="sentinels" data-title="הסנטינלים">
+  <div class="scene-bg blur" style="background-image:url('img/battlefield.webp')"></div>
   <div class="wrap stage3d">
-    <div class="split">
+    <div class="split stack">
       <div>
-        <div class="chapter-no"><span>CHAPTER IV</span><span class="he">פרק 4</span></div>
+        <div class="chapter-no"><span>CHAPTER V</span><span class="he">פרק 5</span></div>
         <h2>הסנטינלים</h2>
         <div class="text">
           <p class="lead">אם דום הוא אדם אחד שרוצה לשלוט בעולם, הסנטינלים הם מה שקורה כשהעולם עצמו מחליט לשלוט במי ששונה ממנו.</p>
@@ -317,13 +374,7 @@
         </div>
         <div class="src"><span><b>מקור</b>X-Men #14 (1965), סטן לי וג'ק קירבי</span><span><b>מקור</b>Uncanny X-Men #141–142 (1981), כריס קלרמונט וג'ון ביירן</span><span><b>מקור</b>New X-Men #115 (2001), גרנט מוריסון ופרנק קוויטלי</span></div>
       </div>
-      <div>
-        <div class="radar" aria-hidden="true">
-          <span class="blip" style="left:68%;top:30%"></span>
-          <span class="blip" style="left:30%;top:62%;animation-delay:1.1s"></span>
-          <span class="blip" style="left:55%;top:78%;animation-delay:2s"></span>
-        </div>
-        <div class="radar-label">MUTANT DETECTED</div>
+      <div class="station wide" data-station="sentinel"></div>
       </div>
     </div>
   </div>
@@ -331,9 +382,8 @@
 
 <!-- ===== 05 ===== -->
 <section class="scene" id="fear" data-title="למה דום מפחיד">
-  <div class="scene-bg" style="background-image:url('img/battlefield.webp')"></div>
   <div class="wrap stage3d">
-    <div class="chapter-no"><span>CHAPTER V</span><span class="he">פרק 5</span></div>
+    <div class="chapter-no"><span>CHAPTER VI</span><span class="he">פרק 6</span></div>
     <h2>למה דום כל כך מפחיד</h2>
     <div class="text">
       <p class="lead">לנבלים רבים יש כוח. לדום יש משהו מסוכן יותר: הוא בטוח לגמרי שהוא צודק, ויש לו את הכלים להוכיח את זה.</p>
@@ -356,10 +406,11 @@
 
 <!-- ===== 06 ===== -->
 <section class="scene" id="mcu" data-title="דום ביקום הקולנועי">
+  <div class="scene-bg blur" style="background-image:url('img/poster.webp')"></div>
   <div class="wrap stage3d">
     <div class="split">
       <div>
-        <div class="chapter-no"><span>CHAPTER VI</span><span class="he">פרק 6</span></div>
+        <div class="chapter-no"><span>CHAPTER VII</span><span class="he">פרק 7</span></div>
         <h2>דום ביקום הקולנועי</h2>
         <div class="text">
           <p class="lead">ביולי 2024, באולם H בכנס קומיק-קון של סן דייגו, אדם במסיכה עלה לבמה. כשהוא הסיר אותה, האולם התפוצץ: זה היה רוברט דאוני ג'וניור.</p>
@@ -371,10 +422,7 @@
         <div class="countdown" id="countdown" aria-live="polite"></div>
         <div class="src"><span><b>בכורה</b>18 בדצמבר 2026</span></div>
       </div>
-      <figure class="frame3d">
-        <img src="img/poster.webp" alt="הפוסטר הרשמי של דוקטור דום לנוקמים: דומסדיי" loading="lazy">
-        <figcaption>פוסטר רשמי · © 2026 Marvel</figcaption>
-      </figure>
+      <div class="station" data-station="poster"></div>
     </div>
   </div>
 </section>
@@ -382,7 +430,7 @@
 <!-- ===== 07 ===== -->
 <section class="scene" id="sources" data-title="מקורות">
   <div class="wrap stage3d">
-    <div class="chapter-no"><span>CHAPTER VII</span><span class="he">פרק 7</span></div>
+    <div class="chapter-no"><span>CHAPTER VIII</span><span class="he">פרק 8</span></div>
     <h2>מקורות וקרדיטים</h2>
     <div class="text"><p>כל העובדות באתר מבוססות על הגיליונות האלה. רוצים להעמיק? אלה הסיפורים שכדאי לקרוא.</p></div>
     <div class="sources">
@@ -456,6 +504,65 @@ document.querySelectorAll('.toggle button').forEach(b => b.addEventListener('cli
   document.querySelectorAll('.toggle button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
   flip.classList.toggle('b', b.dataset.v === 'b');
 }));
+
+// ===== תחנות התמונות: נקודות מידע על כל תמונה =====
+const STATIONS = {
+  gauntlet: { img: 'img/gauntlet.webp', alt: 'הכפפה המשוריינת של דום עם אורות ירוקים, מתוך הטריילר', credit: 'מתוך הטריילר של נוקמים: דומסדיי · © Marvel', hots: [
+    { x: 36, y: 68, t: 'הכפפה', d: 'השריון של דום הוא נשק בפני עצמו. כפות הידיים יורות קרני אנרגיה, השריון יוצר סביבו שדה כוח ומעצים את כוחו הפיזי הרבה מעבר לכוח של אדם רגיל.' },
+    { x: 54, y: 17, t: 'הזוהר הירוק', d: 'ירוק הוא הצבע של דום מההופעה הראשונה שלו ב-1962: הגלימה, הברדס, ועכשיו גם האורות של השריון בטריילר.' },
+    { x: 73, y: 62, t: 'מערכת חיים', d: 'השריון הוא גם מערכת חיים סגורה. הוא מאפשר לדום לשרוד בחלל, מתחת למים ובתנאים שהיו הורגים כל אדם אחר.' },
+  ]},
+  sentinel: { img: 'img/battlefield.webp', alt: 'רגל ענקית של סנטינל בשדה קרב מוצף אור ירוק, ולידה היד של דום', credit: 'מתוך הטריילר של נוקמים: דומסדיי · © Marvel', hots: [
+    { x: 31, y: 40, t: 'רגל הסנטינל', d: 'סנטינלים הם רובוטים בגובה של בניינים. רגל אחת שלהם גדולה יותר מגיבור שלם, וכאן היא דורכת בלב שדה הקרב של דומסדיי.' },
+    { x: 47, y: 75, t: 'היד של דום', d: 'ליד הרגל הענקית מונחת על הקרקע היד המשוריינת של דום. מה קרה כאן? את התשובה נגלה רק בקולנוע.' },
+    { x: 76, y: 45, t: 'האנרגיה הירוקה', d: 'שדה הקרב בדומסדיי מוצף באור ירוק, הצבע של דום.' },
+  ]},
+  mask: { img: 'img/mask-eye-of-uatu.webp', alt: 'דוקטור דום במסיכה ובברדס ירוק, מושיט יד', credit: 'תמונה: Eye of Uatu', hots: [
+    { x: 52, y: 47, t: 'המסיכה', d: 'ברזל שחושל במנזר בטיבט ונחבש כשהוא עדיין לוהט. מאז אף אחד לא ראה את הפנים שמתחתיו.' },
+    { x: 56, y: 32, t: 'העיניים', d: 'הדבר האנושי היחיד שנשאר גלוי. בקומיקס, דרך העיניים רואים מה דום מרגיש באמת.' },
+    { x: 37, y: 72, t: 'היד המושטת', d: 'דום לא מבקש. הוא מצווה. התנועה הזו היא גם התנועה של מכשף שמטיל לחש.' },
+    { x: 86, y: 65, t: 'המדליון', d: 'המדליונים מחזיקים את הגלימה במקומה, ומזכירים שמתחת לשריון עומד מלך.' },
+  ]},
+  poster: { img: 'img/poster.webp', alt: 'הפוסטר הרשמי של דוקטור דום לנוקמים: דומסדיי', credit: 'פוסטר רשמי · © 2026 Marvel', hots: [
+    { x: 45, y: 13, t: 'הברדס והגלימה', d: 'דום לבוש כמו מלך מימי הביניים, לא כמו גיבור על. זה המראה שלו מאז Fantastic Four #5 (1962).' },
+    { x: 48, y: 56, t: 'השריון המשובץ', d: 'בגרסה הקולנועית, שריון החזה עשוי אריחי מתכת קטנים, שבין חלקם נראה זוהר ירוק.' },
+    { x: 13, y: 30, t: 'הוויטראז\' הירוק', d: 'הרקע נראה כמו חלון כנסייה. כמו בקומיקס של מלחמות סודיות, שבהן דום הפך לאל-קיסר, הפוסטר מציג אותו כמעט כמו קדוש.' },
+    { x: 93, y: 86, t: 'התאריך', d: '18 בדצמבר 2026.' },
+  ]},
+};
+document.querySelectorAll('.station').forEach(el => {
+  const st = STATIONS[el.dataset.station];
+  el.innerHTML = `
+    <div class="st-card">
+      <div class="st-shadow"></div><div class="st-glow"></div>
+      <div class="st-img"><img src="${st.img}" alt="${st.alt}" loading="lazy"></div>
+      <div class="st-shine"></div>
+      ${st.hots.map((h, i) => `<button class="hot${h.y < 24 ? ' below' : ''}${h.x > 80 ? ' end' : ''}" style="--x:${h.x}%;--y:${h.y}%" data-i="${i}" aria-label="${h.t}">${i + 1}<span class="lbl">${h.t}</span></button>`).join('')}
+    </div>
+    <div class="st-info" aria-live="polite"></div>
+    <div class="st-meta"><span>לחצו על הנקודות הירוקות</span><span>${st.credit}</span></div>`;
+  const card = el.querySelector('.st-card'), img = el.querySelector('.st-img'), info = el.querySelector('.st-info');
+  const hots = [...el.querySelectorAll('.hot')];
+  const show = i => {
+    const h = st.hots[i];
+    hots.forEach((b, k) => b.classList.toggle('on', k === i));
+    info.innerHTML = `<div class="n">${String(i + 1).padStart(2, '0')}</div><div class="body"><h4>${h.t}</h4><p>${h.d}</p></div>`;
+    img.style.setProperty('--fx', h.x + '%'); img.style.setProperty('--fy', h.y + '%');
+  };
+  hots.forEach((b, i) => { b.addEventListener('click', () => show(i)); b.addEventListener('mouseenter', () => show(i)); });
+  show(0);
+  if (!reduce) {
+    el.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--ry', ((x - .5) * 14).toFixed(2) + 'deg');
+      card.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg');
+      img.style.setProperty('--gx', (x * 100) + '%'); img.style.setProperty('--gy', (y * 100) + '%');
+      card.style.setProperty('--sh', (x * 100).toFixed(0));
+    });
+    el.addEventListener('pointerleave', () => { card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
+  }
+});
 
 // ===== ספירה לאחור =====
 const PREMIERE = new Date('2026-12-18T00:00:00+02:00');
