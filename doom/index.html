@@ -8,7 +8,7 @@
 <link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Cinzel:wght@500;600;900&family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;900&family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #030705;
@@ -22,14 +22,14 @@
     --ember: #ff9a3c;
     --sentinel: #b14bff;
     --bar: 7vh;
-    --serif: 'Frank Ruhl Libre', Georgia, serif;
-    --latin: 'Cinzel', 'Frank Ruhl Libre', serif;
+    --serif: 'Heebo', system-ui, sans-serif;
+    --latin: 'Cinzel', Georgia, serif;
     --sans: 'Heebo', system-ui, sans-serif;
-    --royal: 'Bellefair', 'Frank Ruhl Libre', serif;
+    --royal: 'Heebo', system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--ink); font-family: var(--serif); font-weight: 400; line-height: 1.8; overflow-x: hidden; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.8; overflow-x: hidden; }
   a { color: inherit; }
   button { font-family: inherit; cursor: pointer; }
   img { display: block; max-width: 100%; }
@@ -64,12 +64,12 @@
   .chapter-no { font-family: var(--latin); color: var(--green); letter-spacing: .4em; font-size: 13px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
   .chapter-no .he { font-family: var(--sans); letter-spacing: .05em; font-size: 14px; font-weight: 500; color: var(--mute); }
   .chapter-no::after { content: ""; height: 1px; width: 80px; background: linear-gradient(270deg, transparent, var(--green)); }
-  h2 { font-family: var(--serif); font-weight: 700; letter-spacing: .01em; font-size: clamp(38px, 6vw, 78px); line-height: 1.1; margin-bottom: 30px;
+  h2 { font-family: var(--serif); font-weight: 800; letter-spacing: .01em; font-size: clamp(38px, 6vw, 78px); line-height: 1.1; margin-bottom: 30px;
     background: linear-gradient(180deg, #ffffff 10%, #b9c4bd 55%, #6f7d74 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
     filter: drop-shadow(0 2px 0 #0b1a10) drop-shadow(0 6px 18px rgba(57,255,122,.18)); }
-  .text { max-width: 660px; font-size: clamp(18px, 1.7vw, 20.5px); color: #d3ddd6; text-align: justify; text-justify: inter-word; }
+  .text { max-width: 660px; font-size: clamp(17px, 1.6vw, 19px); color: #d3ddd6; }
   .text p { margin-bottom: 18px; }
-  .text p.lead { font-family: var(--royal); font-size: clamp(23px, 2.4vw, 30px); font-weight: 400; color: #f1f5f2; line-height: 1.55; text-align: right; border-inline-start: 2px solid var(--green-2); padding-inline-start: 18px; }
+  .text p.lead { font-family: var(--royal); font-size: clamp(21px, 2.2vw, 27px); font-weight: 300; color: #f1f5f2; line-height: 1.55; text-align: right; border-inline-start: 2px solid var(--green-2); padding-inline-start: 18px; }
   .text em { color: var(--green); font-style: normal; font-weight: 500; }
   .text strong { color: #fff; font-weight: 700; }
   .src { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -118,7 +118,7 @@
   .flip.b .flip-inner { transform: rotateY(180deg); }
   .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 24px 26px; border-radius: 14px; border: 1px solid rgba(57,255,122,.25); background: linear-gradient(160deg, #0b1d12, #050c08); box-shadow: 0 30px 60px rgba(0,0,0,.6); }
   .face.back { transform: rotateY(180deg); border-color: rgba(255,154,60,.35); background: linear-gradient(160deg, #1d140b, #0a0705); }
-  .face h3 { font-family: var(--royal); font-size: 27px; font-weight: 400; margin-bottom: 4px; }
+  .face h3 { font-family: var(--royal); font-size: 23px; font-weight: 700; margin-bottom: 4px; }
   .face .yr { font-size: 13px; color: var(--faint); margin-bottom: 12px; display: block; }
   .face p { font-size: 17.5px; color: #cfdad2; margin-bottom: 12px; }
   .face p:last-child { margin-bottom: 0; }
@@ -146,7 +146,7 @@
   .scene.in .card:nth-child(2) { transition-delay: .12s; } .scene.in .card:nth-child(3) { transition-delay: .24s; } .scene.in .card:nth-child(4) { transition-delay: .36s; } .scene.in .card:nth-child(5) { transition-delay: .48s; } .scene.in .card:nth-child(6) { transition-delay: .6s; }
   .card:hover { border-color: rgba(57,255,122,.45); box-shadow: 0 0 40px rgba(57,255,122,.12); transform: translateZ(30px) !important; }
   .card .ico { font-family: var(--latin); font-size: 30px; color: var(--green); line-height: 1; margin-bottom: 12px; text-shadow: 0 0 20px rgba(57,255,122,.6); }
-  .card h3 { font-family: var(--royal); font-size: 25px; font-weight: 400; margin-bottom: 8px; }
+  .card h3 { font-family: var(--royal); font-size: 21px; font-weight: 700; margin-bottom: 8px; }
   .card p { font-size: 16.5px; line-height: 1.75; color: var(--mute); }
   .card .src { margin-top: 12px; }
   .card .src span { font-size: 12px; padding: 3px 10px; }
@@ -202,7 +202,7 @@
   .st-list { list-style: none; margin-top: 22px; display: grid; gap: 12px; }
   .st-list li { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; padding: 16px 20px; border-inline-start: 2px solid var(--green-2); background: linear-gradient(90deg, rgba(5,16,9,.85), rgba(5,16,9,.35)); border-radius: 4px; }
   .st-list .n { font-family: var(--latin); font-size: 30px; line-height: 1; color: var(--green); text-shadow: 0 0 20px rgba(57,255,122,.45); }
-  .st-list h4 { font-family: var(--royal); font-weight: 400; font-size: 23px; line-height: 1.2; margin-bottom: 4px; }
+  .st-list h4 { font-family: var(--royal); font-weight: 700; font-size: 20px; line-height: 1.2; margin-bottom: 4px; }
   .st-list p { font-size: 17px; color: #d3ddd6; margin: 0; }
   .st-meta { justify-content: flex-start; }
 
@@ -224,7 +224,6 @@
     .wrap { padding: 0 18px; }
     .scene-bg::after, [dir="rtl"] .scene-bg::after { background: rgba(3,7,5,.82); }
     .s-row { grid-template-columns: 1fr; gap: 4px; }
-    .text { text-align: right; }
   }
   @media (prefers-reduced-motion: reduce) {
     .grain, #intro .scene-bg, .radar::before, .blip, .scroll-hint i { animation: none; }
