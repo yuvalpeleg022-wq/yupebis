@@ -43,7 +43,7 @@ export interface Trailer {
   descriptionHe: string
   status: VerificationStatus
   source: SourceLink
-  /** Only set for a YouTube ID verified as an official Marvel upload */
+  /** YouTube ID of the official Marvel Entertainment upload (supplied by the site owner from the official channel) */
   youtubeId?: string
 }
 

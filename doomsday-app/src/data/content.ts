@@ -54,7 +54,7 @@ export const GALLERY: GalleryImage[] = [
     width: 1024,
     height: 1280,
     altHe: "דוקטור דום בברדס ירוק ובשריון מתכת, על רקע ויטראז׳ ירוק",
-    captionHe: "פוסטר הדמות של דוקטור דום. על הפוסטר מופיעים הכיתוב IN THEATERS DECEMBER 18 וסימן הזכויות © 2026 MARVEL.",
+    captionHe: "פוסטר הדמות של דוקטור דום, עם תאריך הבכורה (18 בדצמבר) וסימן זכויות היוצרים של Marvel.",
     kind: "poster",
     provenance: "unverified",
     provenanceNoteHe: "התקבל מקהילת מארוול גיקים. הפוסטר נושא את סימני הזכויות של Marvel, אך את עמוד המקור הרשמי עוד לא איתרנו.",
@@ -77,11 +77,11 @@ export const GALLERY: GalleryImage[] = [
     src: "./media/frame-battlefield.webp",
     width: 2000,
     height: 825,
-    altHe: "רגל מתכת ענקית דורכת בשדה קרב מוצף אור ירוק",
-    captionHe: "שדה קרב מוצף אור ירוק ורגל מתכת ענקית.",
+    altHe: "רגל ענקית של סנטינל דורכת בשדה קרב מוצף אור ירוק",
+    captionHe: "רגל של סנטינל בשדה קרב מוצף אור ירוק.",
     kind: "trailer-frame",
-    provenance: "unverified",
-    provenanceNoteHe: "פריים שהתקבל מהקהילה. עוד לא אימתנו שהוא לקוח מטריילר רשמי, והחותמת בזמן אינה ידועה.",
+    provenance: "official",
+    provenanceNoteHe: "פריים מחומרי הקידום הרשמיים של הסרט. המקור אומת על ידי מארוול גיקים. החותמת בזמן אינה ידועה.",
     focus: "35% 55%",
   },
   {
@@ -97,14 +97,27 @@ export const GALLERY: GalleryImage[] = [
   },
   {
     id: "official-trailer-thumb",
-    width: 1600,
-    height: 900,
-    altHe: "תמונה ממוזערת של הטריילר הרשמי",
+    src: "https://i.ytimg.com/vi/irVNGjRFZGk/maxresdefault.jpg",
+    width: 1280,
+    height: 720,
+    altHe: "התמונה הממוזערת של הטריילר הרשמי",
     captionHe: "התמונה הממוזערת של הטריילר הרשמי מ-20 ביולי 2026.",
     kind: "trailer-thumbnail",
     provenance: "official",
-    provenanceNoteHe: "מקור רשמי. קובץ התמונה עוד לא הושג.",
-    source: S.trailer,
+    provenanceNoteHe: "תמונה ממוזערת רשמית מערוץ ה-YouTube של Marvel Entertainment.",
+    source: { label: "YouTube · הטריילר הרשמי", url: "https://www.youtube.com/watch?v=irVNGjRFZGk" },
+  },
+  {
+    id: "d23-thumb",
+    src: "https://i.ytimg.com/vi/X1aFkAkFASk/maxresdefault.jpg",
+    width: 1280,
+    height: 720,
+    altHe: "התמונה הממוזערת של המבט המיוחד מכנס D23",
+    captionHe: "התמונה הממוזערת של המבט המיוחד מכנס D23, אוגוסט 2026.",
+    kind: "trailer-thumbnail",
+    provenance: "official",
+    provenanceNoteHe: "תמונה ממוזערת רשמית מערוץ ה-YouTube של Marvel Entertainment.",
+    source: { label: "YouTube · מבט מיוחד", url: "https://www.youtube.com/watch?v=X1aFkAkFASk" },
   },
 ]
 
@@ -114,6 +127,7 @@ export const HERO_IMAGE = GALLERY[0]
 export const TRAILERS: Trailer[] = [
   {
     id: "main-trailer",
+    youtubeId: "irVNGjRFZGk",
     titleHe: "הטריילר הרשמי",
     publishedAt: "2026-07-20",
     descriptionHe: "הטריילר המלא הראשון לקהל הרחב. יחד איתו נפתחה מכירת הכרטיסים לאולמות Infinity Vision.",
@@ -122,6 +136,7 @@ export const TRAILERS: Trailer[] = [
   },
   {
     id: "d23-special-look",
+    youtubeId: "X1aFkAkFASk",
     titleHe: "מבט מיוחד מכנס D23",
     publishedAt: "2026-08-14",
     descriptionHe: "הוצג על הבמה בכנס D23 באנהיים, עם קווין פייגי, רוברט דאוני ג׳וניור, כריס אוונס והיילי אטוול. במרכזו דוקטור דום.",
@@ -130,6 +145,7 @@ export const TRAILERS: Trailer[] = [
   },
   {
     id: "teaser-1",
+    youtubeId: "UiMg566PREA",
     titleHe: "טיזר 1 · סטיב רוג׳רס",
     publishedAt: "2025-12-23",
     descriptionHe: "הטיזר הראשון חשף את חזרתו של כריס אוונס בתפקיד סטיב רוג׳רס.",
@@ -138,6 +154,7 @@ export const TRAILERS: Trailer[] = [
   },
   {
     id: "teaser-2",
+    youtubeId: "1clWprLC5Ak",
     titleHe: "טיזר 2 · ת׳ור",
     publishedAt: "2025-12-30",
     descriptionHe: "טיזר שבמרכזו כריס המסוורת׳ בתפקיד ת׳ור.",
@@ -146,6 +163,7 @@ export const TRAILERS: Trailer[] = [
   },
   {
     id: "teaser-3",
+    youtubeId: "kH1XlwHQv9o",
     titleHe: "טיזר 3 · אקס-מן",
     publishedAt: "2026-01-06",
     descriptionHe: "פטריק סטיוארט בתפקיד פרופסור X, איאן מקלן בתפקיד מגנטו וג׳יימס מרסדן בתפקיד סייקלופס.",
@@ -154,6 +172,7 @@ export const TRAILERS: Trailer[] = [
   },
   {
     id: "teaser-4",
+    youtubeId: "399Ez7WHK5s",
     titleHe: "טיזר 4 · וואקנדה וארבעת המופלאים",
     publishedAt: "2026-01-13",
     descriptionHe: "לטישה רייט בתפקיד שורי, וינסטון דיוק בתפקיד מ׳באקו, טנוך הוארטה מחיה בתפקיד נמור ואבון מוס-בכרך בתפקיד הדבר.",
