@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* ===== Theme tokens (Tailwind v4) ===== */
+@theme {
+  --font-sans: "Heebo Variable", "Heebo", system-ui, sans-serif;
+
+  --color-background: #050805;
+  --color-surface: #0b140d;
+  --color-surface-2: #122018;
+  --color-brand-deep: #124d0a;
+  --color-brand: #46d62c;
+  --color-brand-pale: #b7ff9c;
+  --color-foreground: #f3f7f2;
+  --color-muted: #b6c5b5;
+  --color-border: rgb(70 214 44 / 0.16);
+  --color-report: #e5c35a;
+  --color-rumor: #c9a3ff;
+
+  /* shadcn semantic aliases */
+  --color-primary: #46d62c;
+  --color-primary-foreground: #04140a;
+  --color-secondary: #122018;
+  --color-secondary-foreground: #f3f7f2;
+  --color-ring: #b7ff9c;
+  --color-card: #0b140d;
+  --color-card-foreground: #f3f7f2;
+  --color-popover: #0b140d;
+  --color-popover-foreground: #f3f7f2;
+  --color-input: rgb(70 214 44 / 0.22);
+
+  --radius-lg: 0.875rem;
+  --radius-md: 0.625rem;
+  --radius-sm: 0.375rem;
+
+  --animate-fade-slide-in: fade-slide-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 1.2s ease both;
+  --animate-glow-pulse: glow-pulse 5s ease-in-out infinite;
+
+  @keyframes fade-slide-in {
+    from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
+  }
+}
+
+/* Staggered delays used by the hero (animate-fade-slide-in + delay-N) */
+@utility animation-delay-100 { animation-delay: 100ms; }
+@utility animation-delay-200 { animation-delay: 200ms; }
+@utility animation-delay-300 { animation-delay: 300ms; }
+@utility animation-delay-400 { animation-delay: 400ms; }
+@utility animation-delay-500 { animation-delay: 500ms; }
+@utility animation-delay-700 { animation-delay: 700ms; }
+
+/* Scroll reveal: elements start hidden and animate once .is-visible is added */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  &.is-visible { opacity: 1; transform: none; }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  ::selection { background: var(--color-brand); color: #04140a; }
+  :focus-visible { outline: 2px solid var(--color-brand-pale); outline-offset: 3px; border-radius: 6px; }
+  img { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
