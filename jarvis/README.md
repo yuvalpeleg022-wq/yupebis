@@ -19,7 +19,7 @@ Keys come next (all optional; whatever is missing is announced on screen, never 
 
 ## Keys — `.env`
 
-Copy `.env.example` to `.env` in the `jarvis` folder and fill in what you have. On Windows, keep `.env` private (it's ignored by git). On macOS/Linux, `chmod 600 .env`.
+Easiest: double-click `setup.bat` (or `python setup.py`) and paste each key when asked — it writes `.env` for you. Or copy `.env.example` to `.env` and fill it in by hand. On Windows, keep `.env` private (it's ignored by git). On macOS/Linux, `chmod 600 .env`.
 
 | Setting | What it turns on | Where to get it |
 |---|---|---|
