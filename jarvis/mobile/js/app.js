@@ -39,7 +39,8 @@ function setTheme(t) {
   settings.theme = t; saveSettings();
   document.documentElement.dataset.theme = t;
   reactor?.setTheme(t);
-  document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#010805';
+  const meta = document.querySelector('meta[name=theme-color]');
+  if (meta) meta.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#010805';
 }
 function setState(s) {
   state = s;

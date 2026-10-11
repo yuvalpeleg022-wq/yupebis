@@ -93,6 +93,8 @@ body[data-state="listening"] #mic { background: radial-gradient(circle, rgba(var
 #cmd input { flex: 1; padding: 13px 14px; background: rgba(1, 10, 6, .92); border: 1px solid var(--c); color: var(--hi); font-size: 16px; outline: 0; }
 #cmd button { width: 50px; background: rgba(var(--c-rgb), .2); border: 1px solid var(--c); font-size: 24px; color: var(--hi); }
 
+body:has(#cmd:not([hidden])) #quick { visibility: hidden; }
+
 /* cards */
 #cards { position: fixed; z-index: 4; left: 14px; right: 14px; top: calc(var(--safe-t) + 74px); display: flex; flex-direction: column;
   gap: 8px; pointer-events: none; perspective: 700px; }
