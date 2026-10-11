@@ -8,6 +8,15 @@ echo     J.A.R.V.I.S  -  installing (5-15 minutes)
 echo   =============================================
 echo.
 
+if not exist "jarvis\__init__.py" (
+  echo   ERROR: the files were not extracted.
+  echo   Right-click the ZIP file - "Extract All" - then open the extracted
+  echo   "jarvis" folder and run install.bat from there.
+  echo.
+  pause
+  exit /b 1
+)
+
 set "PY="
 py -3.12 -V >nul 2>&1 && set "PY=py -3.12"
 if not defined PY (py -3.11 -V >nul 2>&1 && set "PY=py -3.11")
@@ -33,9 +42,11 @@ echo [4/4] creating desktop + start-menu shortcuts...
 ".venv\Scripts\python.exe" tools\make_shortcut.py
 
 echo.
-echo   Done!  Open "JARVIS" from your desktop.
+echo   Done!  JARVIS is starting now.
+echo   Next time open "JARVIS" from the desktop or the Start menu (or run.bat in this folder).
 echo   First launch downloads the speech models (~500MB) and asks you to record your voice.
 echo.
+start "" ".venv\Scripts\pythonw.exe" -m jarvis
 pause
 exit /b 0
 
