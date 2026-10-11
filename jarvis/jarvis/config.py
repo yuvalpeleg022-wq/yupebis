@@ -72,7 +72,7 @@ def ensure_user_files() -> None:
         d.mkdir(parents=True, exist_ok=True)
 
 
-CONFIG_VERSION = 4
+CONFIG_VERSION = 5
 
 
 def migrate_user_config() -> list[str]:
@@ -107,6 +107,12 @@ def migrate_user_config() -> list[str]:
                           text, flags=re.M)
         if n:
             done.append("theme → green")
+    if version < 5:
+        # v5: the plasma-orb look from the reference video is orange
+        text, n = re.subn(r"^theme:\s*green\b.*$", "theme: gold                  # gold (כתום-זהב, כמו בסרטון) | green (ירוק) | cyan (כחול)",
+                          text, flags=re.M)
+        if n:
+            done.append("theme → gold (plasma orb)")
     text = re.sub(r"^config_version:\s*\d+", f"config_version: {CONFIG_VERSION}", text, count=1, flags=re.M)
     if done or version < CONFIG_VERSION:
         CONFIG_FILE.write_text(text, encoding="utf-8")

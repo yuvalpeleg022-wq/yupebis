@@ -129,6 +129,12 @@ def parse(text: str) -> Intent:
     if _has(t, "צבע ירוק", "ירוק", "green", "מטריקס", "matrix"):
         if _has(t, "צבע", "color", "theme", "מצב", "mode", "תחליף", "שנה", "תשנה"):
             return Intent("theme", {"theme": "green"}, text)
+    if _has(t, "דשבורד", "dashboard", "לוח המחוונים"):
+        return Intent("view", {"view": "dashboard"}, text)
+    if _has(t, "צאט", "צ'אט", "chat", "היסטוריית השיחה", "השיחה שלנו"):
+        return Intent("view", {"view": "chat"}, text)
+    if _has(t, "מסך הבית", "מסך ראשי", "home screen", "רק את הכדור", "רק הכדור"):
+        return Intent("view", {"view": "home"}, text)
     if _has(t, "שנה צבע", "תשנה צבע", "תחליף צבע", "change color", "switch theme", "החלף צבע"):
         return Intent("theme", {"theme": "toggle"}, text)
     if _has(t, "הסתר", "תסתיר", "תתחבא", "מזער", "תמזער", "hide", "minimize") and len(words) <= 4:

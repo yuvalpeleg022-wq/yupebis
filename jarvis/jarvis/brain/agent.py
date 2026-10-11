@@ -24,7 +24,7 @@ IDLE_RESET_S = 15 * 60
 MAX_MESSAGES = 60
 
 # Commands the local parser handles instantly and reliably; everything else goes to the AI.
-LOCAL_FAST = {"open", "folder", "close", "search", "youtube", "youtube_search", "install", "uninstall", "volume",
+LOCAL_FAST = {"view", "open", "folder", "close", "search", "youtube", "youtube_search", "install", "uninstall", "volume",
               "mute", "media", "time", "date", "lock", "screenshot", "shutdown", "restart_pc", "theme", "hide",
               "show", "reload", "restart_self", "edit_config", "edit_commands", "open_plugins", "open_source",
               "enroll", "sleep", "stop_speaking", "show_desktop", "empty"}
@@ -90,7 +90,8 @@ TOOLS = [
     _tool("forget", "Delete remembered facts that contain this text.", {"text": S}),
     _tool("jarvis", "Control JARVIS itself.",
           {"action": {"type": "string", "enum": ["hide", "show", "sleep", "theme_green", "theme_gold", "theme_cyan", "reload",
-                                                  "learn_my_voice", "open_settings", "open_commands"]}}),
+                                                  "learn_my_voice", "open_settings", "open_commands",
+                                                  "view_home", "view_chat", "view_dashboard"]}}),
     {"type": "web_search_20260209", "name": "web_search", "max_uses": 3},
 ]
 
@@ -233,6 +234,9 @@ def execute(name: str, a: dict, ctx) -> str:
         act = a["action"]
         mapping = {"hide": "hide", "show": "show", "sleep": "sleep", "reload": "reload", "learn_my_voice": "enroll",
                    "open_settings": "edit_config", "open_commands": "edit_commands"}
+        if act.startswith("view_"):
+            ctx.hub.publish("view", act.split("_", 1)[1])
+            return "Done."
         if act.startswith("theme_"):
             ctx.set_theme(act.split("_", 1)[1])
             return "Done."

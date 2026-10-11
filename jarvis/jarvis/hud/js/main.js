@@ -18,7 +18,7 @@ const STATE_LABEL = {
 // ---------------------------------------------------------------- 3D scene
 async function initScene() {
   try {
-    const { Reactor } = await import('./scene.js');
+    const { Reactor } = await import('./orb.js');
     reactor = new Reactor($('#scene'));
     window.reactor = reactor;
     reportGPU();
@@ -106,7 +106,7 @@ function clock() {
 
 // ---------------------------------------------------------------- theme / state
 function setTheme(t) {
-  document.documentElement.dataset.theme = ['gold', 'cyan', 'green'].includes(t) ? t : 'green';
+  document.documentElement.dataset.theme = ['gold', 'cyan', 'green'].includes(t) ? t : 'gold';
   reactor?.setTheme(t);
   drawSparks();
 }
@@ -253,7 +253,32 @@ function reply(text) {
     if (i >= text.length) { clearInterval(typeTimer); el.classList.remove('typing'); }
   }, 22);
 }
+// ---------------------------------------------------------------- views + chat log
+const VIEWS = ['home', 'chat', 'dashboard'];
+function setView(v) {
+  if (!VIEWS.includes(v)) return;
+  document.body.classList.remove(...VIEWS.map(x => 'view-' + x));
+  document.body.classList.add('view-' + v);
+  document.querySelectorAll('#views button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  try { localStorage.setItem('jarvis-view', v); } catch {}
+  if (v === 'dashboard') setTimeout(layoutQuick, 50);
+  if (v === 'chat') $('#chat-input').focus();
+}
+function chatMsg(who, text) {
+  const log = $('#chat-log');
+  log.querySelector('.chat-empty')?.remove();
+  const m = document.createElement('div');
+  m.className = 'msg ' + who; m.dir = 'auto';
+  m.innerHTML = '<small></small><span></span>';
+  m.querySelector('small').textContent = (who === 'you' ? 'YOU · ' : 'JARVIS · ') + now().slice(0, 5);
+  m.querySelector('span').textContent = text;
+  log.append(m);
+  while (log.children.length > 120) log.firstChild.remove();
+  log.scrollTop = log.scrollHeight;
+}
+
 function transcript(d) {
+  if (!d.ignored) chatMsg('you', d.text);
   const el = $('#transcript');
   el.textContent = d.text;
   el.classList.toggle('ignored', !!d.ignored);
@@ -397,7 +422,9 @@ function link(ok) {
 
 // ---------------------------------------------------------------- event stream
 const handlers = {
-  theme: setTheme, status: setState, dock: renderDock, stats, log, reply, transcript,
+  theme: setTheme, status: setState, dock: renderDock, stats, log, transcript,
+  reply: t => { reply(t); chatMsg('jarvis', t); },
+  view: setView,
   tts: playTTS, tts_stop: () => stopTTS(false), confirm: confirmBox, enroll, progress, toast, voice: voiceInfo,
   level: v => { reactor?.setLevel(v); wave(v); const m = $('#enroll .meter i'); if (m) m.style.width = `${Math.min(100, v * 140)}%`; },
   verify: d => {
@@ -443,7 +470,6 @@ function wireInput() {
     e.preventDefault();
     const text = input.value.trim(); if (!text) return;
     input.value = '';
-    transcript({ text });
     reactor?.pulse(.5);
     api('/api/command', { text });
     openKeyboard(false);
@@ -457,6 +483,7 @@ function wireInput() {
     }
     else if ((e.key === '/' || e.key === 'Enter') && !typing) { e.preventDefault(); openKeyboard(true); }
     else if (e.key === 'F5') { e.preventDefault(); handlers.reload_hud(); }
+    else if (!typing && document.activeElement?.tagName !== 'INPUT' && ['1', '2', '3'].includes(e.key)) setView(VIEWS[+e.key - 1]);
     else if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) { e.preventDefault(); api('/api/ui', { cmd: 'devtools' }); }
   });
   document.querySelectorAll('#confirm button').forEach(b => b.addEventListener('click', () => {
@@ -464,6 +491,15 @@ function wireInput() {
   }));
   $('#enroll-cancel').addEventListener('click', () => api('/api/enroll', { cancel: true }));
   addEventListener('resize', () => { layoutQuick(); drawSparks(); });
+  document.querySelectorAll('#views button').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+  $('#chat-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const t = $('#chat-input').value.trim(); if (!t) return;
+    $('#chat-input').value = '';
+    api('/api/command', { text: t });
+  });
+  $('#chat-log').innerHTML = '<div class="chat-empty">כאן תופיע השיחה שלך עם ג\'רוויס. דבר אליו או כתוב למטה.</div>';
+  try { setView(localStorage.getItem('jarvis-view') || 'home'); } catch { setView('home'); }
 }
 
 // ---------------------------------------------------------------- go

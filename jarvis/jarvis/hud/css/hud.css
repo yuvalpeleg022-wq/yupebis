@@ -366,3 +366,42 @@ body.ai-thinking #core .state { color: var(--hi); border-color: var(--c); animat
 @keyframes cardOut { to { opacity: 0; transform: rotateY(40deg) translateX(40px); filter: blur(6px); } }
 @keyframes cardScan { to { translate: 100% 0; } }
 @media (max-width: 1000px) { #cards { right: var(--pad); width: min(320px, 60vw); top: auto; bottom: calc(var(--bottom-h) + var(--pad) * 2); translate: none; } }
+
+/* =====================================================================
+   VIEWS — Home: only the orb on black (as in the reference video) ·
+   Chat: conversation beside the orb · Dashboard: the full HUD around it
+   ===================================================================== */
+#core { display: none; }                       /* the orb's heart replaces the clock */
+#views { position: fixed; z-index: 8; top: calc(var(--pad) + 2px); left: 50%; translate: -50% 0; display: flex; gap: 22px; }
+#views button { display: flex; align-items: center; gap: 7px; background: none; border: 0; cursor: pointer; padding: 6px 2px;
+  font-size: 12px; letter-spacing: .14em; color: var(--c); opacity: .55; transition: opacity .25s; }
+#views button i { width: 8px; height: 8px; border-radius: 2px; background: var(--c); box-shadow: 0 0 8px var(--c); }
+#views button:hover, #views button.on { opacity: 1; }
+#views button.on { color: var(--hi); }
+
+body.view-home #hud > *:not(#bar), body.view-chat #hud > *:not(#bar) { opacity: 0; pointer-events: none; visibility: hidden; }
+#hud > * { transition: opacity .6s var(--ease), visibility .6s; }
+body.view-home #fx, body.view-chat #fx { opacity: .35; }
+/* the caption under the orb stays, quietly */
+body.view-home #bar, body.view-chat #bar { --bottom-h: 132px; }
+body.view-home #mic, body.view-chat #mic { background: none; border-color: transparent; }
+body.view-home #mic-text, body.view-chat #mic-text { font-size: 13px; opacity: .55; text-align: center; }
+body.view-home #reply { font-size: 22px; }
+
+#chat { position: fixed; z-index: 7; top: calc(var(--pad) * 3 + 20px); bottom: calc(var(--pad) + 150px); right: calc(var(--pad) * 2);
+  width: min(460px, 36vw); display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden;
+  translate: 30px 0; transition: opacity .5s var(--ease), translate .5s var(--ease), visibility .5s; }
+body.view-chat #chat { opacity: 1; visibility: visible; translate: 0 0; }
+.chat-title { font-size: 10px; letter-spacing: .32em; opacity: .6; }
+#chat-log { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; scrollbar-width: thin; }
+.msg { max-width: 88%; padding: 10px 14px; font-size: 15px; line-height: 1.45; letter-spacing: .01em; border: 1px solid rgba(var(--c-rgb), .3);
+  user-select: text; animation: logIn .35s var(--ease); }
+.msg.you { align-self: flex-end; background: rgba(var(--c-rgb), .08); color: var(--hi); }
+.msg.jarvis { align-self: flex-start; background: rgba(var(--c-rgb), .16); color: var(--hi); border-color: rgba(var(--c-rgb), .55); }
+.msg small { display: block; font-size: 9px; letter-spacing: .25em; opacity: .55; margin-bottom: 3px; direction: ltr; }
+.chat-empty { opacity: .5; font-size: 14px; line-height: 1.6; }
+#chat-form { display: flex; gap: 8px; }
+#chat-input { flex: 1; padding: 11px 14px; background: rgba(var(--c-rgb), .06); border: 1px solid rgba(var(--c-rgb), .4); outline: 0; color: var(--hi); font-size: 15px; }
+#chat-input:focus { border-color: var(--c); }
+#chat-form button { width: 46px; background: rgba(var(--c-rgb), .18); border: 1px solid var(--c); color: var(--hi); font-size: 22px; cursor: pointer; }
+@media (max-width: 1000px) { #chat { width: calc(100vw - 4 * var(--pad)); background: rgba(0,0,0,.6); padding: 12px; } }

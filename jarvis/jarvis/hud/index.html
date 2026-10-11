@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="he" dir="ltr" data-theme="green">
+<html lang="he" dir="ltr" data-theme="gold">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,9 +13,24 @@
 } }
 </script>
 </head>
-<body data-state="boot">
+<body data-state="boot" class="view-home">
 <canvas id="scene"></canvas>
 <div id="fx" aria-hidden="true"></div>
+
+<nav id="views" aria-label="תצוגות">
+  <button data-view="home" class="on"><i></i>Home</button>
+  <button data-view="chat"><i></i>Chat</button>
+  <button data-view="dashboard"><i></i>Dashboard</button>
+</nav>
+
+<section id="chat" aria-label="שיחה">
+  <div class="chat-title">CONVERSATION</div>
+  <div id="chat-log" aria-live="polite"></div>
+  <form id="chat-form" autocomplete="off">
+    <input id="chat-input" dir="auto" placeholder="כתוב לג'רוויס…" spellcheck="false">
+    <button type="submit" aria-label="שלח">›</button>
+  </form>
+</section>
 
 <main id="hud">
   <!-- ===== TOP: identity · system telemetry · time ===== -->

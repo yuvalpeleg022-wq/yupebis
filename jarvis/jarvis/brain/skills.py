@@ -198,6 +198,9 @@ def handle(intent: Intent, ctx) -> str | None:
     if n == "theme":
         ctx.set_theme(a["theme"])
         return {"cyan": "כחול.", "gold": "זהב.", "green": "ירוק."}.get(ctx.theme, "בוצע.")
+    if n == "view":
+        ctx.hub.publish("view", a["view"])
+        return None
     if n == "hide":
         ctx.ui("hide")
         return None

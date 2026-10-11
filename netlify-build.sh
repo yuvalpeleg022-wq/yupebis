@@ -11,7 +11,7 @@ case "${SITE_NAME:-}" in
     # J.A.R.V.I.S phone app: the mobile shell + the same 3D reactor and three.js the desktop app uses
     cp -R jarvis/mobile/. dist/
     mkdir -p dist/js dist/vendor
-    cp jarvis/jarvis/hud/js/scene.js dist/js/scene.js
+    cp jarvis/jarvis/hud/js/orb.js dist/js/orb.js
     cp -R jarvis/jarvis/hud/vendor/three dist/vendor/three
     echo "Netlify site '${SITE_NAME}' -> publishing the JARVIS phone app"
     exit 0 ;;
