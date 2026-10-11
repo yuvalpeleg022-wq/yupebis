@@ -65,8 +65,12 @@ function applyStatus(s) {
     $("model-pill").classList.add("warn");
     banner("NO MODEL", `${s.model.reason} Routing by keyword matching against your files until then — it is not the model talking.`, "info");
   }
-  if (!s.voice.tts) banner("VOICE OUT", s.voice.reason + " Replies will be text only.", "info");
-  if (!s.voice.stt) banner("VOICE IN", s.voice.reason + " The mic can't transcribe until then.", "info");
+  if (!s.voice.tts) {
+    banner("VOICE OUT", window.speechSynthesis
+      ? "No ElevenLabs key — speaking with your computer's built-in voice instead."
+      : s.voice.reason + " This browser has no built-in voice, so replies are text only.", "info");
+  }
+  if (!s.voice.stt) banner("VOICE IN", "No ElevenLabs key, so the mic can't transcribe. On Windows: click the ask bar and press Win+H to dictate, then Enter.", "info");
   for (const w of s.warnings || []) banner("SETUP", w, "info");
 }
 
@@ -241,7 +245,8 @@ async function runAction(a, btn) {
 // ======================================================================= voice out
 let currentAudio = null;
 async function speak(text) {
-  if (state.muted || !text || !state.status?.voice.tts) { setPhase("idle"); return; }
+  if (state.muted || !text) { setPhase("idle"); return; }
+  if (!state.status?.voice.tts) return systemSpeak(text);
   setPhase("speaking");                       // mic is deaf from here until playback ends
   try {
     const r = await fetch("/api/speak", {
@@ -264,6 +269,40 @@ async function speak(text) {
   }
 }
 
+// ---- Fallback voice: the computer's own (Windows/Edge voices). Free, no key, output only.
+const SCRIPT_LANG = [[/[\u0590-\u05FF]/, "he"], [/[\u0600-\u06FF]/, "ar"], [/[\u0400-\u04FF]/, "ru"],
+                     [/[\u3040-\u30FF]/, "ja"], [/[\u4E00-\u9FFF]/, "zh"]];
+function pickVoice(text) {
+  const voices = speechSynthesis.getVoices();
+  let lang = state.lang !== "auto" ? state.lang : (SCRIPT_LANG.find(([re]) => re.test(text)) || [, "en"])[1];
+  if (lang === "en" && /[¿¡ñ]|\b(qué|está|hola|gracias)\b/i.test(text)) lang = "es";
+  const mine = voices.filter((v) => v.lang.toLowerCase().startsWith(lang));
+  // Edge's "Online (Natural)" voices sound far better than the classic desktop ones.
+  return { lang, voice: mine.find((v) => /natural|online/i.test(v.name)) || mine[0] || null };
+}
+
+function systemSpeak(text) {
+  if (!window.speechSynthesis) { setPhase("idle"); return Promise.resolve(); }
+  return new Promise((done) => {
+    const u = new SpeechSynthesisUtterance(text);
+    const { lang, voice } = pickVoice(text);
+    if (voice) u.voice = voice;
+    else banner("VOICE OUT", `Your computer has no ${lang} voice installed. Windows: Settings → Time & language → Speech → Add voices. Or use Microsoft Edge, which has online voices.`, "info");
+    u.lang = voice?.lang || lang;
+    let over = false;
+    const finish = () => { if (over) return; over = true; clearInterval(fake); state.outLevel = 0; if (state.phase === "speaking") setPhase("idle"); done(); };
+    u.onend = finish;
+    u.onerror = finish;
+    setTimeout(finish, 4000 + text.length * 110);   // some engines never fire onend
+    setPhase("speaking");                     // mic is deaf until it finishes
+    // No audio stream to measure here, so the reactor gets a gentle synthetic level.
+    const fake = setInterval(() => { state.outLevel = 0.06 + Math.random() * 0.08; }, 90);
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
+}
+if (window.speechSynthesis) speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+
 let outCtx, outAnalyser;
 function trackOutput(audio) {
   try {
@@ -280,6 +319,7 @@ function trackOutput(audio) {
 
 function bargeIn() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  if (window.speechSynthesis?.speaking) speechSynthesis.cancel();
   setPhase("idle");
   if (state.micOn) startListening();
 }
@@ -292,7 +332,9 @@ async function micToggle() {
   if (state.phase === "speaking") return bargeIn();
   if (state.micOn) return micOff();
   if (!state.status?.voice.stt) {
-    banner("VOICE IN", (state.status?.voice.reason || "Transcriber unavailable.") + " Type instead.");
+    // No transcriber: hand over to Windows voice typing in the ask bar.
+    $("ask").focus();
+    live("Press Win+H to dictate, then Enter");
     return;
   }
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
@@ -491,7 +533,7 @@ function bindUi() {
     e.preventDefault();
     const v = $("ask").value;
     $("ask").value = "";
-    if (currentAudio) bargeIn();
+    if (currentAudio || window.speechSynthesis?.speaking) bargeIn();
     ask(v);
   };
   $("mic").onclick = () => micToggle();

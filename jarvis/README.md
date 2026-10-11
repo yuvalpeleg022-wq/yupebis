@@ -24,7 +24,7 @@ Copy `.env.example` to `.env` in the `jarvis` folder and fill in what you have. 
 | Setting | What it turns on | Where to get it |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | The brain — real conversation, follow-ups, tool choice. Without it JARVIS routes by keyword matching and shows a **NO MODEL** badge. | [console.anthropic.com](https://console.anthropic.com) → API Keys |
-| `ELEVENLABS_API_KEY` | Voice in (Scribe) and out (text-to-speech). | [elevenlabs.io](https://elevenlabs.io) → Profile → API Keys. Give the key the *Text to Speech* and *Speech to Text* permissions. |
+| `ELEVENLABS_API_KEY` | Voice in (Scribe) and out (text-to-speech). Without it JARVIS speaks with your computer's built-in voice (best in Microsoft Edge, which has natural Hebrew voices), and you dictate with Windows voice typing: click the ask bar, press **Win+H**, then Enter. | [elevenlabs.io](https://elevenlabs.io) → Profile → API Keys. Give the key the *Text to Speech* and *Speech to Text* permissions. |
 | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` | `read_inbox`, read-only over IMAP. | Google Account → Security → 2-Step Verification on → **App passwords** → create one. In Gmail settings, IMAP must be enabled. |
 | `GCAL_ICS_URL` | Calendar for `brief_me` and `plan_day`, read-only. | Google Calendar → Settings → your calendar → **Secret address in iCal format**. |
 | `JARVIS_WEB_SEARCH=1` | Lets the model search the web (`research_web`). Off by default because it costs money (see below). | — |
