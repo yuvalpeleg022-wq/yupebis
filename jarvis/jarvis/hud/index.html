@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="he" dir="ltr" data-theme="gold">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J.A.R.V.I.S</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/hud.css">
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three/build/three.module.min.js",
+    "three/addons/": "./vendor/three/addons/"
+} }
+</script>
+</head>
+<body data-state="boot">
+<canvas id="scene"></canvas>
+<div id="fx" aria-hidden="true"></div>
+
+<main id="hud">
+  <!-- ===== TOP: identity · system telemetry · time ===== -->
+  <header id="top" class="reveal" style="--d:.15s">
+    <div class="brand">
+      <div class="logo">J.A.R.V.I.S</div>
+      <div class="sub">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+    </div>
+
+    <div class="sys panel chamfer">
+      <div class="gauge" id="g-cpu"><svg viewBox="0 0 64 64"><circle class="track" cx="32" cy="32" r="27"/><circle class="val" cx="32" cy="32" r="27"/></svg><b>0</b><span>CPU</span></div>
+      <div class="cores"><div class="label">CORES</div><div id="cores"></div></div>
+      <div class="gauge" id="g-ram"><svg viewBox="0 0 64 64"><circle class="track" cx="32" cy="32" r="27"/><circle class="val" cx="32" cy="32" r="27"/></svg><b>0</b><span>RAM</span></div>
+      <div class="kv">
+        <div><span>SWAP</span><b id="v-swap">--</b></div>
+        <div><span>PROCS</span><b id="v-procs">--</b></div>
+        <div><span>UPTIME</span><b id="v-uptime">--</b></div>
+        <div><span>MEM</span><b id="v-mem">--</b></div>
+      </div>
+      <div class="gauge" id="g-disk"><svg viewBox="0 0 64 64"><circle class="track" cx="32" cy="32" r="27"/><circle class="val" cx="32" cy="32" r="27"/></svg><b>0</b><span>DISK</span></div>
+    </div>
+
+    <div class="clockbox">
+      <div id="t-time">--:--:--</div>
+      <div id="t-date">----</div>
+      <div class="chips">
+        <span class="chip" id="chip-mic">MIC</span>
+        <span class="chip" id="chip-lock">VOICE ID</span>
+        <span class="chip" id="chip-link">LINK</span>
+        <span class="chip" id="chip-bat" hidden>BAT</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SIDE DOCKS: apps ===== -->
+  <aside class="dock reveal" id="dock-left" style="--d:.35s"></aside>
+  <aside class="dock reveal" id="dock-right" style="--d:.35s"></aside>
+
+  <!-- ===== CENTER: reactor overlay ===== -->
+  <section id="core">
+    <div class="clock" id="core-time">00:00</div>
+    <div class="date" id="core-date"></div>
+    <div class="state" id="core-state">INITIALIZING</div>
+  </section>
+  <nav id="qa" class="reveal" style="--d:.6s"></nav>
+
+  <div class="deco tl reveal" style="--d:.5s">
+    <svg viewBox="0 0 120 120" class="dial"><circle cx="60" cy="60" r="54"/><circle cx="60" cy="60" r="44" class="dash"/><path d="M60 6 A54 54 0 0 1 114 60"/></svg>
+    <div><b id="track-pct">00.00%</b><span>//TRACKING</span></div>
+  </div>
+  <div class="deco tr reveal" style="--d:.5s">
+    <div><b id="sync-pct">SYNC</b><span>//NEURAL LINK</span></div>
+    <svg viewBox="0 0 120 120" class="dial r"><circle cx="60" cy="60" r="54" class="dash"/><circle cx="60" cy="60" r="40"/><path d="M60 114 A54 54 0 0 1 6 60"/></svg>
+  </div>
+
+  <!-- ===== BOTTOM ===== -->
+  <section id="net" class="panel chamfer reveal" style="--d:.75s">
+    <div class="row"><span>NET DOWNLOAD</span><b id="v-down">0 B/s</b></div>
+    <canvas id="spark-down" height="34"></canvas>
+    <div class="row"><span>NET UPLOAD</span><b id="v-up">0 B/s</b></div>
+    <canvas id="spark-up" height="34"></canvas>
+  </section>
+
+  <section id="bar" class="reveal" style="--d:.8s">
+    <div id="transcript" dir="auto"></div>
+    <div id="reply" dir="auto"></div>
+    <form id="cmd" autocomplete="off">
+      <span class="prompt">›</span>
+      <input id="cmd-input" dir="auto" placeholder="הקלד פקודה או אמור &quot;ג'רוויס…&quot;   ( / )" spellcheck="false">
+    </form>
+  </section>
+
+  <section id="console" class="panel chamfer reveal" style="--d:.9s">
+    <div class="title">SYSTEM LOG</div>
+    <div id="log"></div>
+  </section>
+</main>
+
+<!-- ===== OVERLAYS ===== -->
+<div id="progress" hidden><div class="label"></div><div class="track"><i></i></div><div class="line" dir="auto"></div></div>
+<div id="toasts"></div>
+
+<div id="confirm" class="modal" hidden>
+  <div class="panel chamfer">
+    <div class="title">CONFIRMATION REQUIRED</div>
+    <div class="q" dir="auto"></div>
+    <div class="detail"></div>
+    <div class="btns"><button data-yes="1">כן</button><button data-yes="0">לא</button></div>
+    <div class="hint">אמור "כן" או "לא"</div>
+  </div>
+</div>
+
+<div id="enroll" class="modal" hidden>
+  <div class="panel chamfer">
+    <div class="title">VOICE ENROLLMENT <span id="enroll-step"></span></div>
+    <p class="intro">קרא בקול את המשפט הבא:</p>
+    <div class="phrase" dir="rtl"></div>
+    <div class="meter"><i></i></div>
+    <div class="dots"></div>
+    <div class="btns"><button id="enroll-cancel">ביטול</button></div>
+  </div>
+</div>
+
+<div id="boot">
+  <div class="boot-logo">J.A.R.V.I.S</div>
+  <div class="boot-lines"></div>
+  <div class="boot-bar"><i></i></div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  J.A.R.V.I.S — קובץ הגדרות                                    ║
+# ║  אפשר לערוך את הקובץ בזמן שג'רוויס פועל: כל שמירה נטענת מיד. ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+user_name: "אדוני"          # איך ג'רוויס פונה אליך
+theme: gold                  # gold (זהב) | cyan (כחול)
+
+window:
+  mode: fullscreen           # fullscreen | window
+  always_on_top: false
+  start_hidden: false        # להתחיל ממוזער למגש המערכת
+  hotkey: "ctrl+alt+j"       # קיצור מקלדת גלובלי להצגה/הסתרה
+
+startup:
+  run_on_login: false        # להפעיל את ג'רוויס אוטומטית כשנכנסים ל-Windows
+
+voice:
+  enabled: true
+  wake_words: ["ג'רוויס", "ג'ארביס", "ג'רביס", "ג'ארוויס", "גרוויס", "jarvis", "jervis"]
+  require_wake_word: true    # true = צריך להגיד "ג'רוויס" לפני פקודה
+  follow_up_seconds: 10      # אחרי פקודה אפשר להמשיך לדבר בלי להגיד שוב "ג'רוויס"
+  stt_engine: whisper        # whisper (בלי אינטרנט) | google (מהיר, דורש אינטרנט)
+  whisper_model: small       # tiny | base | small | medium | large-v3 | ivrit-ai/whisper-large-v3-turbo-ct2
+  whisper_device: auto       # auto | cpu | cuda
+  language: he               # he | en | null (זיהוי אוטומטי)
+  input_device: null         # שם/מספר מיקרופון. null = ברירת המחדל של Windows
+  vad_sensitivity: 3.0       # כמה חזק מעל רעש הרקע נחשב דיבור (נמוך = רגיש יותר)
+  silence_ms: 700            # כמה שקט מסיים משפט
+  max_utterance_s: 15
+
+speaker:
+  require_match: true        # להגיב רק לקול שלך
+  threshold: null            # null = נקבע אוטומטית בזמן לימוד הקול. גבוה יותר = מחמיר יותר
+
+tts:
+  enabled: true
+  engine: edge               # edge (קול טבעי, דורש אינטרנט) | system | none
+  voice: he-IL-AvriNeural    # he-IL-AvriNeural (גבר) | he-IL-HilaNeural (אישה)
+  rate: "+8%"
+
+install:
+  confirm: true              # לשאול "להתקין?" לפני התקנה
+  silent: true
+
+web:
+  unknown_open: first_result # first_result = לפתוח ישר את התוצאה הראשונה | google = דף חיפוש
+
+# האפליקציות בפאנלים בצדדים. open = מה לפתוח (שם אפליקציה, אתר או תיקייה)
+dock:
+  left:
+    - {code: Ch, name: Chrome,      open: chrome}
+    - {code: Fe, name: Explorer,    open: explorer}
+    - {code: Wd, name: Word,        open: word}
+    - {code: Xl, name: Excel,       open: excel}
+    - {code: Pp, name: PowerPoint,  open: powerpoint}
+    - {code: Vs, name: VS Code,     open: visual studio code}
+    - {code: Np, name: Notepad,     open: notepad}
+  right:
+    - {code: Sp, name: Spotify,     open: spotify}
+    - {code: Dc, name: Discord,     open: discord}
+    - {code: Wa, name: WhatsApp,    open: whatsapp}
+    - {code: St, name: Steam,       open: steam}
+    - {code: Ca, name: Calculator,  open: calculator}
+    - {code: Se, name: Settings,    open: settings}
+    - {code: Tm, name: Task Mgr,    open: task manager}
+
+# אתרים: שם → כתובת. אפשר להוסיף כמה שרוצים
+sites:
+  google: https://www.google.com
+  גוגל: https://www.google.com
+  youtube: https://www.youtube.com
+  יוטיוב: https://www.youtube.com
+  gmail: https://mail.google.com
+  ג'ימייל: https://mail.google.com
+  מייל: https://mail.google.com
+  facebook: https://www.facebook.com
+  פייסבוק: https://www.facebook.com
+  instagram: https://www.instagram.com
+  אינסטגרם: https://www.instagram.com
+  tiktok: https://www.tiktok.com
+  טיקטוק: https://www.tiktok.com
+  twitter: https://x.com
+  טוויטר: https://x.com
+  netflix: https://www.netflix.com
+  נטפליקס: https://www.netflix.com
+  chatgpt: https://chatgpt.com
+  צ'אט ג'יפיטי: https://chatgpt.com
+  claude: https://claude.ai
+  קלוד: https://claude.ai
+  wikipedia: https://he.wikipedia.org
+  ויקיפדיה: https://he.wikipedia.org
+  maps: https://www.google.com/maps
+  מפות: https://www.google.com/maps
+  גוגל מפות: https://www.google.com/maps
+  translate: https://translate.google.com
+  תרגום: https://translate.google.com
+  גוגל תרגום: https://translate.google.com
+  drive: https://drive.google.com
+  דרייב: https://drive.google.com
+  github: https://github.com
+  גיטהאב: https://github.com
+  amazon: https://www.amazon.com
+  אמזון: https://www.amazon.com
+  aliexpress: https://www.aliexpress.com
+  עליאקספרס: https://www.aliexpress.com
+  ynet: https://www.ynet.co.il
+  וויינט: https://www.ynet.co.il
+  ספורט 5: https://www.sport5.co.il
+  וואלה: https://www.walla.co.il
+
+# אם האפליקציה לא מותקנת – לפתוח את גרסת האתר
+web_fallback:
+  whatsapp: https://web.whatsapp.com
+  spotify: https://open.spotify.com
+  discord: https://discord.com/app
+  telegram: https://web.telegram.org
+  outlook: https://outlook.live.com
+  word: https://www.office.com/launch/word
+  excel: https://www.office.com/launch/excel
+  powerpoint: https://www.office.com/launch/powerpoint
+
+# שמות בעברית → שם האפליקציה באנגלית (כמו שמופיע בתפריט התחל)
+app_aliases:
+  כרום: chrome
+  גוגל כרום: chrome
+  אדג': edge
+  אדג: edge
+  פיירפוקס: firefox
+  אופרה: opera
+  בריב: brave
+  וורד: word
+  אקסל: excel
+  פאוורפוינט: powerpoint
+  פאואר פוינט: powerpoint
+  אאוטלוק: outlook
+  וואן נוט: onenote
+  טימס: teams
+  ספוטיפיי: spotify
+  דיסקורד: discord
+  וואטסאפ: whatsapp
+  ווטסאפ: whatsapp
+  טלגרם: telegram
+  סטים: steam
+  אפיק: epic games launcher
+  מיינקראפט: minecraft
+  רובלוקס: roblox
+  זום: zoom
+  סקייפ: skype
+  וי אס קוד: visual studio code
+  ויז'ואל סטודיו קוד: visual studio code
+  vscode: visual studio code
+  vs code: visual studio code
+  פוטושופ: photoshop
+  פרימייר: premiere pro
+  אובס: obs studio
+  obs: obs studio
+  וי אל סי: vlc
+  נוטפד: notepad
+  פנקס רשימות: notepad
+  מחשבון: calculator
+  סייר הקבצים: explorer
+  סייר קבצים: explorer
+  קבצים: explorer
+  מנהל המשימות: task manager
+  מנהל משימות: task manager
+  הגדרות: settings
+  הגדרות המחשב: settings
+  לוח הבקרה: control panel
+  לוח בקרה: control panel
+  צייר: paint
+  פיינט: paint
+  תמונות: photos
+  שורת הפקודה: cmd
+  טרמינל: terminal
+  פאוורשל: powershell
+  חנות: microsoft store
+  מצלמה: camera
+  שעון: clock
+  לוח שנה: calendar
+
+# מזהי winget להתקנה מהירה (אם שם לא נמצא כאן – ג'רוויס מחפש לבד)
+winget_ids:
+  chrome: Google.Chrome
+  firefox: Mozilla.Firefox
+  brave: Brave.Brave
+  opera: Opera.Opera
+  discord: Discord.Discord
+  spotify: Spotify.Spotify
+  steam: Valve.Steam
+  epic games launcher: EpicGames.EpicGamesLauncher
+  minecraft: Mojang.MinecraftLauncher
+  roblox: Roblox.Roblox
+  zoom: Zoom.Zoom
+  telegram: Telegram.TelegramDesktop
+  whatsapp: 9NKSQGP7F2NH
+  vlc: VideoLAN.VLC
+  obs studio: OBSProject.OBSStudio
+  visual studio code: Microsoft.VisualStudioCode
+  python: Python.Python.3.12
+  git: Git.Git
+  nodejs: OpenJS.NodeJS.LTS
+  7zip: 7zip.7zip
+  winrar: RARLab.WinRAR
+  notepad++: Notepad++.Notepad++
+  gimp: GIMP.GIMP
+  blender: BlenderFoundation.Blender
+  audacity: Audacity.Audacity
+  teams: Microsoft.Teams
+  powertoys: Microsoft.PowerToys
+  anydesk: AnyDeskSoftwareGmbH.AnyDesk
+  teamviewer: TeamViewer.TeamViewer
+  qbittorrent: qBittorrent.qBittorrent
+  cpu-z: CPUID.CPU-Z
+  nvidia app: Nvidia.GeForceExperience
+
+dev:
+  hot_reload: true           # טעינה חיה של שינויים (HUD, הגדרות, פקודות, תוספים, קוד)
+  remote_debugging_port: 0   # למשל 9222 כדי לפתוח DevTools ב-http://localhost:9222

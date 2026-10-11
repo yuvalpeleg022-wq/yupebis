@@ -1,0 +1,20 @@
+# --- core / desktop window ---
+PySide6>=6.6
+pyyaml>=6.0
+psutil>=5.9
+numpy>=1.26
+rapidfuzz>=3.0
+pillow>=10.0
+keyboard>=0.13        # global hotkey Ctrl+Alt+J
+# --- voice ---
+sounddevice>=0.4.6
+faster-whisper>=1.0   # offline speech recognition (Hebrew + English)
+SpeechRecognition>=3.10  # optional online engine (voice.stt_engine: google)
+edge-tts>=6.1         # natural Hebrew voice
+pyttsx3>=2.90         # offline fallback voice
+# --- voice ID (responds only to you) ---
+torch>=2.2,<2.9
+torchaudio>=2.2,<2.9
+speechbrain>=1.0
+# --- web ---
+yt-dlp>=2024.1        # finds the exact YouTube video
