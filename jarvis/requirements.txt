@@ -19,3 +19,5 @@ torchaudio>=2.2,<2.9
 speechbrain>=1.0
 # --- web ---
 yt-dlp>=2024.1        # finds the exact YouTube video
+# --- AI brain ---
+anthropic>=1.13       # Claude: understands free speech and drives the PC

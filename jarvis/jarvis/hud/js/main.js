@@ -51,6 +51,7 @@ function frame3d(now) {
   const root = document.documentElement.style;
   root.setProperty('--yaw', (-mouse.sx * 5).toFixed(2));
   root.setProperty('--pitch', (mouse.sy * 3.5).toFixed(2));
+  root.setProperty('--voice', (reactor?.voice || 0).toFixed(3));
   const v = reactor?.view;
   if (v) $('#core').style.transform =
     `translate(-50%, -50%) perspective(1100px) rotateX(${(v.pitch - .1) * -57.3}deg) rotateY(${v.yaw * -57.3}deg)`;
@@ -302,6 +303,31 @@ function stopTTS(notify) {
   if (currentAudio) { const a = currentAudio; currentAudio = null; a.pause(); if (notify) api('/api/tts_done'); }
 }
 
+// ---------------------------------------------------------------- action cards
+const CARD_ICONS = {
+  youtube: '<path d="M4 7.5c0-1.4 1-2.5 2.4-2.6C8.2 4.8 10 4.7 12 4.7s3.8.1 5.6.2C19 5 20 6.1 20 7.5v9c0 1.4-1 2.5-2.4 2.6-1.8.1-3.6.2-5.6.2s-3.8-.1-5.6-.2C5 19 4 17.9 4 16.5z"/><path d="M10 9l5 3-5 3z" class="fill"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+  open: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  timer: '<circle cx="12" cy="13" r="7"/><path d="M12 9v4l3 2M9 3h6"/>',
+  screenshot: '<path d="M4 8V5h3M20 8V5h-3M4 16v3h3M20 16v3h-3"/><circle cx="12" cy="12" r="3"/>',
+  terminal: '<path d="M4 6l6 6-6 6M12 18h8"/>',
+  install: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+};
+function showCard(c) {
+  const wrap = $('#cards');
+  const el = document.createElement('div');
+  el.className = 'card panel chamfer';
+  el.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${CARD_ICONS[c.kind] || CARD_ICONS.open}</svg>
+    <div class="txt"><div class="kind"></div><div class="title" dir="auto"></div><div class="sub" dir="auto"></div></div><i class="scan"></i>`;
+  el.querySelector('.kind').textContent = (c.kind || 'action').toUpperCase();
+  el.querySelector('.title').textContent = c.title || '';
+  el.querySelector('.sub').textContent = c.sub || '';
+  wrap.prepend(el);
+  while (wrap.children.length > 3) wrap.lastElementChild.remove();
+  reactor?.pulse(.6);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 700); }, 7000);
+}
+
 // ---------------------------------------------------------------- overlays
 function confirmBox(d) {
   const box = $('#confirm');
@@ -379,10 +405,19 @@ const handlers = {
     else micHint('הקול לא זוהה כקול שלך. אפשר להקליד "למד את הקול שלי" (מקש /) וללמד אותו מחדש', true);
   },
   speech: v => { reactor?.setSpeech(v); wave(v); },
+  spectrum: b => reactor?.setSpectrum(b),
+  card: showCard,
+  ai: on => { document.body.classList.toggle('ai-thinking', !!on); if (on) $('#core-state').textContent = 'NEURAL PROCESSING'; },
+  brain: b => {
+    $('#chip-ai').className = 'chip ' + (b?.ai ? 'on' : '');
+    $('#chip-ai').textContent = b?.ai ? 'AI ONLINE' : 'AI OFF';
+    $('#chip-ai').title = b?.ai ? b.model : 'הוסף ai.api_key בקובץ ההגדרות';
+  },
   heard_nothing: () => micHint('לא הצלחתי להבין, נסה שוב ובקול ברור'),
   reload_hud: () => { sessionStorage.setItem('jarvis-booted', '1'); location.reload(); },
   user: () => {},
 };
+window.hud = handlers;   // DevTools: hud.card({kind:'youtube', title:'test'}), hud.status('listening') …
 function connect() {
   const es = new EventSource(`/api/events?t=${encodeURIComponent(TOKEN)}`);
   es.onopen = () => link(true);
@@ -396,7 +431,7 @@ async function loadState() {
   try {
     const r = await fetch(`/api/state?t=${encodeURIComponent(TOKEN)}`);
     const { snapshot, logs } = await r.json();
-    for (const k of ['theme', 'dock', 'voice', 'stats', 'status']) if (snapshot[k] != null) handlers[k](snapshot[k]);
+    for (const k of ['theme', 'dock', 'voice', 'stats', 'status', 'brain']) if (snapshot[k] != null) handlers[k](snapshot[k]);
     (logs || []).forEach(log);
   } catch { link(false); }
 }

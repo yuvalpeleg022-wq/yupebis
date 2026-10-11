@@ -11,12 +11,12 @@ from typing import Callable
 
 from . import config as C
 from . import hotreload, plugin, stats
-from .actions import apps, installer, system, web
-from .brain import intents, skills
+from .actions import apps, control, installer, system, web
+from .brain import agent, intents, skills
 from .brain import text as textmod
 from .server import Hub
 
-RELOADABLE = [textmod, web, apps, installer, system, intents, skills]
+RELOADABLE = [textmod, web, apps, installer, system, control, intents, skills, agent]
 
 ENROLL_PHRASES = [
     "ג'רוויס, פתח לי את גוגל כרום בבקשה.",
@@ -77,6 +77,11 @@ class Assistant:
 
     # ================================================================ lifecycle
     def start(self):
+        self._new_agent()
+        if self.agent.ready:
+            self.log("AI brain online (Claude)")
+        elif self.agent.error != "off":
+            self.log("AI brain offline – add ai.api_key in config.yaml for free-form speech. Using local commands.", "warn")
         self.publish_static()
         self._load_commands()
         self._load_plugins()
@@ -205,8 +210,10 @@ class Assistant:
         self.last_stats = s
         self.hub.publish("stats", s, keep=True)
 
-    def _on_level(self, lvl):
+    def _on_level(self, lvl, bands=None):
         self.hub.publish("level", round(lvl, 3))
+        if bands is not None and (lvl > 0.04 or self._status == "listening"):
+            self.hub.publish("spectrum", bands)
 
     def _on_speech_start(self):
         if not self.enrolling and time.time() > self._speaking_until:
@@ -282,6 +289,18 @@ class Assistant:
             except Exception:
                 self.log(traceback.format_exc(limit=4), "error")
         threading.Thread(target=run, daemon=True).start()
+
+    def card(self, kind: str, title: str, sub: str = ""):
+        """Holographic action card on the HUD ("▶ YouTube · <title>")."""
+        self.hub.publish("card", {"kind": kind, "title": str(title)[:120], "sub": str(sub)[:160]})
+
+    def _new_agent(self):
+        old = getattr(self, "agent", None)
+        self.agent = agent.Agent(self.cfg, self.log)
+        if old is not None and getattr(old, "messages", None) and self.agent.ready:
+            self.agent.messages = old.messages  # keep the conversation across hot reloads
+        self.hub.publish("brain", {"ai": self.agent.ready,
+                                   "model": (self.cfg.get("ai") or {}).get("model", "claude-opus-5-5")}, keep=True)
 
     def ui(self, cmd: str):
         self.ui_callback(cmd)
@@ -392,8 +411,19 @@ class Assistant:
             self.say(pcmd.func(skills.PluginCtx(self), rest))
             return
         intent = intents.parse(rest)
-        self.log(f"intent: {intent.name} {intent.args or ''}")
         t0 = time.perf_counter()
+        if self.agent.wants(intent, rest):
+            self.log("🧠 AI")
+            self.hub.publish("ai", True)
+            try:
+                reply = self.agent.run(rest, self)
+            finally:
+                self.hub.publish("ai", False)
+            self._timing("AI", t0)
+            if reply is not None or self.pending:
+                self.say(reply)
+                return
+        self.log(f"intent: {intent.name} {intent.args or ''}")
         reply = skills.handle(intent, self)
         self._timing("ביצוע", t0)
         self.say(reply)
@@ -503,6 +533,9 @@ class Assistant:
         if new.get("theme") != old.get("theme"):
             self.set_theme(new.get("theme", "gold"))
         self.publish_static()
+        if new.get("ai") != old.get("ai"):
+            self._new_agent()
+            self.log("AI brain " + ("online ✓" if self.agent.ready else f"offline ({self.agent.error})"))
         self.log("config reloaded ✓")
         self.hub.publish("toast", {"level": "ok", "text": "ההגדרות נטענו"})
         if self.voice_wanted and (new.get("voice") != old.get("voice") or new.get("speaker") != old.get("speaker")):
@@ -547,6 +580,7 @@ class Assistant:
             for mod in RELOADABLE:
                 importlib.reload(mod)
             self.app_index = apps.AppIndex.from_existing(self.app_index)
+            self._new_agent()
             self.log("code reloaded ✓")
             self.hub.publish("toast", {"level": "ok", "text": "הקוד נטען מחדש"})
         except Exception:

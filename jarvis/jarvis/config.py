@@ -72,7 +72,7 @@ def ensure_user_files() -> None:
         d.mkdir(parents=True, exist_ok=True)
 
 
-CONFIG_VERSION = 2
+CONFIG_VERSION = 3
 
 
 def migrate_user_config() -> list[str]:
@@ -93,7 +93,15 @@ def migrate_user_config() -> list[str]:
         text, n = re.subn(r"^(\s*silence_ms:\s*)700\b", r"\g<1>550", text, flags=re.M)
         if n:
             done.append("silence_ms → 550")
-        text = f"config_version: {CONFIG_VERSION}            # לא לשנות – משמש לעדכונים אוטומטיים\n" + text
+        text = "config_version: 2            # לא לשנות – משמש לעדכונים אוטומטיים\n" + text
+    if version < 3 and not re.search(r"^ai:", text, re.M):
+        # v3: AI brain settings
+        block = DEFAULT_CONFIG.read_text(encoding="utf-8")
+        start = block.index("# ── המוח")
+        end = block.index("\nwindow:", start)
+        text = text.rstrip("\n") + "\n\n" + block[start:end].rstrip("\n") + "\n"
+        done.append("added AI brain settings (ai:)")
+    text = re.sub(r"^config_version:\s*\d+", f"config_version: {CONFIG_VERSION}", text, count=1, flags=re.M)
     if done or version < CONFIG_VERSION:
         CONFIG_FILE.write_text(text, encoding="utf-8")
     return done

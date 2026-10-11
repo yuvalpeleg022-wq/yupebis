@@ -7,6 +7,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 const THEMES = {
   gold: { primary: 0xffa83a, secondary: 0xff6a10, hot: 0xffe2a0, star: 0xffcf8a },
@@ -72,6 +73,27 @@ function glowTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
+// final lens pass: makes the hologram feel filmed – colour fringing that grows with voice,
+// fine scanlines, grain and a soft vignette
+const HOLO_SHADER = {
+  uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uAberr: { value: .0012 },
+              uRes: { value: new THREE.Vector2(1920, 1080) } },
+  vertexShader: `varying vec2 vUv;
+    void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime; uniform float uAberr; uniform vec2 uRes; varying vec2 vUv;
+    float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    void main() {
+      vec2 c = vUv - 0.5; float d = length(c);
+      vec2 off = c * uAberr * (1.0 + d * 3.0);
+      vec3 col = vec3(texture2D(tDiffuse, vUv + off).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - off).b);
+      float scan = 0.5 + 0.5 * sin(vUv.y * uRes.y * 0.9 - uTime * 6.0);
+      col *= 1.0 - 0.045 * scan;
+      col += (hash(vUv * uRes + fract(uTime) * 91.0) - 0.5) * 0.035;
+      col *= smoothstep(0.98, 0.32, d);
+      gl_FragColor = vec4(col, 1.0);
+    }`,
+};
+
 // =============================================================================
 export class Reactor {
   constructor(canvas) {
@@ -86,9 +108,11 @@ export class Reactor {
 
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
-    this.bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .7, 0.5, 0.12);
+    this.bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .7, 0.45, 0.18);
     this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
+    this.holo = new ShaderPass(HOLO_SHADER);   // lens: chromatic aberration, scanlines, grain, vignette
+    this.composer.addPass(this.holo);
 
     this.mats = [];          // {mat, role, base}
     this.colors = {};        // role → current THREE.Color
@@ -118,6 +142,9 @@ export class Reactor {
     this.buildBeams();
     this.buildSparks();
     this.buildFloor();
+    this.buildSpectrum();
+    this.buildShield();
+    this.buildShockwaves();
     this.buildOrbiters();
     this.cracks = [];
 
@@ -286,6 +313,87 @@ export class Reactor {
     this.sparkCursor = 0;
   }
 
+  buildSpectrum() {
+    // 96 bars around the reactor, mirrored, driven by your voice's frequencies (and JARVIS's while it speaks)
+    this.specN = 96;
+    this.specTarget = new Float32Array(24);
+    this.spec = new Float32Array(24);
+    this.specAt = 0;
+    const geo = new THREE.BoxGeometry(.05, 1, .05);
+    geo.translate(0, .5, 0);   // grow outward from the base
+    this.specMesh = new THREE.InstancedMesh(geo, this.mat('hot', .55), this.specN);
+    this.specMesh.frustumCulled = false;
+    this.specMesh.position.z = -.6;
+    this.layer(this.specMesh, { delay: .65 });
+    this.specDummy = new THREE.Object3D();
+  }
+
+  animateSpectrum(t, dt, voice) {
+    const live = performance.now() - this.specAt < 250 && (this.state === 'listening' || this.state === 'enrolling');
+    for (let k = 0; k < 24; k++) {
+      let target = live ? this.specTarget[k] : 0;
+      if (this.speech > .02) {   // synthesize a lively spectrum from JARVIS's voice envelope
+        const n = .5 + .5 * Math.sin(t * (7 + k * .9) + k * 1.7) * Math.sin(t * 3.1 + k * .4);
+        target = Math.max(target, this.speech * (.25 + .75 * n) * (1 - k / 34));
+      }
+      const rate = target > this.spec[k] ? 22 : 5;   // fast attack, slow release
+      this.spec[k] += (target - this.spec[k]) * (1 - Math.exp(-dt * rate));
+    }
+    const R = OUTER_R + 1.0, d = this.specDummy;
+    for (let i = 0; i < this.specN; i++) {
+      const m = i % 48, band = m < 24 ? m : 47 - m;
+      const a = (i / this.specN) * Math.PI * 2 + Math.PI / 2;
+      const h = .04 + this.spec[band] * 1.1 + .015 * Math.sin(t * 2 + i);
+      d.position.set(Math.cos(a) * R, Math.sin(a) * R, 0);
+      d.rotation.set(0, 0, a - Math.PI / 2);
+      d.scale.set(1, h, 1);
+      d.updateMatrix();
+      this.specMesh.setMatrixAt(i, d.matrix);
+    }
+    this.specMesh.instanceMatrix.needsUpdate = true;
+  }
+
+  buildShield() {
+    // faint geodesic energy shield that lights up while you talk
+    this.shield = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(2.3, 1)),
+      this.mat('primary', .04, 'line'));
+    this.shield.position.z = .6;
+    this.layer(this.shield, { delay: .6 });
+    // opacity is driven directly in tick()
+    this.mats = this.mats.filter(m => m.mat !== this.shield.material);
+    this.mats.push({ mat: this.shield.material, role: 'primary', base: 0, manual: true });
+  }
+
+  buildShockwaves() {
+    this.waves = [];
+    const geo = new THREE.RingGeometry(1, 1.035, 160);
+    for (let i = 0; i < 6; i++) {
+      const m = new THREE.Mesh(geo, this.mat('hot', 0));
+      m.visible = false;
+      this.reactor.add(m);
+      this.waves.push({ mesh: m, life: 0, strength: 1 });
+    }
+    this.mats = this.mats.filter(x => !this.waves.some(w => w.mesh.material === x.mat));
+    this.waves.forEach(w => this.mats.push({ mat: w.mesh.material, role: 'hot', base: 0, manual: true }));
+  }
+
+  shockwave(strength = 1) {
+    const w = this.waves.find(x => x.life <= 0) || this.waves[0];
+    w.life = 1; w.strength = strength; w.mesh.visible = true;
+  }
+
+  animateShockwaves(dt) {
+    for (const w of this.waves) {
+      if (w.life <= 0) continue;
+      w.life -= dt / 1.25;
+      const p = 1 - Math.max(0, w.life);
+      const e = 1 - Math.pow(1 - p, 3);
+      w.mesh.scale.setScalar(1.2 + e * 8.5 * (.6 + w.strength * .4));
+      w.mesh.material.opacity = Math.max(0, w.life) * .85 * w.strength;
+      if (w.life <= 0) w.mesh.visible = false;
+    }
+  }
+
   buildFloor() {
     // holographic projection table: perspective grid, glowing pad and a light cone up to the reactor
     const floor = new THREE.Group();
@@ -405,10 +513,13 @@ export class Reactor {
     this.targetColors = { ...THEMES[this.themeName] };
   }
   setState(s) {
+    const prev = this.state;
     this.state = s;
     if (s === 'denied') { this.denied = 1; }
-    if (s === 'listening') this.emitSparks(40, .8);
+    if (s === 'listening' && prev !== 'listening') { this.emitSparks(60, 1); this.shockwave(1); }
+    if (s === 'speaking' && prev !== 'speaking') this.shockwave(.7);
   }
+  setSpectrum(bands) { this.specTarget.set(bands.slice(0, 24)); this.specAt = performance.now(); }
   setLevel(v) { this.levelTarget = v; }
   setQuality(q) {
     if (q === 'low') {
@@ -420,7 +531,11 @@ export class Reactor {
     }
   }
   setSpeech(v) { this.speech = v; }
-  pulse(strength = 1) { this.emitSparks(Math.round(90 * strength), 1.4); for (let i = 0; i < 3 * strength; i++) this.spawnCrack(); }
+  pulse(strength = 1) {
+    this.emitSparks(Math.round(90 * strength), 1.4);
+    for (let i = 0; i < 3 * strength; i++) this.spawnCrack();
+    this.shockwave(Math.min(1, strength));
+  }
 
   /** screen-space radius (px) of the outer ring – used to lay out DOM around the reactor */
   pxRadius() {
@@ -435,6 +550,7 @@ export class Reactor {
     this.renderer.setSize(w, h, false);
     this.composer.setSize(w, h);
     this.bloom.resolution.set(w / 2, h / 2);
+    this.holo?.uniforms.uRes.value.set(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     // keep the reactor inside narrow windows
@@ -476,23 +592,33 @@ export class Reactor {
     const flick = 1 + Math.sin(t * 23) * .02 + Math.sin(t * 7.3) * .03;
     for (const m of this.mats) {
       m.mat.color.copy(this.colors[m.role]);
-      if (m.mat === this.scanner.material) continue;
-      m.mat.opacity = m.base * (.75 + this.energy * .35) * flick;
+      if (m.manual || m.mat === this.scanner.material) continue;
+      m.mat.opacity = m.base * (.72 + this.energy * .28) * flick;
     }
     this.scanner.material.opacity = lerp(this.scanner.material.opacity,
       this.state === 'thinking' || this.state === 'verifying' ? .85 : 0, 1 - Math.exp(-dt * 6));
 
     // core reacts to voice
-    const cs = 1 + voice * .45 + Math.sin(t * 2.2) * .03;
+    const cs = 1 + voice * .3 + Math.sin(t * 2.2) * .03;
     this.core.children.forEach(c => { if (c !== this.halo && c !== this.coreGlow) c.scale.setScalar(cs); });
-    this.coreGlow.scale.setScalar(1.6 + voice * 3 + this.energy * .5);
-    this.halo.scale.setScalar(7 + voice * 5 + this.energy * 2);
+    this.coreGlow.scale.setScalar(1.6 + voice * 1.2 + this.energy * .4);
+    this.halo.scale.setScalar(7 + voice * 2 + this.energy * 1.5);
     this.tri.rotation.z += dt * (.3 + this.energy * 1.5);
     for (const g of this.gyros) {
       g.mesh.rotation.x += dt * g.speed * (1 + this.energy * 2);
       g.mesh.rotation.y += dt * g.speed * .7;
     }
-    this.bloom.strength = .55 + this.energy * .35 + voice * .7;
+    this.bloom.strength = .5 + this.energy * .25 + voice * .35;
+    this.voice = voice;
+    this.animateSpectrum(t, dt, voice);
+    this.animateShockwaves(dt);
+    this.shield.rotation.y += dt * (.08 + voice * .6);
+    this.shield.rotation.x += dt * .05;
+    this.shield.material.opacity = (.03 + voice * .16 + (this.state === 'thinking' ? .06 : 0)) * flick;
+    this.shield.scale.setScalar(1 + voice * .12);
+    this.root.scale.setScalar(1 + voice * .045);
+    this.holo.uniforms.uTime.value = t;
+    this.holo.uniforms.uAberr.value = .0012 + voice * .0055 + this.denied * .012;
 
     // sparks
     const sparkRate = (this.state === 'speaking' ? 90 : this.state === 'thinking' ? 60 : 10) * (0.3 + voice * 2);
@@ -524,7 +650,8 @@ export class Reactor {
     this.mouseSmooth.lerp(this.mouse, 1 - Math.exp(-dt * 2.2));
     const yaw = this.mouseSmooth.x * .34 + Math.sin(t * .17) * .16;
     const pitch = .1 + this.mouseSmooth.y * .14 + Math.sin(t * .23) * .05;
-    const dist = 17.5 - this.energy * .6 + Math.sin(t * .4) * .15;
+    this.voiceSmooth = lerp(this.voiceSmooth || 0, voice, 1 - Math.exp(-dt * 5));
+    const dist = 17.5 - this.energy * .6 - this.voiceSmooth * 1.8 + Math.sin(t * .4) * .15;   // the camera leans in while you talk
     this.camera.position.set(Math.sin(yaw) * Math.cos(pitch) * dist, Math.sin(pitch) * dist, Math.cos(yaw) * Math.cos(pitch) * dist);
     this.camera.lookAt(0, 0, 0);
     this.view = { yaw, pitch };

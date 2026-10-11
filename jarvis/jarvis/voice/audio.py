@@ -16,7 +16,7 @@ BLOCK = 480  # 30 ms
 class Listener:
     """Streams the mic, emits whole utterances via on_utterance(np.ndarray).
 
-    on_level(float 0..1) is called ~20x/s for the HUD; on_speech_start() when speech begins.
+    on_level(level 0..1, bands list[float]) is called ~20x/s for the HUD; on_speech_start() when speech begins.
     """
 
     def __init__(self, cfg: dict, on_utterance: Callable, on_level: Callable, on_speech_start: Callable,
@@ -63,6 +63,7 @@ class Listener:
         silence_blocks = int(self.cfg.get("silence_ms", 700) / 30)
         max_blocks = int(float(self.cfg.get("max_utterance_s", 15)) * 1000 / 30)
         pre = collections.deque(maxlen=10)  # 300 ms pre-roll
+        recent = collections.deque(maxlen=4)  # 120 ms window for the spectrum
         noise = 0.003
         speech: list[np.ndarray] = []
         in_speech, quiet, loud_run = False, 0, 0
@@ -73,9 +74,10 @@ class Listener:
             except queue.Empty:
                 continue
             rms = float(np.sqrt(np.mean(block * block)) + 1e-9)
+            recent.append(block)
             now = time.time()
             if now - last_level > 0.05:
-                self.on_level(min(1.0, rms / max(noise * 12, 0.02)))
+                self.on_level(min(1.0, rms / max(noise * 12, 0.02)), spectrum(np.concatenate(recent), noise))
                 last_level = now
             if self.paused:
                 speech, in_speech, quiet, loud_run = [], False, 0, 0
@@ -101,6 +103,23 @@ class Listener:
                     pre.clear()
                     if len(audio) > RATE * 0.45:
                         self.on_utterance(audio)
+
+
+# 24 log-spaced bands between 90 Hz and 7.5 kHz (the voice range) for the HUD's spectrum ring
+_EDGES = np.geomspace(90, 7500, 25)
+_WINDOW = None
+
+
+def spectrum(x: np.ndarray, noise: float) -> list[float]:
+    global _WINDOW
+    if _WINDOW is None or len(_WINDOW) != len(x):
+        _WINDOW = np.hanning(len(x)).astype(np.float32)
+    mag = np.abs(np.fft.rfft(x * _WINDOW))
+    freqs = np.fft.rfftfreq(len(x), 1 / RATE)
+    idx = np.searchsorted(freqs, _EDGES)
+    bands = [float(mag[a:max(b, a + 1)].mean()) for a, b in zip(idx[:-1], idx[1:])]
+    ref = max(noise * len(x) * 0.6, 1e-3)
+    return [round(float(min(1.0, max(0.0, np.log10(1 + b / ref) / 1.6))), 2) for b in bands]
 
 
 def record_seconds(seconds: float, device=None) -> np.ndarray:
