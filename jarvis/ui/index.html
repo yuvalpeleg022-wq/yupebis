@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>J.A.R.V.I.S.</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="graph"></canvas>
+  <div id="tooltip" class="tooltip" hidden></div>
+  <div id="banners" class="banners"></div>
+
+  <!-- left: inspector + hubs -->
+  <aside class="panel left">
+    <section id="inspector" class="card inspector">
+      <div class="label">Inspector</div>
+      <div id="insp-empty" class="muted">Click a node to open it. Shift-click a second node to trace the path between them.</div>
+      <div id="insp-body" hidden>
+        <div class="insp-head">
+          <span id="insp-dot" class="dot"></span>
+          <h2 id="insp-title" dir="auto"></h2>
+        </div>
+        <div id="insp-meta" class="meta"></div>
+        <div id="insp-path" class="mono small muted"></div>
+        <pre id="insp-text" dir="auto"></pre>
+        <div class="label">Linked</div>
+        <div id="insp-links" class="chips"></div>
+      </div>
+    </section>
+    <section class="card hubs">
+      <div class="label">Top hubs</div>
+      <ol id="hubs"></ol>
+    </section>
+  </aside>
+
+  <!-- right: filters + reactor -->
+  <aside class="panel right">
+    <section class="card filters">
+      <div class="label">Filter <span id="mode-badge" class="pill tiny"></span></div>
+      <ul id="filters"></ul>
+    </section>
+    <section class="reactor-wrap">
+      <canvas id="reactor" width="220" height="220"></canvas>
+      <div class="pills">
+        <span id="state-pill" class="pill state"><i></i><b id="state-text">IDLE</b></span>
+        <span id="model-pill" class="pill">◆ <b id="model-text">…</b></span>
+      </div>
+      <button id="lang-btn" class="pill lang" title="Language for speech and replies">🌐 <b id="lang-text">AUTO</b></button>
+      <div id="lang-menu" class="lang-menu" hidden></div>
+      <div id="bars" class="bars"></div>
+    </section>
+  </aside>
+
+  <!-- bottom-left: what it said + the card -->
+  <section id="reply" class="card reply" hidden>
+    <div class="reply-head">
+      <span id="reply-tool" class="pill tiny"></span>
+      <span id="reply-route" class="pill tiny warn" hidden></span>
+      <button id="reply-close" class="x" title="Close">×</button>
+    </div>
+    <p id="caption" class="caption" dir="auto"></p>
+    <div id="card"></div>
+  </section>
+
+  <!-- bottom: ask bar -->
+  <footer class="askbar">
+    <div id="live" class="live mono" hidden></div>
+    <form id="ask-form" class="ask card">
+      <button type="button" id="mic" class="btn icon" title="Microphone (Space)">
+        <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      </button>
+      <input id="ask" autocomplete="off" dir="auto" placeholder="Ask JARVIS…">
+      <button type="submit" class="btn send" title="Send">↵</button>
+    </form>
+    <div class="actions">
+      <button id="btn-mute" class="btn chip">Mute</button>
+      <button id="btn-brief" class="btn chip">Brief</button>
+      <button id="btn-plan" class="btn chip">Plan</button>
+      <button id="btn-memory" class="btn chip">Memory</button>
+      <button id="btn-fit" class="btn chip">Fit</button>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

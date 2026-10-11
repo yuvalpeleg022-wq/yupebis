@@ -31,8 +31,22 @@ what which who whom when where why how can could would should will just about in
 all any some more most very also up out over""".split())
 
 
+IRREGULAR = {"paid": "pay", "spent": "spend", "bought": "buy", "owe": "owe", "rent": "rent", "went": "go"}
+
+
+def stem(t):
+    """Tiny English suffix stripper; other scripts pass through untouched."""
+    if t in IRREGULAR:
+        return IRREGULAR[t]
+    if t.isascii() and len(t) > 4:
+        for suf in ("ing", "ed", "es", "s"):
+            if t.endswith(suf) and len(t) - len(suf) >= 3:
+                return t[: -len(suf)]
+    return t
+
+
 def tokenize(text):
-    return [t for t in TOKEN.findall(text.lower()) if t not in STOP and len(t) > 1]
+    return [stem(t) for t in TOKEN.findall(text.lower()) if t not in STOP and len(t) > 1]
 
 
 # ---------------------------------------------------------------- file readers
@@ -208,10 +222,13 @@ class Vault:
         return [dict(id=nid, title=self.notes[nid]["title"], path=self.notes[nid]["path"],
                      type=self.notes[nid]["type"], score=round(s, 3),
                      snippet=self.snippet(nid, terms))
-                for nid, s in scores.most_common(limit)]
+                for nid, s in scores.most_common(limit)
+                if s >= 0.4 * scores.most_common(1)[0][1]]          # drop the long tail
 
     def snippet(self, nid, terms, width=220):
-        text = re.sub(r"\s+", " ", self.notes[nid]["text"]).strip()
+        text = re.sub(r"\[\[([^\]|]+)(?:\|[^\]]*)?\]\]", r"\1", self.notes[nid]["text"])
+        text = re.sub(r"^#+\s*.*$", "", text, count=1, flags=re.M)        # drop the title heading
+        text = re.sub(r"\s+", " ", text).strip()
         low = text.lower()
         pos = min((low.find(t) for t in terms if t in low), default=0)
         start = max(0, pos - width // 3)
@@ -267,6 +284,7 @@ def report(vault, mode):
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(errors="replace")      # Hebrew filenames on a Windows console
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import data
     report(Vault(data.source_folders()).build(), data.mode())
