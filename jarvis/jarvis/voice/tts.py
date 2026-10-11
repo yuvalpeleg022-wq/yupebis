@@ -46,8 +46,8 @@ class TTS:
         self._prune()
         return name
 
-    def _prune(self, keep: int = 200):
-        files = sorted(TTS_DIR.glob("*.mp3"), key=lambda p: p.stat().st_mtime)
+    def _prune(self, keep: int = 300):
+        files = sorted([*TTS_DIR.glob("*.mp3"), *TTS_DIR.glob("*.wav")], key=lambda p: p.stat().st_mtime)
         for p in files[:-keep]:
             p.unlink(missing_ok=True)
 

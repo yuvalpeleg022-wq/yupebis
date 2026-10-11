@@ -3,6 +3,7 @@
 # ║  אפשר לערוך את הקובץ בזמן שג'רוויס פועל: כל שמירה נטענת מיד. ║
 # ╚══════════════════════════════════════════════════════════════╝
 
+config_version: 2            # לא לשנות – משמש לעדכונים אוטומטיים
 user_name: "אדוני"          # איך ג'רוויס פונה אליך
 theme: gold                  # gold (זהב) | cyan (כחול)
 
@@ -20,13 +21,13 @@ voice:
   wake_words: ["ג'רוויס", "ג'ארביס", "ג'רביס", "ג'ארוויס", "גרוויס", "jarvis", "jervis"]
   require_wake_word: true    # true = צריך להגיד "ג'רוויס" לפני פקודה
   follow_up_seconds: 10      # אחרי פקודה אפשר להמשיך לדבר בלי להגיד שוב "ג'רוויס"
-  stt_engine: whisper        # whisper (בלי אינטרנט) | google (מהיר, דורש אינטרנט)
+  stt_engine: auto           # auto (מהיר: גוגל, ובלי אינטרנט עובר ל-whisper) | google | whisper (בלי אינטרנט, איטי יותר)
   whisper_model: small       # tiny | base | small | medium | large-v3 | ivrit-ai/whisper-large-v3-turbo-ct2
   whisper_device: auto       # auto | cpu | cuda
   language: he               # he | en | null (זיהוי אוטומטי)
   input_device: null         # שם/מספר מיקרופון. null = ברירת המחדל של Windows
   vad_sensitivity: 3.0       # כמה חזק מעל רעש הרקע נחשב דיבור (נמוך = רגיש יותר)
-  silence_ms: 700            # כמה שקט מסיים משפט
+  silence_ms: 550            # כמה שקט מסיים משפט (פחות = תגובה מהירה יותר)
   max_utterance_s: 15
 
 speaker:

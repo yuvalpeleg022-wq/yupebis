@@ -117,6 +117,8 @@ export class Reactor {
     this.buildCore();
     this.buildBeams();
     this.buildSparks();
+    this.buildFloor();
+    this.buildOrbiters();
     this.cracks = [];
 
     addEventListener('resize', () => this.resize());
@@ -203,22 +205,22 @@ export class Reactor {
       l.position.z = z; return this.layer(l, { spin, delay });
     };
     // outermost: thin circle + fine ticks
-    line(circlePoints(R + .55), 'primary', .35, 0, .0);
-    line(ticks(R + .58, .08, 180, 15, .28), 'primary', .55, .02, .05, 0, true);
+    line(circlePoints(R + .55), 'primary', .35, 0, .0, -1.1);
+    line(ticks(R + .58, .08, 180, 15, .28), 'primary', .55, .02, .05, -1.0, true);
     // heavy segmented band
-    add(segmentedRing(R, .14, 36, i => (i % 9 === 0 ? 0 : .8)), 'primary', .5, -.08, .1);
-    add(segmentedRing(R - .32, .07, 120, .55), 'primary', .5, .14, .15);
+    add(segmentedRing(R, .14, 36, i => (i % 9 === 0 ? 0 : .8)), 'primary', .5, -.08, .1, -.6);
+    add(segmentedRing(R - .32, .07, 120, .55), 'primary', .5, .14, .15, -.4);
     // dashed arcs with gaps, like the HUD rings in the references
-    add(segmentedRing(R - .62, .22, 6, i => [.7, .3, .55, .15, .6, .4][i]), 'secondary', .32, .22, .2);
+    add(segmentedRing(R - .62, .22, 6, i => [.7, .3, .55, .15, .6, .4][i]), 'secondary', .32, .22, .2, -.1);
     line(circlePoints(R - .7), 'primary', .4, 0, .22);
-    add(segmentedRing(R - 1.05, .05, 72, i => (i % 4 ? .7 : 0)), 'hot', .45, -.3, .25);
-    line(ticks(R - 1.4, .14, 90, 6, .3), 'primary', .45, .1, .3, 0, true);
-    add(segmentedRing(R - 1.75, .26, 3, .26), 'primary', .32, -.45, .35, .05);
-    line(circlePoints(R - 1.9), 'secondary', .55, 0, .38);
-    add(segmentedRing(R - 2.2, .08, 48, .5), 'primary', .35, .6, .4);
+    add(segmentedRing(R - 1.05, .05, 72, i => (i % 4 ? .7 : 0)), 'hot', .45, -.3, .25, .25);
+    line(ticks(R - 1.4, .14, 90, 6, .3), 'primary', .45, .1, .3, .4, true);
+    add(segmentedRing(R - 1.75, .26, 3, .26), 'primary', .32, -.45, .35, .6);
+    line(circlePoints(R - 1.9), 'secondary', .55, 0, .38, .65);
+    add(segmentedRing(R - 2.2, .08, 48, .5), 'primary', .35, .6, .4, .85);
     // inner housing rings
-    add(segmentedRing(1.45, .08, 10, .82), 'hot', .4, -.9, .45, .1);
-    line(circlePoints(1.25), 'hot', .5, 0, .5, .12);
+    add(segmentedRing(1.45, .08, 10, .82), 'hot', .4, -.9, .45, 1.05);
+    line(circlePoints(1.25), 'hot', .5, 0, .5, 1.15);
 
     // scanner arc used during "thinking"
     this.scanner = add(new THREE.RingGeometry(R - .45, R - .1, 64, 1, 0, Math.PI / 3), 'hot', 0, 2.4, .5);
@@ -256,7 +258,7 @@ export class Reactor {
     this.halo.scale.setScalar(11);
     this.halo.position.z = -1;
     core.add(this.halo);
-    core.position.z = .2;
+    core.position.z = 1.3;
     this.core = core;
     this.layer(core, { delay: .55 });
   }
@@ -282,6 +284,90 @@ export class Reactor {
     this.sparks.frustumCulled = false;
     this.reactor.add(this.sparks);
     this.sparkCursor = 0;
+  }
+
+  buildFloor() {
+    // holographic projection table: perspective grid, glowing pad and a light cone up to the reactor
+    const floor = new THREE.Group();
+    floor.position.y = -5.4;
+    const size = 70, step = 1.4, pts = [];
+    for (let v = -size / 2; v <= size / 2 + .01; v += step) {
+      pts.push(new THREE.Vector3(v, 0, -size / 2), new THREE.Vector3(v, 0, size / 2));
+      pts.push(new THREE.Vector3(-size / 2, 0, v), new THREE.Vector3(size / 2, 0, v));
+    }
+    this.grid = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), this.mat('primary', .1, 'line'));
+    this.gridStep = step;
+    floor.add(this.grid);
+    const pad = new THREE.Group();
+    for (const [r, op] of [[1.2, .5], [2.2, .35], [3.3, .25], [4.6, .15]]) {
+      const ring = new THREE.Line(circlePoints(r, 128), this.mat('primary', op, 'line'));
+      ring.rotation.x = -Math.PI / 2; pad.add(ring);
+    }
+    const padTicks = new THREE.LineSegments(ticks(2.6, .25, 72, 6, .5), this.mat('primary', .3, 'line'));
+    padTicks.rotation.x = -Math.PI / 2; pad.add(padTicks);
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), this.mat('primary', .35, 'basic', { map: this.glow }));
+    glow.rotation.x = -Math.PI / 2; pad.add(glow);
+    this.pad = pad;
+    floor.add(pad);
+    const cone = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 1.1, 5.2, 64, 1, true), this.mat('primary', .045));
+    cone.position.y = 2.6;
+    floor.add(cone);
+    this.coneMat = cone.material;
+    this.floor = floor;
+    this.scene.add(floor);
+  }
+
+  animateFloor(t, dt) {
+    this.grid.position.z = (t * .5) % this.gridStep;   // the table surface slowly streams toward you
+    this.pad.rotation.y += dt * .15;
+  }
+
+  buildOrbiters() {
+    // a wireframe globe and two satellites circling the reactor on tilted 3D orbits
+    this.orbiters = [];
+    const globe = new THREE.Group();
+    globe.add(new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.SphereGeometry(.45, 16, 10)), this.mat('primary', .22, 'line')));
+    const eq = new THREE.Line(circlePoints(.6, 96), this.mat('hot', .4, 'line')); eq.rotation.x = Math.PI / 2; globe.add(eq);
+    const halo = new THREE.Sprite(this.mat('primary', .12, 'sprite', { map: this.glow })); halo.scale.setScalar(1.4); globe.add(halo);
+    const sat = (size) => {
+      const g = new THREE.Group();
+      g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.OctahedronGeometry(size)), this.mat('hot', .85, 'line')));
+      const h = new THREE.Sprite(this.mat('hot', .6, 'sprite', { map: this.glow })); h.scale.setScalar(size * 5); g.add(h);
+      return g;
+    };
+    const specs = [
+      { obj: globe, r: 5.6, speed: .14, tilt: 1.32, roll: .3, phase: 0, spin: .5 },
+      { obj: sat(.16), r: 4.9, speed: -.42, tilt: 1.05, roll: -.6, phase: 2, spin: 2 },
+      { obj: sat(.12), r: 5.5, speed: .3, tilt: 1.45, roll: 1.1, phase: 4.2, spin: 2.5 },
+    ];
+    for (const o of specs) {
+      const plane = new THREE.Group(); plane.rotation.set(o.tilt, 0, o.roll);
+      plane.add(o.obj);
+      // faint orbit path
+      plane.add(new THREE.Line(circlePoints(o.r, 200), this.mat('primary', .1, 'line')));
+      // glowing trail
+      const n = 48, trail = new THREE.Line(new THREE.BufferGeometry(), this.mat('hot', .3, 'line'));
+      trail.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+      plane.add(trail);
+      this.root.add(plane);
+      this.orbiters.push({ ...o, plane, trail, n });
+      plane.scale.setScalar(.001);
+      this.layers.push({ obj: plane, spin: 0, axis: 'z', delay: .7, wobble: 0, phase: 0 });
+    }
+  }
+
+  animateOrbiters(t, dt) {
+    for (const o of this.orbiters) {
+      const a = o.phase + t * o.speed;
+      o.obj.position.set(Math.cos(a) * o.r, Math.sin(a) * o.r, 0);
+      o.obj.rotation.y += dt * o.spin; o.obj.rotation.x += dt * o.spin * .3;
+      const arr = o.trail.geometry.attributes.position.array;
+      for (let i = 0; i < o.n; i++) {
+        const b = a - i * .022 * Math.sign(o.speed);
+        arr[i * 3] = Math.cos(b) * o.r; arr[i * 3 + 1] = Math.sin(b) * o.r; arr[i * 3 + 2] = 0;
+      }
+      o.trail.geometry.attributes.position.needsUpdate = true;
+    }
   }
 
   emitSparks(count, speed = 1) {
@@ -324,13 +410,22 @@ export class Reactor {
     if (s === 'listening') this.emitSparks(40, .8);
   }
   setLevel(v) { this.levelTarget = v; }
+  setQuality(q) {
+    if (q === 'low') {
+      this.renderer.setPixelRatio(1);
+      this.composer.setPixelRatio?.(1);
+      this.sparkN = Math.min(this.sparkN, 250);
+      this.resize();
+      this.bloom.resolution.set(innerWidth / 4, innerHeight / 4);
+    }
+  }
   setSpeech(v) { this.speech = v; }
   pulse(strength = 1) { this.emitSparks(Math.round(90 * strength), 1.4); for (let i = 0; i < 3 * strength; i++) this.spawnCrack(); }
 
   /** screen-space radius (px) of the outer ring – used to lay out DOM around the reactor */
   pxRadius() {
     const h = innerHeight;
-    const dist = this.camera.position.z;
+    const dist = 17.5;
     const visible = 2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)) * dist;
     return (OUTER_R + .95) * this.reactor.scale.x * (h / visible);
   }
@@ -425,10 +520,16 @@ export class Reactor {
       }
     }
 
-    // parallax + idle sway
-    this.mouseSmooth.lerp(this.mouse, 1 - Math.exp(-dt * 2.5));
-    this.root.rotation.y = this.mouseSmooth.x * .22 + Math.sin(t * .23) * .05;
-    this.root.rotation.x = -.16 - this.mouseSmooth.y * .14 + Math.sin(t * .31) * .03;
+    // camera orbit: mouse parallax + slow drift, so the hologram is seen from changing angles
+    this.mouseSmooth.lerp(this.mouse, 1 - Math.exp(-dt * 2.2));
+    const yaw = this.mouseSmooth.x * .34 + Math.sin(t * .17) * .16;
+    const pitch = .1 + this.mouseSmooth.y * .14 + Math.sin(t * .23) * .05;
+    const dist = 17.5 - this.energy * .6 + Math.sin(t * .4) * .15;
+    this.camera.position.set(Math.sin(yaw) * Math.cos(pitch) * dist, Math.sin(pitch) * dist, Math.cos(yaw) * Math.cos(pitch) * dist);
+    this.camera.lookAt(0, 0, 0);
+    this.view = { yaw, pitch };
+    this.animateFloor(t, dt);
+    this.animateOrbiters(t, dt);
     this.stars.rotation.y += dt * .004;
     this.stars.rotation.x = this.mouseSmooth.y * .03;
     this.dust.rotation.z += dt * .01;

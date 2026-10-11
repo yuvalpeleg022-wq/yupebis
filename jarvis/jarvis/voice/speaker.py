@@ -24,7 +24,7 @@ class SpeakerVerifier:
         if VOICEPRINT_FILE.exists():
             d = np.load(VOICEPRINT_FILE)
             self.embedding = d["embedding"]
-            self.auto_threshold = float(d["threshold"])
+            self.auto_threshold = min(float(d["threshold"]), 0.42)
 
     def load_model(self):
         import torch  # noqa: F401
@@ -57,10 +57,14 @@ class SpeakerVerifier:
         mean /= np.linalg.norm(mean) + 1e-9
         pair = [float(np.dot(a, b)) for a, b in itertools.combinations(embs, 2)]
         # your own samples agree with each other at ~avg; accept somewhat less than that
-        threshold = float(np.clip(np.mean(pair) - 0.22, 0.25, 0.5))
+        threshold = float(np.clip(np.mean(pair) - 0.28, 0.22, 0.42))
         np.savez(VOICEPRINT_FILE, embedding=mean, threshold=threshold)
         self.embedding, self.auto_threshold = mean, threshold
         return threshold
+
+    def threshold_for(self, cfg: dict) -> float:
+        t = (cfg.get("speaker") or {}).get("threshold")
+        return float(t) if t is not None else self.auto_threshold
 
     def verify(self, audio: np.ndarray, threshold: float | None) -> tuple[bool, float]:
         score = float(np.dot(self.embed(audio), self.embedding))

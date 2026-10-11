@@ -51,6 +51,10 @@ def main(argv=None):
     args = parse_args(argv)
     C.ensure_user_files()
     try:
+        migrated = C.migrate_user_config()
+    except Exception as e:
+        migrated = [f"config migration skipped: {e}"]
+    try:
         cfg = C.load_config()
     except Exception as e:
         print(f"config.yaml error ({e}); using defaults", file=sys.stderr)
@@ -64,6 +68,8 @@ def main(argv=None):
 
     hub = Hub()
     assistant = Assistant(hub, cfg, voice=not args.no_voice)
+    for m in migrated:
+        assistant.log(f"settings updated: {m}")
     server = Server(hub, assistant, args.port)
     server.start()
     apply_startup(bool((cfg.get("startup") or {}).get("run_on_login")))

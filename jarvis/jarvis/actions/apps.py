@@ -63,6 +63,7 @@ class AppIndex:
         self.apps: list[App] = apps or []
         self.updated = 0.0
         self._lock = threading.Lock()
+        self._refreshing = False
 
     @classmethod
     def from_existing(cls, old) -> "AppIndex":
@@ -96,8 +97,16 @@ class AppIndex:
         return len(self.apps)
 
     def ensure_fresh(self, max_age: float = 300) -> None:
-        if time.time() - self.updated > max_age:
-            self.refresh()
+        """Never blocks a command: a stale index is refreshed in the background."""
+        if time.time() - self.updated > max_age and not self._refreshing:
+            self._refreshing = True
+
+            def run():
+                try:
+                    self.refresh()
+                finally:
+                    self._refreshing = False
+            threading.Thread(target=run, name="app-index", daemon=True).start()
 
     # -- lookup -------------------------------------------------------------
     def find(self, query: str, min_score: float = 72) -> tuple[App | None, float]:

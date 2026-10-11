@@ -12,6 +12,7 @@ faster-whisper>=1.0   # offline speech recognition (Hebrew + English)
 SpeechRecognition>=3.10  # optional online engine (voice.stt_engine: google)
 edge-tts>=6.1         # natural Hebrew voice
 pyttsx3>=2.90         # offline fallback voice
+miniaudio>=1.59       # plays the voice through Windows + drives the reactor animation
 # --- voice ID (responds only to you) ---
 torch>=2.2,<2.9
 torchaudio>=2.2,<2.9

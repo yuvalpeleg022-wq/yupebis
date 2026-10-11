@@ -63,6 +63,8 @@ class Assistant:
         self.stt = None
         self.speaker = None
         self.tts = None
+        self.player = None
+        self._timings: list[str] = []
         self.enrolling: dict | None = None
         self.voice_ready = False
         self.voice_phase = "off" if not voice else "loading"
@@ -95,8 +97,11 @@ class Assistant:
         self.log(f"indexed {n} apps")
         if not installer.available() and C.IS_WINDOWS:
             self.log("winget not found – installs disabled", "warn")
+        from .voice.player import Player
         from .voice.tts import TTS
         self.tts = TTS(self.cfg.get("tts") or {}, self.log)
+        if Player.available():
+            self.player = Player(self.log, lambda v: self.hub.publish("speech", round(v, 3)), self._tts_finished)
         self.status("idle")
         for _ in range(60):  # let the window connect so the first spoken line isn't lost
             if self.hub._clients:
@@ -225,8 +230,14 @@ class Assistant:
         self._speaking_until = time.time() + est
         if self.listener:
             self.listener.paused = True
+        t0 = time.perf_counter()
         name = self.tts.render(text)
-        if name:
+        if name and self.player:
+            # Windows: Python plays the voice itself (the embedded browser can't decode MP3)
+            self._speaking_until = time.time() + 120
+            self.player.play(C.TTS_DIR / name)
+            self._timing("קול", t0)
+        elif name:
             self._speaking_until = time.time() + est + 1
             self.hub.publish("tts", {"url": f"/tts/{name}", "text": text})
             threading.Thread(target=self._speech_watchdog, args=(self._speaking_until,), daemon=True).start()
@@ -249,8 +260,13 @@ class Assistant:
             self.status("enrolling" if self.enrolling else "idle")
 
     def stop_speaking(self):
+        if self.player:
+            self.player.stop()
         self.hub.publish("tts_stop")
         self._tts_finished()
+
+    def _timing(self, label: str, t0: float):
+        self._timings.append(f"{label} {time.perf_counter() - t0:.1f}s")
 
     # ================================================================ helpers for skills
     def confirm(self, question: str, on_yes: Callable[[], str | None], detail: str = ""):
@@ -304,27 +320,36 @@ class Assistant:
                 self.log(traceback.format_exc(limit=6), "error")
                 self.say("משהו השתבש. הפרטים ביומן.")
             finally:
+                if self._timings and kind == "audio":
+                    self.log("⏱ " + " · ".join(self._timings))
+                self._timings = []
                 if self._status in ("thinking", "listening", "denied"):
                     self.status("enrolling" if self.enrolling else "idle")
 
     def _handle_audio(self, audio):
         if self.enrolling is not None:
             return self._enroll_sample(audio)
+        self._timings = [f"דיבור {len(audio) / 16000:.1f}s"]
         if self.speaker and self.speaker.enrolled:
             self.status("verifying")
+            t0 = time.perf_counter()
             ok, score = self.speaker.verify(audio, (self.cfg.get("speaker") or {}).get("threshold"))
+            self._timing("זיהוי קול", t0)
             self.hub.publish("verify", {"ok": ok, "score": round(score, 3)})
             if not ok:
                 self.status("denied")
-                self.log(f"voice rejected (match {score:.2f})", "warn")
+                self.log(f"voice rejected (match {score:.2f}, need {self.speaker.threshold_for(self.cfg):.2f})", "warn")
                 time.sleep(0.6)
                 return
         elif self.speaker and not self.speaker.enrolled and not self._warned_unlocked:
             self._warned_unlocked = True  # enrollment was skipped: work unlocked until the user enrolls
             self.log("voice ID not set up – responding to any voice (say 'למד את הקול שלי')", "warn")
         self.status("thinking")
+        t0 = time.perf_counter()
         text = self.stt.transcribe(audio)
+        self._timing("תמלול", t0)
         if not text:
+            self.hub.publish("heard_nothing")
             return
         self.handle_text(text, "voice")
 
@@ -368,7 +393,10 @@ class Assistant:
             return
         intent = intents.parse(rest)
         self.log(f"intent: {intent.name} {intent.args or ''}")
-        self.say(skills.handle(intent, self))
+        t0 = time.perf_counter()
+        reply = skills.handle(intent, self)
+        self._timing("ביצוע", t0)
+        self.say(reply)
 
     def _match_plugin(self, text):
         t = textmod.key(text)
@@ -442,6 +470,8 @@ class Assistant:
                 self._work.put(("call", self.start_enroll))
         elif path == "/api/theme":
             self.set_theme(str(body.get("theme", "toggle")))
+        elif path == "/api/client_log":
+            self.log(str(body.get("msg", ""))[:300], str(body.get("level", "info")) if body.get("level") in ("info", "warn", "error") else "info")
         elif path == "/api/reload":
             self._work.put(("call", self.reload_all))
         return {"ok": True}

@@ -105,7 +105,7 @@ def do_install(name: str, ctx) -> str:
             ctx.progress(f"INSTALLING {pkg.name}", pct[0], line)
         ok = installer.install(pkg, bool((ctx.cfg.get("install") or {}).get("silent", True)), on_line)
         ctx.progress(None)
-        ctx.app_index.refresh()
+        ctx.app_index.ensure_fresh(0)  # pick up the new app in the background
         ctx.say(f"{pkg.name} הותקן בהצלחה." if ok else f"ההתקנה של {pkg.name} נכשלה. בדוק את היומן.")
 
     if (ctx.cfg.get("install") or {}).get("confirm", True):
@@ -125,7 +125,7 @@ def do_uninstall(name: str, ctx) -> str | None:
         ctx.progress(f"REMOVING {english}", None)
         ok = installer.uninstall(english, lambda line: ctx.progress(f"REMOVING {english}", None, line))
         ctx.progress(None)
-        ctx.app_index.refresh()
+        ctx.app_index.ensure_fresh(0)  # pick up the new app in the background
         ctx.say(f"{name} הוסר." if ok else f"לא הצלחתי להסיר את {name}.")
     ctx.confirm(f"להסיר את {name} מהמחשב?", lambda: (ctx.background(run), "מסיר.")[1])
     return None

@@ -65,11 +65,25 @@ button, input { font: inherit; color: inherit; }
 .glow { text-shadow: 0 0 8px rgba(var(--c-rgb), .9), 0 0 22px rgba(var(--c-rgb), .45); }
 
 /* ---------- reveal on boot ---------- */
-.reveal { opacity: 0; transform: translateY(12px) scale(.985); filter: blur(4px);
-  transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s), filter .9s var(--ease) var(--d, 0s); }
-body.ready .reveal { opacity: 1; transform: none; filter: none; }
-.dock.reveal { transform: translateX(var(--from, -30px)); }
-#dock-right.reveal { --from: 30px; }
+/* reveal uses the independent `translate` property so `transform` stays free for the 3D layout */
+.reveal { opacity: 0; translate: 0 14px; filter: blur(4px);
+  transition: opacity .9s var(--ease) var(--d, 0s), translate .9s var(--ease) var(--d, 0s), filter .9s var(--ease) var(--d, 0s); }
+body.ready .reveal { opacity: 1; translate: 0 0; filter: none; }
+.dock.reveal { translate: var(--from, -40px) 0; }
+#dock-right.reveal { --from: 40px; }
+body.ready .dock.reveal { translate: 0 0; }
+
+/* ---------- 3D helmet-HUD: panels sit on angled planes around you and follow the mouse ---------- */
+:root { --yaw: 0; --pitch: 0; }
+#hud { perspective: 1300px; perspective-origin: 50% 48%; }
+#dock-left  { transform-origin: 0 50%;    transform: rotateY(calc(28deg + var(--yaw) * 1deg)) rotateX(calc(var(--pitch) * 1deg)); }
+#dock-right { transform-origin: 100% 50%; transform: rotateY(calc(-28deg + var(--yaw) * 1deg)) rotateX(calc(var(--pitch) * 1deg)); }
+#top        { transform-origin: 50% 0;    transform: rotateX(calc(-18deg + var(--pitch) * 1deg)) rotateY(calc(var(--yaw) * .6deg)); }
+#net        { transform-origin: 0 100%;   transform: rotateY(calc(24deg + var(--yaw) * 1deg)) rotateX(calc(16deg + var(--pitch) * 1deg)); }
+#console    { transform-origin: 100% 100%; transform: rotateY(calc(-24deg + var(--yaw) * 1deg)) rotateX(calc(16deg + var(--pitch) * 1deg)); }
+.deco.tl    { transform-origin: 0 50%;    transform: rotateY(calc(22deg + var(--yaw) * 1deg)); }
+.deco.tr    { transform-origin: 100% 50%; transform: rotateY(calc(-22deg + var(--yaw) * 1deg)); }
+#dock-left .tile, #dock-right .tile { box-shadow: 0 0 22px rgba(var(--c-rgb), .12), inset 0 0 18px rgba(var(--c-rgb), .08); }
 
 /* ================= TOP ================= */
 #top {
@@ -211,8 +225,7 @@ body[data-state="thinking"] #core .state::after { content: ""; display: inline-b
 #bar { position: absolute; bottom: var(--pad); left: 50%; transform: translateX(-50%);
   width: min(760px, calc(100vw - 2 * (clamp(260px, 24vw, 430px) + 3 * var(--pad))));
   height: var(--bottom-h); display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; text-align: center; }
-body.ready #bar.reveal { transform: translateX(-50%); }
-#bar.reveal { transform: translateX(-50%) translateY(12px); }
+#bar { transform-origin: 50% 100%; transform: translateX(-50%) rotateX(calc(14deg + var(--pitch) * .6deg)); }
 #transcript { font-size: 15px; opacity: .75; min-height: 1.4em; letter-spacing: .02em; transition: opacity .4s; }
 #transcript.ignored { opacity: .3; }
 #transcript:not(:empty)::before { content: "◂ "; opacity: .6; }
@@ -232,7 +245,8 @@ body[data-state="listening"] #mic .mic-icon { stroke: #fff; animation: none; fil
   transition: transform .08s linear; }
 #mic-text { flex: 1; font-size: 15px; color: var(--hi); letter-spacing: .02em; text-align: right; }
 #mic.loading #mic-text::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: dots 1s steps(4) infinite; }
-#mic.offline { border-color: var(--danger); }
+#mic.offline, #mic.hint-bad { border-color: var(--danger); }
+#mic.hint-bad #mic-text { color: #ffc2c8; }
 #mic.offline .mic-icon { stroke: var(--danger); filter: none; }
 #mic.offline #mic-text { color: #ffc2c8; font-size: 13px; }
 #mic.offline .wave { opacity: .25; }
@@ -309,7 +323,7 @@ body[data-state="denied"] #fx { box-shadow: inset 0 0 160px rgba(255, 30, 50, .3
 @media (max-width: 1000px) {
   #qa, #console { display: none; }
   #bar { width: calc(100vw - 3 * var(--pad) - clamp(220px, 19vw, 320px)); left: auto; right: var(--pad); transform: none; }
-  body.ready #bar.reveal, #bar.reveal { transform: none; }
+  #bar { transform: rotateX(12deg); }
 }
 @media (max-width: 760px) {
   .dock, #net, .sys, .brand .sub, .deco { display: none; }

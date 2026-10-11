@@ -21,11 +21,51 @@ async function initScene() {
     const { Reactor } = await import('./scene.js');
     reactor = new Reactor($('#scene'));
     window.reactor = reactor;
+    reportGPU();
   } catch (e) {
     console.error(e);
     log({ t: now(), level: 'error', msg: '3D disabled: ' + e.message });
+    api('/api/client_log', { level: 'error', msg: '3D disabled: ' + e.message });
   }
 }
+
+// tell the log which GPU renders the HUD (software rendering = slow, choppy HUD)
+function reportGPU() {
+  try {
+    const gl = reactor.renderer.getContext();
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    const name = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+    const soft = /swiftshader|llvmpipe|software|basic render/i.test(name);
+    api('/api/client_log', { level: soft ? 'warn' : 'info', msg: `GPU: ${name}${soft ? ' (software rendering – the 3D will be slow)' : ''}` });
+  } catch {}
+}
+
+// 3D parallax for the DOM layer: panels and the clock follow the same camera as the hologram
+const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
+addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth * 2 - 1; mouse.y = e.clientY / innerHeight * 2 - 1; });
+let fpsFrames = 0, fpsT0 = performance.now(), lowFps = 0, lastFrame = performance.now();
+function frame3d(now) {
+  const dt = Math.min(.05, (now - lastFrame) / 1000); lastFrame = now;
+  const k = 1 - Math.exp(-dt * 3);
+  mouse.sx += (mouse.x - mouse.sx) * k; mouse.sy += (mouse.y - mouse.sy) * k;
+  const root = document.documentElement.style;
+  root.setProperty('--yaw', (-mouse.sx * 5).toFixed(2));
+  root.setProperty('--pitch', (mouse.sy * 3.5).toFixed(2));
+  const v = reactor?.view;
+  if (v) $('#core').style.transform =
+    `translate(-50%, -50%) perspective(1100px) rotateX(${(v.pitch - .1) * -57.3}deg) rotateY(${v.yaw * -57.3}deg)`;
+  // adaptive quality: if the PC struggles, render fewer pixels
+  fpsFrames++;
+  if (now - fpsT0 > 2000) {
+    const fps = fpsFrames * 1000 / (now - fpsT0); fpsFrames = 0; fpsT0 = now;
+    if (reactor && fps < 32 && ++lowFps === 2) {
+      reactor.setQuality('low');
+      api('/api/client_log', { level: 'warn', msg: `HUD running at ${fps.toFixed(0)} fps – switching to lighter 3D` });
+    }
+  }
+  requestAnimationFrame(frame3d);
+}
+requestAnimationFrame(frame3d);
 
 // ---------------------------------------------------------------- boot sequence
 const BOOT_LINES = [
@@ -216,6 +256,16 @@ function transcript(d) {
   const el = $('#transcript');
   el.textContent = d.text;
   el.classList.toggle('ignored', !!d.ignored);
+  if (d.ignored) micHint(`שמעתי "${d.text}" — כדי לתת פקודה תתחיל ב"${lastVoice?.wake || "ג'רוויס"}"`);
+}
+// temporary message in the microphone strip, then back to the normal status
+let hintTimer;
+function micHint(text, bad = false) {
+  const el = $('#mic-text');
+  el.textContent = text;
+  $('#mic').classList.toggle('hint-bad', bad);
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => { $('#mic').classList.remove('hint-bad'); voiceInfo(lastVoice); }, 4500);
 }
 
 // ---------------------------------------------------------------- speech playback (+ visualizer)
@@ -284,14 +334,16 @@ function toast(d) {
   $('#toasts').appendChild(t);
   setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 450); }, 3200);
 }
+let lastVoice = null;
 function voiceInfo(v) {
   if (!v) return;
+  lastVoice = v;
   $('#chip-mic').className = 'chip ' + (v.ready ? 'on' : v.phase === 'loading' ? '' : 'bad');
   $('#chip-mic').textContent = v.ready ? 'MIC ONLINE' : v.phase === 'loading' ? 'MIC LOADING' : 'MIC OFFLINE';
   $('#chip-lock').className = 'chip ' + (v.locked ? 'on' : '');
   $('#chip-lock').textContent = v.locked ? 'VOICE LOCKED' : 'VOICE ID OFF';
   const mic = $('#mic'), text = $('#mic-text');
-  mic.className = v.ready ? 'ready' : v.phase === 'loading' ? 'loading' : 'offline';
+  mic.className = v.ready ? 'ready' : v.phase === 'loading' ? 'loading' : v.phase === 'off' ? 'off' : 'offline';
   text.textContent = v.ready ? `מקשיב — אמור "${v.wake}" ואז את הפקודה`
     : v.phase === 'loading' ? 'טוען את זיהוי הקול… (בפעם הראשונה כמה דקות)'
     : v.phase === 'off' ? 'הקול כבוי (voice.enabled בהגדרות)'
@@ -322,7 +374,12 @@ const handlers = {
   theme: setTheme, status: setState, dock: renderDock, stats, log, reply, transcript,
   tts: playTTS, tts_stop: () => stopTTS(false), confirm: confirmBox, enroll, progress, toast, voice: voiceInfo,
   level: v => { reactor?.setLevel(v); wave(v); const m = $('#enroll .meter i'); if (m) m.style.width = `${Math.min(100, v * 140)}%`; },
-  verify: d => { if (d.ok) reactor?.pulse(.4); },
+  verify: d => {
+    if (d.ok) reactor?.pulse(.4);
+    else micHint('הקול לא זוהה כקול שלך. אפשר להקליד "למד את הקול שלי" (מקש /) וללמד אותו מחדש', true);
+  },
+  speech: v => { reactor?.setSpeech(v); wave(v); },
+  heard_nothing: () => micHint('לא הצלחתי להבין, נסה שוב ובקול ברור'),
   reload_hud: () => { sessionStorage.setItem('jarvis-booted', '1'); location.reload(); },
   user: () => {},
 };

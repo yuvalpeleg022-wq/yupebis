@@ -72,6 +72,33 @@ def ensure_user_files() -> None:
         d.mkdir(parents=True, exist_ok=True)
 
 
+CONFIG_VERSION = 2
+
+
+def migrate_user_config() -> list[str]:
+    """Bring an older config.yaml up to date in place (keeps the user's comments and edits)."""
+    if not CONFIG_FILE.exists():
+        return []
+    import re
+    text = CONFIG_FILE.read_text(encoding="utf-8")
+    m = re.search(r"^config_version:\s*(\d+)", text, re.M)
+    version = int(m.group(1)) if m else 1
+    done = []
+    if version < 2:
+        # v2: fast online speech recognition with offline fallback, snappier end-of-speech
+        text, n = re.subn(r"^(\s*stt_engine:\s*)whisper\b.*$",
+                          r"\1auto           # auto (מהיר) | google | whisper (בלי אינטרנט)", text, flags=re.M)
+        if n:
+            done.append("stt_engine → auto")
+        text, n = re.subn(r"^(\s*silence_ms:\s*)700\b", r"\g<1>550", text, flags=re.M)
+        if n:
+            done.append("silence_ms → 550")
+        text = f"config_version: {CONFIG_VERSION}            # לא לשנות – משמש לעדכונים אוטומטיים\n" + text
+    if done or version < CONFIG_VERSION:
+        CONFIG_FILE.write_text(text, encoding="utf-8")
+    return done
+
+
 def _merge(base: dict, over: dict) -> dict:
     out = copy.deepcopy(base)
     for k, v in (over or {}).items():
