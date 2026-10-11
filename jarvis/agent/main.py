@@ -143,7 +143,13 @@ def main():
     s = status()
     print(f"\nmodel: {s['model']['label'] if s['model']['ok'] else 'NONE — ' + s['model']['reason']}")
     print(f"voice: {'ElevenLabs' if s['voice']['tts'] else 'OFF — ' + s['voice']['reason']}")
-    srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    print(f"settings: {data.ROOT / '.env'} ({'found' if (data.ROOT / '.env').exists() else 'MISSING — run setup.bat'})")
+    try:
+        srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    except OSError:
+        print(f"\n!! Port {PORT} is busy — JARVIS (maybe an older copy) is already running in another window.")
+        print("   Close every other JARVIS window, then run start.bat again.")
+        return
     url = f"http://localhost:{PORT}"
     print(f"\nJARVIS is up → {url}   (Ctrl+C to stop)\n")
     if "--no-browser" not in sys.argv:
