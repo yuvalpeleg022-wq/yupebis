@@ -138,6 +138,12 @@ class Handler(BaseHTTPRequestHandler):
         return self._json({"error": "not found"}, 404)
 
 
+class Server(ThreadingHTTPServer):
+    # On Windows SO_REUSEADDR lets a second copy silently share the port; refuse instead.
+    allow_reuse_address = os.name != "nt"
+    daemon_threads = True
+
+
 def main():
     report(VAULT, data.mode())
     s = status()
@@ -145,7 +151,7 @@ def main():
     print(f"voice: {'ElevenLabs' if s['voice']['tts'] else 'OFF — ' + s['voice']['reason']}")
     print(f"settings: {data.ROOT / '.env'} ({'found' if (data.ROOT / '.env').exists() else 'MISSING — run setup.bat'})")
     try:
-        srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+        srv = Server(("127.0.0.1", PORT), Handler)
     except OSError:
         print(f"\n!! Port {PORT} is busy — JARVIS (maybe an older copy) is already running in another window.")
         print("   Close every other JARVIS window, then run start.bat again.")
