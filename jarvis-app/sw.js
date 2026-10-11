@@ -1,6 +1,6 @@
 // Offline shell: app files are cached; AI requests and links always go to the network.
-const CACHE = 'jarvis-v1';
-const SHELL = ['./', 'index.html', 'css/mobile.css', 'js/app.js', 'js/brain.js', 'js/scene.js', 'manifest.webmanifest',
+const CACHE = 'jarvis-v2';
+const SHELL = ['./', 'index.html', 'css/mobile.css', 'js/app.js', 'js/brain.js', 'js/orb.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'vendor/anthropic-sdk.min.js', 'vendor/three/build/three.module.min.js'];
 self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(caches.keys()

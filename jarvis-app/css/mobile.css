@@ -9,7 +9,7 @@
 }
 :root[data-theme="green"] { --c: #2cffa0; --c-rgb: 44, 255, 160; --c2: #0ca86c; --hi: #d2ffe9; --bg: #010805; }
 :root[data-theme="cyan"]  { --c: #38d6ff; --c-rgb: 56, 214, 255; --c2: #1679ff; --hi: #d2f6ff; --bg: #010409; }
-:root[data-theme="gold"]  { --c: #ffb547; --c-rgb: 255, 181, 71; --c2: #ff7a18; --hi: #ffe6b0; --bg: #070401; }
+:root[data-theme="gold"]  { --c: #ffa53a; --c-rgb: 255, 165, 58; --c2: #ff5a0a; --hi: #ffe7c2; --bg: #000000; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; background: var(--bg); overscroll-behavior: none; }
@@ -21,7 +21,7 @@ button, input, select { font: inherit; color: inherit; }
 #scene { position: fixed; inset: 0; width: 100vw; height: 100dvh; display: block; }
 #fx { position: fixed; inset: 0; pointer-events: none; z-index: 1;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(var(--c-rgb), .08), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(var(--c-rgb), .03), transparent 60%),
     radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.75) 100%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, transparent 1px 3px); }
 
@@ -42,10 +42,11 @@ button, input, select { font: inherit; color: inherit; }
 .chip.on { opacity: 1; background: rgba(var(--c-rgb), .14); }
 
 /* reactor overlay (tap to talk) */
-#center { position: fixed; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none; padding-bottom: 14dvh; }
+#center { position: fixed; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none; }
 #core { pointer-events: auto; background: none; border: 0; display: flex; flex-direction: column; align-items: center;
   width: 62vw; max-width: 300px; aspect-ratio: 1; justify-content: center; border-radius: 50%; cursor: pointer; direction: ltr;
-  background: radial-gradient(circle, rgba(1,8,5,.72) 0, rgba(1,8,5,.4) 42%, transparent 66%); }
+  justify-content: flex-end; width: 80vw; max-width: 380px; }
+#core .clock, #core .date { display: none; }
 #core .clock { font-size: clamp(44px, 15vw, 72px); font-weight: 300; color: var(--hi); line-height: 1; letter-spacing: .06em;
   text-shadow: 0 0 14px var(--c), 0 0 36px rgba(var(--c-rgb), .7); font-variant-numeric: tabular-nums; scale: calc(1 + var(--voice) * .08); }
 #core .date { font-size: 9.5px; letter-spacing: .36em; opacity: .7; margin-top: 6px; }

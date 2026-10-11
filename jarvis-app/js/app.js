@@ -9,7 +9,7 @@ const STATE_LABEL = { boot: 'INITIALIZING', idle: 'TAP TO TALK', listening: 'LIS
   ai: 'NEURAL PROCESSING', speaking: 'RESPONDING', wake: 'SAY "JARVIS"' };
 
 // ---------------------------------------------------------------- settings
-const DEFAULTS = { key: '', name: 'אדוני', theme: 'green', nav: 'waze', wake: false, voice: true };
+const DEFAULTS = { key: '', name: 'אדוני', theme: 'gold', nav: 'waze', wake: false, voice: true };
 const settings = (() => { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem('jarvis-settings') || '{}') }; } catch { return { ...DEFAULTS }; } })();
 const saveSettings = () => { try { localStorage.setItem('jarvis-settings', JSON.stringify(settings)); } catch {} };
 
@@ -18,7 +18,7 @@ let reactor = null, agent = new Agent(settings.key, settings), state = 'boot';
 // ---------------------------------------------------------------- 3D
 async function initScene() {
   try {
-    const { Reactor } = await import('./scene.js');
+    const { Reactor } = await import('./orb.js');
     reactor = new Reactor($('#scene'));
     reactor.setTheme(settings.theme);
     window.reactor = reactor;
