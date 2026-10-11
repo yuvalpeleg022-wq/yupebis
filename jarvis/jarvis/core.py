@@ -51,7 +51,7 @@ class Assistant:
         self.hub = hub
         self.cfg = cfg
         self.voice_wanted = voice
-        self.theme = cfg.get("theme", "gold")
+        self.theme = cfg.get("theme", "green")
         self.app_index = apps.AppIndex()
         self.commands: list = []
         self.plugin_cmds: list = []
@@ -307,7 +307,8 @@ class Assistant:
 
     def set_theme(self, theme: str):
         if theme == "toggle":
-            theme = "cyan" if self.theme == "gold" else "gold"
+            order = ["green", "cyan", "gold"]
+            theme = order[(order.index(self.theme) + 1) % 3] if self.theme in order else "green"
         self.theme = theme
         self.hub.publish("theme", theme, keep=True)
 
@@ -531,7 +532,7 @@ class Assistant:
         if self.tts:
             self.tts.cfg = new.get("tts") or {}
         if new.get("theme") != old.get("theme"):
-            self.set_theme(new.get("theme", "gold"))
+            self.set_theme(new.get("theme", "green"))
         self.publish_static()
         if new.get("ai") != old.get("ai"):
             self._new_agent()

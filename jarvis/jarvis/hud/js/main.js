@@ -106,7 +106,7 @@ function clock() {
 
 // ---------------------------------------------------------------- theme / state
 function setTheme(t) {
-  document.documentElement.dataset.theme = t === 'cyan' ? 'cyan' : 'gold';
+  document.documentElement.dataset.theme = ['gold', 'cyan', 'green'].includes(t) ? t : 'green';
   reactor?.setTheme(t);
   drawSparks();
 }

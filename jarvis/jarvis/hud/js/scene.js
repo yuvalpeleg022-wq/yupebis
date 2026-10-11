@@ -9,9 +9,12 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
+// bg: deep clear colour; the composer gamma-lifts it, so tiny values read as a dark tint
+const BG = { gold: 0x020100, cyan: 0x000102, green: 0x000201 };
 const THEMES = {
   gold: { primary: 0xffa83a, secondary: 0xff6a10, hot: 0xffe2a0, star: 0xffcf8a },
   cyan: { primary: 0x34cfff, secondary: 0x1466ff, hot: 0xd8f7ff, star: 0x9adfff },
+  green: { primary: 0x2cffa0, secondary: 0x0ca86c, hot: 0xd2ffe9, star: 0x86ffc6 },
   denied: { primary: 0xff2a3c, secondary: 0xaa0010, hot: 0xffb0b8, star: 0xff8090 },
 };
 const STATE_ENERGY = { boot: .2, idle: .25, listening: .75, verifying: .8, thinking: 1, speaking: .85,
@@ -99,8 +102,8 @@ export class Reactor {
   constructor(canvas) {
     this.canvas = canvas;
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
-    this.renderer.setClearColor(0x000000, 1);  // composer re-encodes the clear color, so true black reads as the HUD bg
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1.5 : 1.75));
+    this.renderer.setClearColor(BG.green, 1);
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.FogExp2(0x020509, 0.012);
     this.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 400);
@@ -116,10 +119,10 @@ export class Reactor {
 
     this.mats = [];          // {mat, role, base}
     this.colors = {};        // role → current THREE.Color
-    this.themeName = 'gold';
+    this.themeName = 'green';
     this.denied = 0;
-    for (const role of ['primary', 'secondary', 'hot', 'star']) this.colors[role] = new THREE.Color(THEMES.gold[role]);
-    this.targetColors = { ...THEMES.gold };
+    for (const role of ['primary', 'secondary', 'hot', 'star']) this.colors[role] = new THREE.Color(THEMES.green[role]);
+    this.targetColors = { ...THEMES.green };
 
     this.state = 'boot';
     this.energy = .2; this.level = 0; this.levelTarget = 0; this.speech = 0;
@@ -509,7 +512,8 @@ export class Reactor {
 
   // ---------- public API ----------
   setTheme(name) {
-    this.themeName = THEMES[name] ? name : 'gold';
+    this.themeName = THEMES[name] ? name : 'green';
+    this.renderer.setClearColor(BG[this.themeName], 1);
     this.targetColors = { ...THEMES[this.themeName] };
   }
   setState(s) {
@@ -540,7 +544,7 @@ export class Reactor {
   /** screen-space radius (px) of the outer ring – used to lay out DOM around the reactor */
   pxRadius() {
     const h = innerHeight;
-    const dist = 17.5;
+    const dist = this.baseDist || 17.5;
     const visible = 2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)) * dist;
     return (OUTER_R + .95) * this.reactor.scale.x * (h / visible);
   }
@@ -553,9 +557,11 @@ export class Reactor {
     this.holo?.uniforms.uRes.value.set(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
-    // keep the reactor inside narrow windows
-    const s = Math.min(1, (w / h) / 1.45);
-    this.reactor.scale.setScalar(Math.max(.55, s));
+    // narrow windows and phones: pull the camera back instead of shrinking the hologram
+    const aspect = w / h;
+    this.baseDist = 17.5 * Math.max(1, 1.45 / aspect) * (aspect < 1 ? .72 : 1);
+    // portrait: raise the hologram so the lower part of the screen stays free for text and buttons
+    this.lookY = aspect < 1 ? -2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)) * this.baseDist * .07 : 0;
   }
 
   // ---------- animation ----------
@@ -651,9 +657,9 @@ export class Reactor {
     const yaw = this.mouseSmooth.x * .34 + Math.sin(t * .17) * .16;
     const pitch = .1 + this.mouseSmooth.y * .14 + Math.sin(t * .23) * .05;
     this.voiceSmooth = lerp(this.voiceSmooth || 0, voice, 1 - Math.exp(-dt * 5));
-    const dist = 17.5 - this.energy * .6 - this.voiceSmooth * 1.8 + Math.sin(t * .4) * .15;   // the camera leans in while you talk
+    const dist = (this.baseDist || 17.5) - this.energy * .6 - this.voiceSmooth * 1.8 + Math.sin(t * .4) * .15;   // the camera leans in while you talk
     this.camera.position.set(Math.sin(yaw) * Math.cos(pitch) * dist, Math.sin(pitch) * dist, Math.cos(yaw) * Math.cos(pitch) * dist);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.lookAt(0, this.lookY || 0, 0);
     this.view = { yaw, pitch };
     this.animateFloor(t, dt);
     this.animateOrbiters(t, dt);

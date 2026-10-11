@@ -197,7 +197,7 @@ def handle(intent: Intent, ctx) -> str | None:
         return f"המעבד על {s.get('cpu', 0):.0f} אחוז, הזיכרון על {s.get('ram', 0):.0f} אחוז."
     if n == "theme":
         ctx.set_theme(a["theme"])
-        return "כחול." if ctx.theme == "cyan" else "זהב."
+        return {"cyan": "כחול.", "gold": "זהב.", "green": "ירוק."}.get(ctx.theme, "בוצע.")
     if n == "hide":
         ctx.ui("hide")
         return None

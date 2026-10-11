@@ -72,7 +72,7 @@ def ensure_user_files() -> None:
         d.mkdir(parents=True, exist_ok=True)
 
 
-CONFIG_VERSION = 3
+CONFIG_VERSION = 4
 
 
 def migrate_user_config() -> list[str]:
@@ -101,6 +101,12 @@ def migrate_user_config() -> list[str]:
         end = block.index("\nwindow:", start)
         text = text.rstrip("\n") + "\n\n" + block[start:end].rstrip("\n") + "\n"
         done.append("added AI brain settings (ai:)")
+    if version < 4:
+        # v4: green is the new default look
+        text, n = re.subn(r"^theme:\s*gold\b.*$", "theme: green                 # green (ירוק) | cyan (כחול) | gold (זהב)",
+                          text, flags=re.M)
+        if n:
+            done.append("theme → green")
     text = re.sub(r"^config_version:\s*\d+", f"config_version: {CONFIG_VERSION}", text, count=1, flags=re.M)
     if done or version < CONFIG_VERSION:
         CONFIG_FILE.write_text(text, encoding="utf-8")

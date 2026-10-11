@@ -28,6 +28,7 @@ LOCAL_FAST = {"open", "folder", "close", "search", "youtube", "youtube_search", 
               "mute", "media", "time", "date", "lock", "screenshot", "shutdown", "restart_pc", "theme", "hide",
               "show", "reload", "restart_self", "edit_config", "edit_commands", "open_plugins", "open_source",
               "enroll", "sleep", "stop_speaking", "show_desktop", "empty"}
+RECENCY = re.compile(r"חדש|אחרון|האחרון|הכי|שיצא|היום|new|latest|newest|recent", re.I)
 CONNECTORS = re.compile(r"(?:^|\s)(?:ואז|וגם|אחרי ש|אחר כך|and then|then|after that)(?:\s|$)|\s[ו][תפשסה]\w+")
 
 SYSTEM = """You are J.A.R.V.I.S., the personal AI assistant running on the user's Windows PC, modelled on Tony Stark's JARVIS: calm, precise, quietly witty, unfailingly loyal.
@@ -88,7 +89,7 @@ TOOLS = [
     _tool("remember", "Store a lasting fact about the user.", {"fact": S}),
     _tool("forget", "Delete remembered facts that contain this text.", {"text": S}),
     _tool("jarvis", "Control JARVIS itself.",
-          {"action": {"type": "string", "enum": ["hide", "show", "sleep", "theme_gold", "theme_cyan", "reload",
+          {"action": {"type": "string", "enum": ["hide", "show", "sleep", "theme_green", "theme_gold", "theme_cyan", "reload",
                                                   "learn_my_voice", "open_settings", "open_commands"]}}),
     {"type": "web_search_20260209", "name": "web_search", "max_uses": 3},
 ]
@@ -279,6 +280,8 @@ class Agent:
             return True
         if intent.name not in LOCAL_FAST:
             return True
+        if intent.name == "youtube" and RECENCY.search(text):
+            return True  # "the newest video of X" needs a web search, not just the top match
         return len(text.split()) > 9 or bool(CONNECTORS.search(" " + text))
 
     def reset(self):

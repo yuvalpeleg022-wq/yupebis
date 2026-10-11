@@ -1,4 +1,4 @@
-# Netlify publishes marvel/ or doom/ depending on the project name (see netlify-build.sh)
+# Netlify publishes marvel/, doom/ or the JARVIS phone app depending on the project name (see netlify-build.sh)
 [build]
   command = "bash netlify-build.sh"
   publish = "dist"

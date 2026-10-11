@@ -16,13 +16,16 @@
 :root[data-theme="gold"] {
   --c: #ffb547; --c-rgb: 255, 181, 71; --c2: #ff7a18; --hi: #ffe6b0; --c3: #ffd27a;
 }
+:root[data-theme="green"] {
+  --c: #2cffa0; --c-rgb: 44, 255, 160; --c2: #0ca86c; --hi: #d2ffe9; --c3: #7dffc4; --bg: #010805;
+}
 :root[data-theme="cyan"] {
   --c: #38d6ff; --c-rgb: 56, 214, 255; --c2: #1679ff; --hi: #d2f6ff; --c3: #8be9ff;
 }
 :root { transition: --c .6s; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; background: var(--bg); }
+html, body { height: 100%; overflow: hidden; background: var(--bg); transition: background .8s; }
 body {
   font-family: var(--font); color: var(--c); letter-spacing: .06em;
   -webkit-font-smoothing: antialiased; user-select: none; cursor: default;
@@ -36,6 +39,7 @@ button, input { font: inherit; color: inherit; }
 #fx {
   position: fixed; inset: 0; pointer-events: none; z-index: 1;
   background:
+    radial-gradient(ellipse at 50% 55%, rgba(var(--c-rgb), .07), transparent 60%),
     radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.72) 100%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
     linear-gradient(rgba(var(--c-rgb), .035) 1px, transparent 1px) 0 0 / 64px 64px,

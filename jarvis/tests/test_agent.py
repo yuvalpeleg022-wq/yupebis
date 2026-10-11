@@ -105,6 +105,7 @@ class AgentTests(unittest.TestCase):
         a, _ = make_agent([])
         self.assertFalse(a.wants(intents.parse("פתח כרום"), "פתח כרום"))
         self.assertFalse(a.wants(intents.parse("מה השעה"), "מה השעה"))
+        self.assertFalse(a.wants(intents.parse("תנגן despacito"), "תנגן despacito"))
         for t in ["תכניס לי את הסרטון החדש של מיסטר ביסט", "מה מזג האוויר מחר בתל אביב",
                   "תפתח ספוטיפיי ותגביר את הווליום", "תזכיר לי בעוד עשר דקות להוציא את הפיצה"]:
             self.assertTrue(a.wants(intents.parse(t), t), t)

@@ -11,7 +11,7 @@ base = Image.new("RGBA", (S, S), (0, 0, 0, 0))
 d = ImageDraw.Draw(base)
 c = S / 2
 d.ellipse([8, 8, S - 8, S - 8], fill=(6, 10, 16, 255))
-gold, hot = (255, 176, 64, 255), (255, 232, 180, 255)
+gold, hot = (44, 255, 160, 255), (210, 255, 233, 255)  # JARVIS green
 d.ellipse([40, 40, S - 40, S - 40], outline=gold, width=10)
 for i in range(36):  # segmented band
     if i % 9 == 0:
@@ -24,11 +24,19 @@ tri = [(c + math.cos(math.radians(-90 + j * 120)) * 150, c + math.sin(math.radia
 d.polygon(tri, outline=hot, width=12)
 d.ellipse([c - 62, c - 62, c + 62, c + 62], outline=hot, width=14)
 glow = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-ImageDraw.Draw(glow).ellipse([c - 90, c - 90, c + 90, c + 90], fill=(255, 220, 150, 200))
+ImageDraw.Draw(glow).ellipse([c - 90, c - 90, c + 90, c + 90], fill=(120, 255, 200, 200))
 glow = glow.filter(ImageFilter.GaussianBlur(40))
 img = Image.alpha_composite(base, glow)
 img = Image.alpha_composite(img, base.filter(ImageFilter.GaussianBlur(6)))
 img = Image.alpha_composite(img, base)
 img.save(out / "icon.png")
+# phone app icons (mobile/icons); maskable = full-bleed background with the logo in the safe zone
+mob = out.parent / "mobile" / "icons"
+mob.mkdir(parents=True, exist_ok=True)
+for size in (192, 512):
+    img.resize((size, size), Image.LANCZOS).save(mob / f"icon-{size}.png")
+bg = Image.new("RGBA", (S, S), (1, 8, 5, 255))
+bg.alpha_composite(img.resize((int(S * .8), int(S * .8)), Image.LANCZOS), (int(S * .1), int(S * .1)))
+bg.save(mob / "maskable-512.png")
 img.save(out / "icon.ico", sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
 print("icon written to", out)
