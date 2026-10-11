@@ -286,10 +286,31 @@ function toast(d) {
 }
 function voiceInfo(v) {
   if (!v) return;
-  $('#chip-mic').className = 'chip ' + (v.ready ? 'on' : 'bad');
-  $('#chip-mic').textContent = v.ready ? 'MIC ONLINE' : 'MIC OFFLINE';
+  $('#chip-mic').className = 'chip ' + (v.ready ? 'on' : v.phase === 'loading' ? '' : 'bad');
+  $('#chip-mic').textContent = v.ready ? 'MIC ONLINE' : v.phase === 'loading' ? 'MIC LOADING' : 'MIC OFFLINE';
   $('#chip-lock').className = 'chip ' + (v.locked ? 'on' : '');
   $('#chip-lock').textContent = v.locked ? 'VOICE LOCKED' : 'VOICE ID OFF';
+  const mic = $('#mic'), text = $('#mic-text');
+  mic.className = v.ready ? 'ready' : v.phase === 'loading' ? 'loading' : 'offline';
+  text.textContent = v.ready ? `מקשיב — אמור "${v.wake}" ואז את הפקודה`
+    : v.phase === 'loading' ? 'טוען את זיהוי הקול… (בפעם הראשונה כמה דקות)'
+    : v.phase === 'off' ? 'הקול כבוי (voice.enabled בהגדרות)'
+    : `המיקרופון לא זמין: ${v.error || ''}`;
+}
+const WAVE_BARS = 28;
+function buildWave() { $('#mic .wave').innerHTML = '<i></i>'.repeat(WAVE_BARS); }
+let waveLevel = 0;
+function wave(v) {
+  waveLevel = Math.max(v, waveLevel * .82);
+  const bars = $('#mic .wave').children, t = performance.now() / 120;
+  for (let i = 0; i < bars.length; i++) {
+    const shape = .35 + .65 * Math.abs(Math.sin(i * .9 + t));
+    bars[i].style.transform = `scaleY(${.08 + Math.min(1, waveLevel * 1.6) * shape})`;
+  }
+}
+function openKeyboard(open) {
+  $('#cmd').hidden = !open;
+  if (open) $('#cmd-input').focus(); else $('#cmd-input').blur();
 }
 function link(ok) {
   $('#chip-link').className = 'chip ' + (ok ? 'on' : 'bad');
@@ -300,7 +321,7 @@ function link(ok) {
 const handlers = {
   theme: setTheme, status: setState, dock: renderDock, stats, log, reply, transcript,
   tts: playTTS, tts_stop: () => stopTTS(false), confirm: confirmBox, enroll, progress, toast, voice: voiceInfo,
-  level: v => { reactor?.setLevel(v); const m = $('#enroll .meter i'); if (m) m.style.width = `${Math.min(100, v * 140)}%`; },
+  level: v => { reactor?.setLevel(v); wave(v); const m = $('#enroll .meter i'); if (m) m.style.width = `${Math.min(100, v * 140)}%`; },
   verify: d => { if (d.ok) reactor?.pulse(.4); },
   reload_hud: () => { sessionStorage.setItem('jarvis-booted', '1'); location.reload(); },
   user: () => {},
@@ -333,11 +354,16 @@ function wireInput() {
     transcript({ text });
     reactor?.pulse(.5);
     api('/api/command', { text });
+    openKeyboard(false);
   });
+  $('#kbd-btn').addEventListener('click', () => openKeyboard($('#cmd').hidden));
   addEventListener('keydown', e => {
     const typing = document.activeElement === input;
-    if (e.key === 'Escape') { if (typing && input.value) { input.value = ''; return; } input.blur(); api('/api/ui', { cmd: 'hide' }); }
-    else if ((e.key === '/' || e.key === 'Enter') && !typing) { e.preventDefault(); input.focus(); }
+    if (e.key === 'Escape') {
+      if (typing) { input.value = ''; openKeyboard(false); return; }
+      api('/api/ui', { cmd: 'hide' });
+    }
+    else if ((e.key === '/' || e.key === 'Enter') && !typing) { e.preventDefault(); openKeyboard(true); }
     else if (e.key === 'F5') { e.preventDefault(); handlers.reload_hud(); }
     else if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) { e.preventDefault(); api('/api/ui', { cmd: 'devtools' }); }
   });
@@ -351,6 +377,7 @@ function wireInput() {
 // ---------------------------------------------------------------- go
 boot();
 clock(); setInterval(clock, 1000);
+buildWave();
 wireInput();
 await initScene();
 renderQuick();

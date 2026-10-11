@@ -27,6 +27,18 @@ ENROLL_PHRASES = [
 ]
 
 
+def _friendly_voice_error(e: Exception) -> str:
+    msg = str(e)
+    if isinstance(e, ImportError):
+        return "חסרים רכיבי הקול. הפעל שוב את install.bat."
+    low = msg.lower()
+    if "no default input" in low or "invalid device" in low or "error querying device" in low or "portaudio" in low:
+        return "לא נמצא מיקרופון. חבר מיקרופון ובדוק בהגדרות הפרטיות של Windows שמותר לאפליקציות להשתמש בו."
+    if "connection" in low or "resolve" in low or "huggingface" in low:
+        return "לא הצלחתי להוריד את מודל הדיבור. בדוק את החיבור לאינטרנט ואמור 'טען מחדש'."
+    return msg[:160]
+
+
 @dataclass
 class Pending:
     question: str
@@ -53,6 +65,8 @@ class Assistant:
         self.tts = None
         self.enrolling: dict | None = None
         self.voice_ready = False
+        self.voice_phase = "off" if not voice else "loading"
+        self.voice_error = ""
         self._work: queue.Queue = queue.Queue()
         self._stop = threading.Event()
         self._speaking_until = 0.0
@@ -84,19 +98,34 @@ class Assistant:
         from .voice.tts import TTS
         self.tts = TTS(self.cfg.get("tts") or {}, self.log)
         self.status("idle")
+        for _ in range(60):  # let the window connect so the first spoken line isn't lost
+            if self.hub._clients:
+                break
+            time.sleep(0.25)
+        time.sleep(2.5)      # boot animation
         if self.voice_wanted and (self.cfg.get("voice") or {}).get("enabled", True):
+            self.say("מאתחל את מערכת הקול. בפעם הראשונה זה לוקח כמה דקות.")
             self.start_voice()
         else:
+            self.voice_phase = "off"
             self.publish_voice_info()
-        self.say(self._greeting())
+        if not self.enrolling:
+            self.say(self._greeting())
 
     def _greeting(self) -> str:
         h = time.localtime().tm_hour
         part = "בוקר טוב" if 5 <= h < 12 else "צהריים טובים" if h < 17 else "ערב טוב" if h < 22 else "לילה טוב"
+        if self.voice_ready:
+            wake = ((self.cfg.get("voice") or {}).get("wake_words") or ["ג'רוויס"])[0]
+            return f"{part}, {self.cfg.get('user_name', '')}. אני מקשיב. תגיד {wake} ואז מה לעשות."
+        if self.voice_phase == "offline":
+            return f"{part}. המיקרופון לא זמין: {self.voice_error}"
         return f"{part}, {self.cfg.get('user_name', '')}. כל המערכות מוכנות."
 
     def start_voice(self):
         vcfg = self.cfg.get("voice") or {}
+        self.voice_phase, self.voice_error = "loading", ""
+        self.publish_voice_info()
         try:
             from .voice.audio import Listener
             from .voice.speaker import SpeakerVerifier
@@ -113,9 +142,11 @@ class Assistant:
             self.listener = Listener(vcfg, self._on_utterance, self._on_level, self._on_speech_start, self.log)
             self.listener.start()
             self.voice_ready = True
+            self.voice_phase = "ready"
             self.log("voice online")
         except Exception as e:
             self.voice_ready = False
+            self.voice_phase, self.voice_error = "offline", _friendly_voice_error(e)
             self.log(f"voice offline: {e}", "error")
             self.log(traceback.format_exc(limit=2), "error")
         self.publish_voice_info()
@@ -161,6 +192,8 @@ class Assistant:
             "wake": (vcfg.get("wake_words") or ["jarvis"])[0],
             "locked": bool(self.speaker and self.speaker.enrolled),
             "voice_id": bool(self.speaker),
+            "phase": self.voice_phase,
+            "error": self.voice_error,
         }, keep=True)
 
     def _on_stats(self, s):
@@ -491,6 +524,9 @@ class Assistant:
             self.hub.publish("toast", {"level": "error", "text": "שגיאה בטעינת הקוד"})
 
     def reload_all(self):
+        if self.voice_wanted and self.voice_phase == "offline":
+            self.log("retrying the microphone…")
+            self.restart_voice()
         self.reload_config()
         self._load_commands(True)
         self._load_plugins(True)

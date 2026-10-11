@@ -219,6 +219,26 @@ body.ready #bar.reveal { transform: translateX(-50%); }
 #reply { font-size: 21px; color: var(--hi); min-height: 1.5em; letter-spacing: .02em;
   text-shadow: 0 0 12px rgba(var(--c-rgb), .7); }
 #reply.typing::after { content: "▌"; animation: blink .6s infinite; margin-inline-start: 2px; }
+/* microphone strip – the main way to talk to JARVIS */
+#mic { display: flex; align-items: center; gap: 14px; padding: 10px 16px; border: 1px solid rgba(var(--c-rgb), .35);
+  background: rgba(var(--c-rgb), .05);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+#mic .mic-icon { width: 24px; height: 24px; flex: none; fill: none; stroke: var(--hi); stroke-width: 1.6;
+  filter: drop-shadow(0 0 6px var(--c)); }
+#mic.ready .mic-icon { animation: blink 2.4s ease-in-out infinite; }
+body[data-state="listening"] #mic .mic-icon { stroke: #fff; animation: none; filter: drop-shadow(0 0 10px var(--c)); }
+#mic .wave { display: flex; align-items: center; gap: 3px; height: 26px; flex: none; }
+#mic .wave i { width: 3px; height: 100%; background: var(--c); box-shadow: 0 0 6px var(--c); transform: scaleY(.08);
+  transition: transform .08s linear; }
+#mic-text { flex: 1; font-size: 15px; color: var(--hi); letter-spacing: .02em; text-align: right; }
+#mic.loading #mic-text::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: dots 1s steps(4) infinite; }
+#mic.offline { border-color: var(--danger); }
+#mic.offline .mic-icon { stroke: var(--danger); filter: none; }
+#mic.offline #mic-text { color: #ffc2c8; font-size: 13px; }
+#mic.offline .wave { opacity: .25; }
+#kbd-btn { flex: none; width: 34px; height: 30px; background: none; border: 1px solid rgba(var(--c-rgb), .35); color: var(--c);
+  font-size: 16px; cursor: pointer; transition: background .2s; }
+#kbd-btn:hover { background: rgba(var(--c-rgb), .2); }
 #cmd { display: flex; align-items: center; gap: 10px; border: 1px solid rgba(var(--c-rgb), .35);
   background: rgba(var(--c-rgb), .05); padding: 9px 16px; transition: border-color .25s, box-shadow .25s;
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
