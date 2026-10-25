@@ -80,9 +80,13 @@ check() {
   if [[ -n ${3:-} ]]; then
     at=$3
   else
-    # Frame with the largest difference from its predecessor = fastest motion.
+    # Fastest sustained motion: highest minimum frame difference over 3 consecutive frames
+    # (a single spike is a scene cut, not motion).
     at=$(ffmpeg -v error -i "$f" -vf "tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-" \
-      -f null - | awk '/pts_time/{split($3,a,":"); t=a[2]} /YAVG/{split($1,b,"="); if (b[2]>m){m=b[2]; best=t}} END{print best+0}')
+      -f null - | awk '/pts_time/{split($3,a,":"); t=a[2]}
+        /YAVG/{split($1,b,"="); p2=p1; p1=c; c=b[2]; n++
+               if (n>=3) { s=c; if (p1<s) s=p1; if (p2<s) s=p2; if (s>m) {m=s; best=t} } }
+        END{print best+0}')
   fi
   rm -rf "$dir"; mkdir -p "$dir"
   ffmpeg -v error -ss "$(awk -v t="$at" 'BEGIN{t-=2/60; print (t<0)?0:t}')" -i "$f" -frames:v 5 "$dir/frame_%d.png"
