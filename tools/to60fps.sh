@@ -15,8 +15,8 @@
 # Env: JOBS (parallel segments, default = CPU cores), WORK (work dir), OUT (output file).
 set -euo pipefail
 
-SEG=5      # segment length, seconds
-PAD=0.3    # extra input read so every segment has exactly SEG*60 frames
+SEG=5      # segment length, seconds; a remainder under 1 s joins the last segment
+PAD=0.3    # extra input read on both sides so every segment holds exactly its frames of the 60 fps grid
 VF="minterpolate=fps=60:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=fdiff"
 
 cmd=${1:?usage: $0 all|inspect|segments|check|join|verify|split INPUT}
@@ -31,7 +31,14 @@ mkdir -p "$WORK"
 log() { echo "[$(date '+%F %T')] $*" | tee -a "$LOG"; }
 probe() { ffprobe -v error "$@"; }
 duration() { probe -show_entries format=duration -of csv=p=0 "$1"; }
-nseg() { awk -v d="$(duration "$INPUT")" -v s=$SEG 'BEGIN{n=int(d/s); if (d-n*s>0.001) n++; print n}'; }
+# Video length = last frame timestamp + one frame (the container duration can include longer audio).
+vdur() {
+  [[ -s $WORK/vdur ]] || probe -select_streams v:0 -show_entries packet=pts_time -of csv=p=0 "$INPUT" | sort -g | tail -1 |
+    awk -v r="$(probe -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 "$INPUT")" \
+      '{split(r,f,"/"); printf "%.6f\n", $1 + f[2]/f[1]}' > "$WORK/vdur"
+  cat "$WORK/vdur"
+}
+nseg() { awk -v d="$(vdur)" -v s=$SEG 'BEGIN{n=int(d/s); if (d-n*s>=1 || n==0) n++; print n}'; }
 
 inspect() {
   echo "== $INPUT"
@@ -49,12 +56,22 @@ segment() {
   out=$WORK/seg$nn.mkv tmp=$WORK/tmp_seg$nn.mkv
   [[ -s $out ]] && return 0
   s=$((i * SEG))
-  d=$(awk -v t="$(duration "$INPUT")" -v s=$s -v l=$SEG 'BEGIN{r=t-s; print (r<l)?r:l}')
+  # Last segment runs to the end of the input.
+  d=$(awk -v t="$(vdur)" -v s=$s -v l=$SEG -v last=$(( i == $(nseg) - 1 )) 'BEGIN{print last ? t-s : l}')
   t0=$(date +%s)
-  ffmpeg -nostdin -v error -y -ss "$s" -t "$(awk -v d="$d" -v p=$PAD 'BEGIN{print d+p}')" -i "$INPUT" \
-    -vf "$VF" -t "$d" -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -an "$tmp"
+  # -copyts keeps source timestamps, so minterpolate puts every segment on the same global
+  # 60 fps grid; trim then keeps exactly the grid frames in [s, s+d) - no hitches at the joins.
+  # tpad clones the final frame so the end of the video is interpolated too.
+  ffmpeg -nostdin -v error -y -copyts -ss "$(awk -v s=$s -v p=$PAD 'BEGIN{print (s>p)?s-p:0}')" \
+    -t "$(awk -v d="$d" -v p=$PAD 'BEGIN{print d+2*p}')" -i "$INPUT" \
+    -vf "tpad=stop_mode=clone:stop_duration=1,$VF,trim=start=$(awk -v s=$s 'BEGIN{print s-0.001}'):end=$(awk -v s=$s -v d="$d" 'BEGIN{print s+d-0.001}'),setpts=PTS-STARTPTS" \
+    -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -an "$tmp"
+  local want got
+  want=$(awk -v s=$s -v d="$d" 'BEGIN{b=(s+d)*60-0.06; n=int(b); if (n<b) n++; print n-s*60}')
+  got=$(probe -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -of csv=p=0 "$tmp")
+  [[ $got == "$want" ]] || { log "seg$nn FAILED: $got frames, expected $want"; rm -f "$tmp"; return 1; }
   mv "$tmp" "$out"
-  log "seg$nn done ($s-$(awk -v s=$s -v d="$d" 'BEGIN{print s+d}')s) in $(( $(date +%s) - t0 ))s"
+  log "seg$nn done, $got frames ($s-$(awk -v s=$s -v d="$d" 'BEGIN{print s+d}')s) in $(( $(date +%s) - t0 ))s"
   # Estimate total after the first finished segment (mkdir is atomic across workers).
   if mkdir "$WORK/.eta" 2>/dev/null; then
     n=$(nseg)
