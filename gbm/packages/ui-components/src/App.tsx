@@ -94,6 +94,9 @@ function StartScreen() {
   const [managerName, setManagerName] = useState('');
   const [experience, setExperience] = useState<ManagerExperience>('professional');
   const [policy, setPolicy] = useState<'when_needed' | 'never'>('when_needed');
+  const [rosterPolicy, setRosterPolicy] = useState<'real_only' | 'placeholders'>('real_only');
+  const [playerDataset, setPlayerDataset] = useState<unknown>(undefined);
+  const [datasetInfo, setDatasetInfo] = useState('');
   return (
     <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-3xl flex-col gap-4 px-4 py-8">
       <Logo />
@@ -103,7 +106,7 @@ function StartScreen() {
           onSubmit={(e) => {
             e.preventDefault();
             if (!managerName.trim()) return;
-            void newCareer({ careerName: careerName.trim() || 'Career', managerName: managerName.trim(), experience, fictionalCoachPolicy: policy });
+            void newCareer({ careerName: careerName.trim() || 'Career', managerName: managerName.trim(), experience, fictionalCoachPolicy: policy, rosterPolicy, playerDataset });
           }}
         >
           <Field label="Your name (head coach)">
@@ -123,9 +126,30 @@ function StartScreen() {
               <option value="never">Never (real coaches only)</option>
             </select>
           </Field>
+          <Field label="Player rosters">
+            <select className={inputCls} value={rosterPolicy} onChange={(e) => setRosterPolicy(e.target.value as 'real_only' | 'placeholders')} data-testid="roster-policy">
+              <option value="real_only">Real players only (clubs without real rosters are not simulated)</option>
+              <option value="placeholders">Allow labelled fictional placeholders where real rosters are missing</option>
+            </select>
+          </Field>
+          <Field label="Real player dataset (JSON, optional)">
+            <input type="file" accept=".json" className="text-xs" onChange={async (e) => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              try {
+                const j = JSON.parse(await f.text());
+                setPlayerDataset(j);
+                setDatasetInfo(`${(j.players ?? []).length} players, ${(j.sources ?? []).length} sources loaded — validated on create.`);
+              } catch (err) {
+                setDatasetInfo(`Invalid JSON: ${(err as Error).message}`);
+              }
+            }} />
+            {datasetInfo && <span className="text-xs text-ink">{datasetInfo}</span>}
+          </Field>
           <p className="text-xs text-muted sm:col-span-2">
-            Season {seasonLabel(2026)} world: real clubs and coaches researched on 2026-11-03 (see Data Sources). Player rosters are
-            fictional generated players until an authorized player dataset is imported.
+            Season {seasonLabel(2026)} world: real clubs and coaches researched on 2026-11-03 (see Data Sources). The built-in dataset contains
+            no verified player rosters yet, so with “real players only” no competition can be simulated until you import a verified
+            player dataset (format: <code>{'{ sources: [...], players: [...] }'}</code>, see DATA_SOURCES.md). Placeholders are clearly marked FICTIONAL.
           </p>
           <div className="sm:col-span-2"><Button variant="primary" type="submit" data-testid="create-career">Create world &amp; choose club</Button></div>
         </form>

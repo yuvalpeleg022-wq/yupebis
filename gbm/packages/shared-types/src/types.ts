@@ -133,6 +133,11 @@ export interface Player {
   source: DataSource;
   /** External reference (e.g. import source id). */
   sourceRef: string | null;
+  /**
+   * How the game ratings were obtained: from real statistics, a league
+   * baseline (real player without usable stats), or generation (fictional).
+   */
+  ratingBasis: 'statistics' | 'league_baseline' | 'generated' | 'imported_attributes';
   draftYear: number | null;
   createdAt: string;
   updatedAt: string;
@@ -227,6 +232,8 @@ export interface Club {
   /** Board-approved budget for coaching staff salaries per season. */
   staffBudget: number;
   primaryColor: string; // neutral UI accent (no branding)
+  /** Where the starting roster came from. */
+  rosterSource: 'real' | 'mixed' | 'placeholder' | 'missing';
   source: DataSource;
   sourceRef: string | null;
   verification: Verification;
@@ -744,6 +751,13 @@ export interface CareerMeta {
    * suitable real coach is available; 'never' keeps the market real-only.
    */
   fictionalCoachPolicy: 'when_needed' | 'never';
+  /**
+   * 'real_only' (default): clubs use only real players; clubs without enough
+   * real players are reported and their competitions are not simulated.
+   * 'placeholders': the user explicitly allowed labelled fictional placeholder
+   * players for clubs whose real roster data is missing.
+   */
+  rosterPolicy: 'real_only' | 'placeholders';
 }
 
 /** The complete, normalized game world held in memory during play. */

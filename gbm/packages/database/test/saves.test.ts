@@ -7,7 +7,7 @@ describe('save games', async () => {
   const SQL = await initSqlJs();
 
   it('round-trips a career through SQLite without losing data', async () => {
-    const world = createCareer({ careerName: 'Persist', managerName: 'Tester', userClubRef: 'el:pao', seed: 99 });
+    const world = createCareer({ careerName: 'Persist', managerName: 'Tester', userClubRef: 'el:pao', seed: 99, rosterPolicy: 'placeholders' });
     advance(world, 'month');
     advance(world, 'month');
     const storage = new MemoryStorage();
@@ -26,7 +26,7 @@ describe('save games', async () => {
   });
 
   it('passes SQLite integrity and foreign-key checks', () => {
-    const world = createCareer({ careerName: 'FK', managerName: 'T', userClubRef: 'nba:mia', seed: 3 });
+    const world = createCareer({ careerName: 'FK', managerName: 'T', userClubRef: 'nba:mia', seed: 3, rosterPolicy: 'placeholders' });
     advance(world, 'month');
     const db = new SQL.Database();
     saveWorld(db, world);
@@ -39,7 +39,7 @@ describe('save games', async () => {
   });
 
   it('keeps a backup and recovers from a corrupted main save', async () => {
-    const world = createCareer({ careerName: 'Crash', managerName: 'T', userClubRef: 'nba:okc', seed: 4 });
+    const world = createCareer({ careerName: 'Crash', managerName: 'T', userClubRef: 'nba:okc', seed: 4, rosterPolicy: 'placeholders' });
     const storage = new MemoryStorage();
     const saves = new SaveManager(SQL, storage);
     await saves.save(world);

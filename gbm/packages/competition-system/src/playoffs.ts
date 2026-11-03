@@ -118,8 +118,13 @@ export function recordPlayoffResult(world: World, seriesId: string, winnerId: st
   }
   s.winnerId = s.highWins >= needed ? s.highSeedId : s.lowSeedId;
 
-  const roundSeries = seriesForLeague(world, s.leagueId, s.season).filter((x) => x.round === s.round);
-  if (roundSeries.length === 1) {
+  const all = seriesForLeague(world, s.leagueId, s.season);
+  const roundSeries = all.filter((x) => x.round === s.round);
+  // The final is identified from the bracket size, not from how many series
+  // currently exist (a sibling series may not have been created yet).
+  const firstRound = all.filter((x) => x.round === 0).length;
+  const finalRound = Math.round(Math.log2(firstRound * 2)) - 1;
+  if (s.round === finalRound) {
     return { series: s, decided: true, championDecided: true, championId: s.winnerId };
   }
   // Create the next-round series when the sibling series has finished.

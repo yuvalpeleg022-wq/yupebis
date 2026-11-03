@@ -4,7 +4,7 @@ import { advance, createCareer, leagueStatus } from '../src';
 
 describe('full season advancement', () => {
   it('plays a complete season with playoffs and rolls over', () => {
-    const world = createCareer({ careerName: 'Season', managerName: 'Tester', userClubRef: 'el:rma', seed: 777 });
+    const world = createCareer({ careerName: 'Season', managerName: 'Tester', userClubRef: 'el:rma', seed: 777, rosterPolicy: 'placeholders' });
     const t0 = Date.now();
     let guard = 0;
     while (world.meta.season === 2026 && guard++ < 2000) {
@@ -37,5 +37,22 @@ describe('full season advancement', () => {
     expect(real.length / employed.length).toBeGreaterThan(0.8);
     // No duplicate player ids and every contract points to a real player.
     for (const c of Object.values(world.contracts)) expect(world.players[c.playerId]).toBeTruthy();
+  });
+});
+
+describe('playoff integrity', () => {
+  it('crowns exactly one champion per competition, the winner of the final', () => {
+    const world = createCareer({ careerName: 'PO', managerName: 'T', userClubRef: 'el:oly', seed: 31, rosterPolicy: 'placeholders' });
+    while (world.meta.season === 2026) advance(world, 'month');
+    for (const l of Object.values(world.leagues).filter((x) => x.active)) {
+      const sums = world.seasonSummaries.filter((s) => s.season === 2026 && s.leagueId === l.id);
+      expect(sums).toHaveLength(1);
+      const series = Object.values(world.series).filter((s) => s.leagueId === l.id && s.season === 2026);
+      const lastRound = Math.max(...series.map((s) => s.round));
+      const final = series.filter((s) => s.round === lastRound);
+      expect(final).toHaveLength(1);
+      expect(sums[0].championId).toBe(final[0].winnerId);
+      expect(series.every((s) => s.winnerId)).toBe(true);
+    }
   });
 });

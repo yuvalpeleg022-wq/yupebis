@@ -3,6 +3,7 @@ import initSqlJs from 'sql.js';
 import type { World } from '@gbm/shared-types';
 import { invalidateIndexes } from '@gbm/shared-types';
 import { SaveManager, type SaveInfo } from '@gbm/database';
+import { loadRealDataset2026, validateDataset } from '@gbm/data-import';
 import { advanceDay, assignUserToClub, blockingIssues, createCareer, type AdvanceMode, type ManagerExperience } from '@gbm/game-engine';
 import type { PlatformServices } from './platform';
 
@@ -39,7 +40,7 @@ interface GameState {
 
   boot(platform: PlatformServices): Promise<void>;
   refreshCareers(): Promise<void>;
-  newCareer(o: { careerName: string; managerName: string; experience: ManagerExperience; fictionalCoachPolicy: 'when_needed' | 'never' }): Promise<void>;
+  newCareer(o: { careerName: string; managerName: string; experience: ManagerExperience; fictionalCoachPolicy: 'when_needed' | 'never'; rosterPolicy: 'real_only' | 'placeholders'; playerDataset?: unknown }): Promise<void>;
   chooseClub(clubId: string): void;
   loadCareer(careerId: string): Promise<void>;
   closeCareer(): Promise<void>;
@@ -98,7 +99,13 @@ export const useGame = create<GameState>((set, get) => ({
     set({ busy: { label: 'Building the basketball world…', progress: 0 } });
     await new Promise((r) => setTimeout(r, 30));
     try {
-      const world = createCareer({ careerName: o.careerName, managerName: o.managerName, managerExperience: o.experience, fictionalCoachPolicy: o.fictionalCoachPolicy });
+      let dataset = undefined;
+      if (o.playerDataset) {
+        const base = loadRealDataset2026();
+        const extra = o.playerDataset as { sources?: unknown[]; players?: unknown[] };
+        dataset = validateDataset({ sources: [...base.sources, ...(extra.sources ?? [])], clubs: base.clubs, coaches: base.coaches, players: [...base.players, ...(extra.players ?? [])] }, `${base.name} + imported players`, base.season);
+      }
+      const world = createCareer({ careerName: o.careerName, managerName: o.managerName, managerExperience: o.experience, fictionalCoachPolicy: o.fictionalCoachPolicy, rosterPolicy: o.rosterPolicy, dataset });
       set({ world, version: get().version + 1, route: { screen: 'dashboard' }, history: [] });
     } catch (e) {
       get().toast((e as Error).message, 'bad');

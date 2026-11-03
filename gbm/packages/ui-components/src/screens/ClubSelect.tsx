@@ -4,13 +4,15 @@ import { useGame, useWorld } from '../store';
 import { Badge, Button, Card, Field, TableWrap, inputCls, td, th } from '../components/ui';
 import { PageTitle, money } from './common';
 
+const ROSTER_TONE = { real: 'real', mixed: 'warn', placeholder: 'fictional', missing: 'bad' } as const;
 const STATUS_TONE: Record<FinancialStatus, 'good' | 'accent' | 'neutral' | 'warn' | 'bad'> = { wealthy: 'good', healthy: 'accent', stable: 'neutral', tight: 'warn', in_debt: 'bad' };
 
 /** Global, searchable club selection (career start). */
 export function ClubSelect({ initial }: { initial?: boolean }) {
   const world = useWorld();
   const chooseClub = useGame((s) => s.chooseClub);
-  const rows = useMemo(() => clubDirectory(world), [world]);
+  const rows = useMemo(() => clubDirectory(world).filter((r) => world.leagues[r.leagueId].active), [world]);
+  const locked = Object.values(world.leagues).filter((l) => !l.active);
   const [f, setF] = useState<ClubFilter>({ minReputation: 0, maxReputation: 100 });
   const [sort, setSort] = useState<'reputation' | 'name' | 'position' | 'cash'>('reputation');
   const countries = [...new Set(rows.map((r) => r.country))].sort();
@@ -23,6 +25,13 @@ export function ClubSelect({ initial }: { initial?: boolean }) {
   return (
     <div className={initial ? 'safe-top safe-bottom mx-auto max-w-6xl px-4 py-6' : ''}>
       <PageTitle title="Choose your club" sub={`${rows.length} clubs in ${leagues.length} competitions. You will be the head coach of ONE club; every other club is run by the AI.`} />
+      {locked.length > 0 && (
+        <div className="mb-3 rounded-lg border border-warn/40 bg-warn/10 p-3 text-sm">
+          <strong>{locked.length} competition(s) cannot be simulated</strong> because real player rosters are missing:
+          <ul className="mt-1 list-disc pl-5 text-xs">{locked.map((l) => <li key={l.id}>{l.name}: {l.dataNote}</li>)}</ul>
+          {rows.length === 0 && <p className="mt-2">No club is currently playable. Start a new career with a verified player dataset, or allow labelled placeholders.</p>}
+        </div>
+      )}
       <Card title="Filters">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Field label="Search"><input className={inputCls} placeholder="Club or city" value={f.text ?? ''} onChange={(e) => setF({ ...f, text: e.target.value })} data-testid="club-search" /></Field>
@@ -66,7 +75,7 @@ export function ClubSelect({ initial }: { initial?: boolean }) {
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
         <Card title={`${list.length} clubs`}>
           <TableWrap>
-            <thead><tr><th className={th}>Club</th><th className={th}>League</th><th className={th}>Rep</th><th className={th}>Pos</th><th className={th}>Finances</th><th className={th}>Head coach</th></tr></thead>
+            <thead><tr><th className={th}>Club</th><th className={th}>League</th><th className={th}>Rep</th><th className={th}>Pos</th><th className={th}>Finances</th><th className={th}>Head coach</th><th className={th}>Roster</th></tr></thead>
             <tbody>
               {list.map((r) => (
                 <tr key={r.clubId} onClick={() => setPicked(r.clubId)} className={`cursor-pointer hover:bg-surface-2 ${picked === r.clubId ? 'bg-accent/10' : ''}`} data-testid="club-row">
@@ -76,6 +85,7 @@ export function ClubSelect({ initial }: { initial?: boolean }) {
                   <td className={td}>{r.position ? `${r.position}${r.positionProjected ? 'ᵖ' : ''}/${r.leagueSize}` : '—'}</td>
                   <td className={td}><Badge tone={STATUS_TONE[r.financialStatus]}>{r.financialStatus.replace('_', ' ')}</Badge></td>
                   <td className={td}>{r.headCoach ?? <span className="text-muted">vacant</span>} {r.headCoach && <Badge tone={r.headCoachReal ? 'real' : 'fictional'}>{r.headCoachReal ? 'Real' : 'Fictional'}</Badge>}</td>
+                  <td className={td}><Badge tone={ROSTER_TONE[world.clubs[r.clubId].rosterSource]}>{world.clubs[r.clubId].rosterSource}</Badge></td>
                 </tr>
               ))}
             </tbody>

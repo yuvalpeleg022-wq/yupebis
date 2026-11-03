@@ -18,5 +18,9 @@
     "@gbm/ai-manager": "workspace:*",
     "@gbm/data-import": "workspace:*",
     "@gbm/staff-system": "workspace:*"
+  },
+  "devDependencies": {
+    "@gbm/database": "workspace:*",
+    "sql.js": "^1.15.2"
   }
 }

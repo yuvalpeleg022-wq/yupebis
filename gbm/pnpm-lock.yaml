@@ -221,6 +221,13 @@ importers:
       '@gbm/transfer-system':
         specifier: workspace:*
         version: link:../transfer-system
+    devDependencies:
+      '@gbm/database':
+        specifier: workspace:*
+        version: link:../database
+      sql.js:
+        specifier: ^1.15.2
+        version: 1.15.2
 
   packages/player-system:
     dependencies:

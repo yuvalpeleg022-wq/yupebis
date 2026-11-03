@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { coachDataReport, importCoaches, importPlayers, parseCsv } from '@gbm/data-import';
+import { coachDataReport, importCoaches, importPlayers, parseCsv, playerDataReport } from '@gbm/data-import';
 import { makeFictionalCoach } from '@gbm/game-engine';
 import { Rng } from '@gbm/shared-types';
 import { useGame, useWorld } from '../store';
@@ -12,6 +12,7 @@ export function DataSources() {
   const [log, setLog] = useState<string[]>([]);
   const r = coachDataReport(world);
   const issues = r.missingOrUnverifiedAssignments;
+  const pr = playerDataReport(world);
   return (
     <div>
       <PageTitle title="Data sources & verification" sub={world.meta.datasetName} />
@@ -46,6 +47,17 @@ export function DataSources() {
             }} /></label>
           </div>
           {log.length > 0 && <ul className="mt-3 max-h-48 overflow-y-auto rounded bg-surface-2 p-2 text-xs">{log.map((l, i) => <li key={i}>{l}</li>)}</ul>}
+        </Card>
+        <Card title="Real player database">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+            <Stat label="Real players" value={pr.realPlayers} /><Stat label="Rated from stats" value={pr.realPlayersRatedFromStats} />
+            <Stat label="Clubs with real roster" value={`${pr.clubsWithRealRoster}/${pr.clubs.length}`} /><Stat label="Fictional placeholders" value={pr.placeholderPlayers} />
+          </div>
+          <p className="mt-2 text-xs text-muted">Playable: {pr.playableCompetitions.join(', ') || 'none'}.</p>
+          <TableWrap>
+            <thead><tr>{['Club', 'League', 'Real', 'Placeholders', 'Min', 'Status'].map((h) => <th key={h} className={th}>{h}</th>)}</tr></thead>
+            <tbody>{pr.clubs.map((c) => <tr key={c.clubId}><td className={td}>{c.name}</td><td className={td}>{c.league}</td><td className={td}>{c.real}</td><td className={td}>{c.placeholders}</td><td className={td}>{c.required}</td><td className={td}><Badge tone={c.status === 'real' ? 'real' : c.status === 'missing' ? 'bad' : 'fictional'}>{c.status}</Badge></td></tr>)}</tbody>
+          </TableWrap>
         </Card>
         <Card title={`Sources (${r.sources.length})`}>
           <ul className="space-y-1 text-xs">{r.sources.map((s) => <li key={s.id}><a className="text-accent" href={s.url} target="_blank" rel="noreferrer">{s.title}</a> <span className="text-muted">accessed {s.accessedOn}</span></li>)}</ul>

@@ -9,6 +9,7 @@ test('create a career, choose a club, play, save, close, reopen and continue', a
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
   await page.getByTestId('manager-name').fill('E2E Coach');
+  await page.getByTestId('roster-policy').selectOption('placeholders');
   await page.getByTestId('create-career').click();
   await expect(page.getByText('Choose your club')).toBeVisible({ timeout: 60_000 });
   await page.getByTestId('club-search').fill('Panathinaikos');
@@ -51,6 +52,7 @@ for (const width of [360, 390, 430, 768, 1280, 1920]) {
     await page.goto('/');
     await noHorizontalOverflow(page);
     await page.getByTestId('manager-name').fill('Layout');
+    await page.getByTestId('roster-policy').selectOption('placeholders');
     await page.getByTestId('create-career').click();
     await expect(page.getByText('Choose your club')).toBeVisible({ timeout: 60_000 });
     await noHorizontalOverflow(page);
@@ -72,3 +74,12 @@ for (const width of [360, 390, 430, 768, 1280, 1920]) {
     }
   });
 }
+
+test('real-only mode reports missing rosters instead of inventing players', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  await page.getByTestId('manager-name').fill('Real Only');
+  await page.getByTestId('create-career').click();
+  await expect(page.getByText('Choose your club')).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByText(/cannot be simulated because real player rosters are missing/)).toBeVisible();
+});

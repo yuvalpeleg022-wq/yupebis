@@ -227,6 +227,16 @@ export function aiFillRoster(world: World, clubId: string, rng: Rng, maxSignings
     }
     if (!signed) break;
   }
+  // Emergency: below the league minimum, sign the best eligible player on a minimum deal.
+  for (let guard = 0; guard < 8 && rosterOf(world, clubId).length < rules.rosterMin; guard++) {
+    const salary = rules.salaryCap.minSalary;
+    const pick = freeAgents(world)
+      .filter((p) => validateSigning(world, clubId, p.id, { salary, years: 1 }, 'free_agent').ok)
+      .sort((a, b) => playerOverall(b) - playerOverall(a))[0];
+    if (!pick) break;
+    signContract(world, clubId, pick.id, { salary, years: 1 }, 'free_agent');
+    signings.push({ playerId: pick.id, clubId, salary, years: 1 });
+  }
   return signings;
 }
 

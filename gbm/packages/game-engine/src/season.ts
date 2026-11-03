@@ -175,6 +175,7 @@ export function rolloverSeason(world: World) {
     p.morale = Math.round(p.morale * 0.7 + 65 * 0.3);
   }
   generateRookies(world, rng);
+  youthIntake(world, rng);
   pruneHistory(world);
   for (const club of Object.values(world.clubs)) {
     if (!world.leagues[club.leagueId].active) continue;
@@ -189,6 +190,47 @@ export function rolloverSeason(world: World) {
   for (const league of Object.values(world.leagues)) if (league.active) generateLeagueSchedule(world, league, world.meta.season);
   invalidateIndexes(world);
   addNews(world, 'season', `Welcome to the ${world.meta.season}-${String((world.meta.season + 1) % 100).padStart(2, '0')} season`, 'Contracts have rolled over, rookies have entered the league and the new schedule has been released.', { important: true });
+}
+
+/**
+ * Youth academy intake: every club adds two home-grown prospects per season
+ * (the new-generation path for fictional players). Better academies produce
+ * better prospects. They join the senior roster if there is room.
+ */
+function youthIntake(world: World, rng: Rng) {
+  const positions = ['PG', 'SG', 'SF', 'PF', 'C'] as const;
+  for (const club of Object.values(world.clubs)) {
+    const league = world.leagues[club.leagueId];
+    if (!league.active) continue;
+    const rules = world.rules[league.rulesId];
+    for (let i = 0; i < 2; i++) {
+      const p = generatePlayer(world, {
+        rng, position: rng.pick(positions), age: rng.int(18, 20), overall: Math.round(40 + club.youthRating * 0.15 + rng.normal(0, 4)),
+        potential: Math.round(55 + club.youthRating * 0.25 + rng.normal(0, 7)), onDate: world.meta.currentDate,
+        nationality: league.region === 'north_america' ? 'USA' : club.country,
+      });
+      p.draftYear = world.meta.season;
+      world.players[p.id] = p;
+      invalidateIndexes(world);
+      if (rosterOfClub(world, club.id) < rules.rosterMax) {
+        const salary = rules.salaryCap.minSalary;
+        const contractId = nextId(world, 'ct');
+        world.contracts[contractId] = {
+          id: contractId, playerId: p.id, clubId: club.id, salary, startSeason: world.meta.season, endSeason: world.meta.season + 2,
+          option: 'none', buyout: null, nbaExitClause: false, signedDate: world.meta.currentDate, active: true,
+        };
+        p.clubId = club.id;
+        invalidateIndexes(world);
+        if (club.id === world.meta.userClubId) addNews(world, 'development', `Academy graduate: ${p.firstName} ${p.lastName}`, `${p.firstName} ${p.lastName} (${p.position}, ${ageOn(p.birthDate, world.meta.currentDate)}) joins the senior squad from the youth academy.`, { clubId: club.id, playerId: p.id });
+      }
+    }
+  }
+}
+
+function rosterOfClub(world: World, clubId: string): number {
+  let n = 0;
+  for (const p of Object.values(world.players)) if (p.clubId === clubId && !p.retired) n++;
+  return n;
 }
 
 function generateRookies(world: World, rng: Rng) {

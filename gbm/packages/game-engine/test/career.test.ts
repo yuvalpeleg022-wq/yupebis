@@ -4,7 +4,7 @@ import { createCareer } from '../src';
 
 describe('real-world career creation', () => {
   // No user club yet: the world as it looks on the club-selection screen.
-  const world = createCareer({ careerName: 'Test', managerName: 'Tester', seed: 12345 });
+  const world = createCareer({ careerName: 'Test', managerName: 'Tester', seed: 12345, rosterPolicy: 'placeholders' });
 
   it('assigns every sourced head coach to the correct real club', () => {
     const ds = loadRealDataset2026();
@@ -36,7 +36,7 @@ describe('real-world career creation', () => {
   });
 
   it('the user replaces the real head coach of the chosen club, who joins the market', () => {
-    const w = createCareer({ careerName: 'T2', managerName: 'Tester', userClubRef: 'nba:bos', seed: 5 });
+    const w = createCareer({ careerName: 'T2', managerName: 'Tester', userClubRef: 'nba:bos', seed: 5, rosterPolicy: 'placeholders' });
     const bos = w.meta.userClubId;
     const mazzulla = Object.values(w.staff).find((s) => s.sourceRef === 'coach:joe-mazzulla')!;
     expect(mazzulla.clubId).toBeNull();

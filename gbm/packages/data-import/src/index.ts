@@ -6,6 +6,7 @@ import { Rng, hashString } from '@gbm/shared-types';
 import sourcesJson from '../data/real-2026-27/sources.json';
 import clubsJson from '../data/real-2026-27/clubs.json';
 import coachesJson from '../data/real-2026-27/coaches.json';
+import playersJson from '../data/real-2026-27/players.json';
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -55,6 +56,37 @@ export const RealCoachSchema = z.object({
   notes: z.string().default(''),
 });
 
+const POSITION = z.enum(['PG', 'SG', 'SF', 'PF', 'C']);
+
+/** A real player in the starting-season dataset. Birth date and position are required. */
+export const RealPlayerSchema = z.object({
+  ref: z.string().min(1),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  nationality: z.string().length(3).nullable(),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  heightCm: z.number().min(150).max(240),
+  weightKg: z.number().min(50).max(180),
+  position: POSITION,
+  secondaryPosition: POSITION.nullable(),
+  club: z.string().nullable(),
+  jersey: z.number().int().min(0).max(99).nullable(),
+  status: STATUS,
+  sources: z.array(z.string()).min(1),
+  /** Most recent season's per-game statistics (drives game ratings). */
+  stats: z
+    .object({
+      season: z.number().int(), league: z.string(), gp: z.number(), mpg: z.number(), ppg: z.number(), rpg: z.number(),
+      apg: z.number(), spg: z.number(), bpg: z.number(), topg: z.number().optional(), orpg: z.number().optional(),
+      fgPct: z.number().min(0).max(1), tpPct: z.number().min(0).max(1), ftPct: z.number().min(0).max(1),
+      tpaPg: z.number().optional(), ftaPg: z.number().optional(),
+    })
+    .nullable(),
+  contract: z.object({ salary: z.number().positive(), endSeason: z.number().int(), sources: z.array(z.string()) }).nullable(),
+  notes: z.string().default(''),
+});
+
+export type RealPlayer = z.infer<typeof RealPlayerSchema>;
 export type RealClub = z.infer<typeof RealClubSchema>;
 export type RealCoach = z.infer<typeof RealCoachSchema>;
 export type RealSource = z.infer<typeof SourceSchema>;
@@ -65,15 +97,17 @@ export interface RealDataset {
   sources: RealSource[];
   clubs: RealClub[];
   coaches: RealCoach[];
+  players: RealPlayer[];
 }
 
 /** Statuses strong enough to place a real coach at a club. */
 export const ASSIGNABLE: VerificationStatus[] = ['verified', 'reported'];
 
-export function validateDataset(raw: { sources: unknown; clubs: unknown; coaches: unknown }, name: string, season: number): RealDataset {
+export function validateDataset(raw: { sources: unknown; clubs: unknown; coaches: unknown; players?: unknown }, name: string, season: number): RealDataset {
   const sources = z.array(SourceSchema).parse(raw.sources);
   const clubs = z.array(RealClubSchema).parse(raw.clubs);
   const coaches = z.array(RealCoachSchema).parse(raw.coaches);
+  const players = z.array(RealPlayerSchema).parse(raw.players ?? []);
   const sourceIds = new Set(sources.map((s) => s.id));
   const clubRefs = new Set(clubs.map((c) => c.ref));
   const errors: string[] = [];
@@ -95,12 +129,20 @@ export function validateDataset(raw: { sources: unknown; clubs: unknown; coaches
     assigned.set(c.assignment.club, c.ref);
   }
   for (const c of clubs) for (const s of c.sources) if (!sourceIds.has(s)) errors.push(`${c.ref}: unknown source ${s}`);
+  const playerRefs = new Set<string>();
+  for (const p of players) {
+    if (playerRefs.has(p.ref)) errors.push(`Duplicate player ref ${p.ref}`);
+    playerRefs.add(p.ref);
+    for (const s of p.sources) if (!sourceIds.has(s)) errors.push(`${p.ref}: unknown source ${s}`);
+    if (p.club && !clubRefs.has(p.club)) errors.push(`${p.ref}: unknown club ${p.club}`);
+    if (p.club && !ASSIGNABLE.includes(p.status)) errors.push(`${p.ref}: status ${p.status} cannot carry a club assignment`);
+  }
   if (errors.length) throw new Error(`Invalid dataset ${name}:\n${errors.join('\n')}`);
-  return { name, season, sources, clubs, coaches };
+  return { name, season, sources, clubs, coaches, players };
 }
 
 export function loadRealDataset2026(): RealDataset {
-  return validateDataset({ sources: sourcesJson, clubs: clubsJson, coaches: coachesJson }, 'Real-world 2026-27 (researched 2026-11-03)', 2026);
+  return validateDataset({ sources: sourcesJson, clubs: clubsJson, coaches: coachesJson, players: playersJson }, 'Real-world 2026-27 (researched 2026-11-03)', 2026);
 }
 
 // ---------------------------------------------------------------------------
@@ -351,6 +393,7 @@ export function importPlayers(world: World, rows: Record<string, unknown>[]): Im
     );
     const rng = new Rng(hashString(`${r.firstName}${r.lastName}${r.birthDate}`));
     const attributes = { ...generateAttributes(rng, r.position, r.overall ?? 60) };
+    const hasAttrColumns = ALL_ATTRIBUTES.some((k) => Number((row as Record<string, unknown>)[k]) > 0);
     for (const k of ALL_ATTRIBUTES) {
       const v = Number((row as Record<string, unknown>)[k]);
       if (Number.isFinite(v) && v > 0) attributes[k] = clamp(Math.round(v), 1, 100);
@@ -382,6 +425,7 @@ export function importPlayers(world: World, rows: Record<string, unknown>[]): Im
       retired: false,
       source: 'imported',
       sourceRef: r.sourceRef ?? r.sourceUrl ?? null,
+      ratingBasis: hasAttrColumns ? 'imported_attributes' : 'league_baseline',
       draftYear: null,
       createdAt: now,
       updatedAt: now,
@@ -400,3 +444,46 @@ export function openDataIssue(world: World, issue: Omit<DataIssue, 'id' | 'statu
 }
 
 export { POSITIONS };
+
+// ---------------------------------------------------------------------------
+// Real player database report
+// ---------------------------------------------------------------------------
+
+export interface PlayerDataReport {
+  realPlayers: number;
+  realPlayersRatedFromStats: number;
+  realPlayersBaselineRated: number;
+  placeholderPlayers: number;
+  clubs: { clubId: string; name: string; league: string; real: number; placeholders: number; required: number; status: string }[];
+  clubsWithRealRoster: number;
+  clubsMissingRoster: number;
+  lockedCompetitions: { name: string; note: string }[];
+  playableCompetitions: string[];
+}
+
+export function playerDataReport(world: World): PlayerDataReport {
+  const players = Object.values(world.players).filter((p) => !p.retired);
+  const real = players.filter((p) => p.source !== 'generated');
+  const clubs = Object.values(world.clubs).map((c) => {
+    const roster = players.filter((p) => p.clubId === c.id);
+    const rules = world.rules[world.leagues[c.leagueId].rulesId];
+    return {
+      clubId: c.id, name: c.name, league: world.leagues[c.leagueId].shortName,
+      real: roster.filter((p) => p.source !== 'generated').length,
+      placeholders: roster.filter((p) => p.source === 'generated').length,
+      required: rules.rosterMin, status: c.rosterSource,
+    };
+  });
+  const leagues = Object.values(world.leagues);
+  return {
+    realPlayers: real.length,
+    realPlayersRatedFromStats: real.filter((p) => p.ratingBasis === 'statistics').length,
+    realPlayersBaselineRated: real.filter((p) => p.ratingBasis === 'league_baseline').length,
+    placeholderPlayers: players.filter((p) => p.source === 'generated' && p.draftYear === null).length,
+    clubs,
+    clubsWithRealRoster: clubs.filter((c) => c.status === 'real').length,
+    clubsMissingRoster: clubs.filter((c) => c.real < c.required).length,
+    lockedCompetitions: leagues.filter((l) => !l.active).map((l) => ({ name: l.name, note: l.dataNote ?? '' })),
+    playableCompetitions: leagues.filter((l) => l.active).map((l) => l.name),
+  };
+}

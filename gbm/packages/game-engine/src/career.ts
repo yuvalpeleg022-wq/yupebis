@@ -5,13 +5,14 @@ import type {
   CoachingPhilosophy,
   CareerAmbition,
   Contract,
+  Player,
   Position,
   Staff,
   StaffRole,
   World,
 } from '@gbm/shared-types';
 import { COACH_ATTRIBUTE_KEYS, Rng, clamp, combineSeeds, hashString, invalidateIndexes, nextId } from '@gbm/shared-types';
-import { askingSalary, generatePlayer, playerOverall, preferredYears, randomNationality } from '@gbm/player-system';
+import { askingSalary, attributesFromStats, baselineAttributes, generatePlayer, overallForPosition, playerOverall, preferredYears, randomNationality } from '@gbm/player-system';
 import { RULESETS, generateLeagueSchedule } from '@gbm/competition-system';
 import { DEFAULT_TACTICS } from '@gbm/simulation';
 import { staffPayroll } from '@gbm/finance-system';
@@ -39,6 +40,8 @@ export interface NewCareerOptions {
   /** Dataset club ref (e.g. 'nba:bos') or world club id. Omit to pick a club later (club selection screen). */
   userClubRef?: string;
   managerExperience?: ManagerExperience;
+  /** Default 'real_only'. 'placeholders' fills missing real rosters with labelled fictional players. */
+  rosterPolicy?: 'real_only' | 'placeholders';
   seed?: number;
   fictionalCoachPolicy?: 'when_needed' | 'never';
   dataset?: RealDataset;
@@ -105,6 +108,7 @@ export function createCareer(opts: NewCareerOptions): World {
     datasetName: dataset.name,
     datasetSource: 'verified',
     fictionalCoachPolicy: opts.fictionalCoachPolicy ?? 'when_needed',
+    rosterPolicy: opts.rosterPolicy ?? 'real_only',
   });
   for (const r of Object.values(RULESETS)) world.rules[r.id] = structuredClone(r);
   for (const s of dataset.sources) world.dataSources[s.id] = { ...s };
@@ -144,6 +148,7 @@ export function createCareer(opts: NewCareerOptions): World {
       trainingFocus: 'balanced',
       youthRating: crng.int(30, 80),
       staffBudget: 0,
+      rosterSource: 'missing',
       primaryColor: ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#a855f7', '#14b8a6', '#eab308', '#f97316'][crng.int(0, 7)],
       source: 'verified',
       sourceRef: rc.ref,
@@ -177,13 +182,45 @@ export function createCareer(opts: NewCareerOptions): World {
     }
   }
 
-  // ---- Players (generated: no authorized real player dataset yet) -------
+  // ---- Players: real rosters first --------------------------------------
+  const leagueKeyByClubId: Record<string, string> = {};
+  for (const rc of dataset.clubs) leagueKeyByClubId[clubIdByRef[rc.ref]] = rc.league;
+  addRealPlayers(world, dataset, clubIdByRef, leagueKeyByClubId);
+  invalidateIndexes(world);
   for (const club of Object.values(world.clubs)) {
-    if (!world.leagues[club.leagueId].active) continue;
-    generateRoster(world, club, rng);
+    const rules = world.rules[world.leagues[club.leagueId].rulesId];
+    const real = Object.values(world.players).filter((p) => p.clubId === club.id && p.source !== 'generated').length;
+    const target = Math.min(rules.rosterMax, Math.max(rules.rosterMin, 13));
+    if (real >= rules.rosterMin) {
+      club.rosterSource = 'real';
+      continue;
+    }
+    if (world.meta.rosterPolicy === 'placeholders') {
+      generateRoster(world, club, rng, target - real);
+      club.rosterSource = real > 0 ? 'mixed' : 'placeholder';
+    } else {
+      club.rosterSource = real >= MIN_PLAYABLE_ROSTER ? 'real' : 'missing';
+    }
+    openDataIssue(world, {
+      entity: 'club', entityId: club.id, field: 'roster', severity: 'missing',
+      message: `${club.name}: ${real} real player(s) found for 2026-27; league minimum is ${rules.rosterMin}.${world.meta.rosterPolicy === 'placeholders' ? ` ${target - real} labelled fictional placeholder(s) added by user choice.` : ''}`,
+      candidates: [],
+    });
     invalidateIndexes(world);
   }
-  generateFreeAgents(world, rng);
+  // Fictional free agents exist only when the user allowed placeholders.
+  if (world.meta.rosterPolicy === 'placeholders') generateFreeAgents(world, rng);
+
+  // Competitions can only be simulated when every participant can field a team.
+  for (const league of Object.values(world.leagues)) {
+    if (!league.active) continue;
+    const blocked = Object.values(world.clubs).filter((c) => c.competitionIds.includes(league.id) && c.rosterSource === 'missing');
+    if (blocked.length) {
+      league.active = false;
+      league.dataNote = `Not simulated: real rosters missing for ${blocked.length} club(s) (${blocked.slice(0, 4).map((c) => c.shortName).join(', ')}${blocked.length > 4 ? ', …' : ''}). Import verified rosters or allow labelled placeholders.`;
+    }
+  }
+  for (const club of Object.values(world.clubs)) club.competitionIds = club.competitionIds.filter((id) => world.leagues[id].active || id === club.leagueId);
 
   // ---- Finances & staff budgets -----------------------------------------
   for (const club of Object.values(world.clubs)) setupClubFinances(world, club);
@@ -308,11 +345,10 @@ export function makeFictionalCoach(world: World, rng: Rng, role: StaffRole, leag
 
 const ROSTER_POSITIONS: Position[] = ['PG', 'SG', 'SF', 'PF', 'C', 'PG', 'SG', 'SF', 'PF', 'C', 'SG', 'SF', 'PF', 'PG', 'C'];
 
-function generateRoster(world: World, club: Club, rng: Rng) {
+function generateRoster(world: World, club: Club, rng: Rng, size: number) {
   const league = world.leagues[club.leagueId];
   const rules = world.rules[league.rulesId];
   const na = league.region === 'north_america';
-  const size = na ? 15 : 14;
   const tier = (club.reputation - 65) * 0.25 + rng.normal(0, 2.5);
   const base = (na ? 69 : club.leagueId === 'lg_euroleague' ? 64 : 58) + tier;
   let foreign = 0;
@@ -385,6 +421,55 @@ function setupClubFinances(world: World, club: Club) {
 function expectedSalaryFallback(world: World, club: Club, role: StaffRole): number {
   const league = world.leagues[club.leagueId];
   return expectedSalary({ reputation: 65, experienceYears: 10 }, role, league.salaryScale.max);
+}
+
+export const MIN_PLAYABLE_ROSTER = 8;
+
+/** Adds the dataset's real players to the world, rated from their real statistics. */
+function addRealPlayers(world: World, dataset: RealDataset, clubIdByRef: Record<string, string>, leagueKeyByClubId: Record<string, string>) {
+  const now = new Date().toISOString();
+  for (const rp of dataset.players) {
+    const clubId = rp.club ? clubIdByRef[rp.club] ?? null : null;
+    const leagueKey = clubId ? leagueKeyByClubId[clubId] : rp.stats?.league ?? 'euroleague';
+    const attributes = rp.stats ? attributesFromStats(rp.position, rp.heightCm, rp.stats) : baselineAttributes(rp.position, leagueKey);
+    const ovr = overallForPosition(attributes, rp.position);
+    const age = world.meta.season - Number(rp.birthDate.slice(0, 4));
+    const p: Player = {
+      id: nextId(world, 'p'),
+      firstName: rp.firstName,
+      lastName: rp.lastName,
+      nationality: rp.nationality ?? '',
+      birthDate: rp.birthDate,
+      heightCm: rp.heightCm,
+      weightKg: rp.weightKg,
+      position: rp.position,
+      secondaryPosition: rp.secondaryPosition,
+      clubId,
+      jersey: rp.jersey,
+      attributes,
+      // Potential is a game projection from age and current level, not a real-world claim.
+      potential: clamp(Math.round(ovr + Math.max(0, 26 - age) * 1.6), ovr, 99),
+      morale: 65,
+      fatigue: 0,
+      loyalty: 50,
+      injuryId: null,
+      retired: false,
+      source: 'verified',
+      sourceRef: rp.ref,
+      ratingBasis: rp.stats ? 'statistics' : 'league_baseline',
+      draftYear: null,
+      createdAt: now,
+      updatedAt: now,
+    };
+    world.players[p.id] = p;
+    if (clubId) {
+      const c = addContract(world, p.id, clubId, new Rng(hashString(rp.ref)), world.rules[world.leagues[world.clubs[clubId].leagueId].rulesId].salaryCap.minSalary);
+      if (rp.contract) {
+        c.salary = Math.round(rp.contract.salary);
+        c.endSeason = Math.max(world.meta.season, rp.contract.endSeason);
+      }
+    }
+  }
 }
 
 export { ROLE_LABEL };

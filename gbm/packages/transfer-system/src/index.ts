@@ -85,7 +85,11 @@ export function validateSigning(world: World, clubId: string, playerId: string, 
     errors.push(`Over the salary cap (${fmt(after)} > ${fmt(cap.cap)}). Only minimum contracts (${fmt(cap.minSalary)}) are allowed over the cap.`);
   }
   if (cap.type === 'soft' && cap.luxuryTax && after > cap.luxuryTax) warnings.push('This payroll is above the luxury tax line.');
-  if (cap.type === 'none') {
+  // Emergency rule: a club below the league roster minimum may always add a
+  // minimum-salary player so it can field a team.
+  const emergency = kind === 'free_agent' && rosterOf(world, clubId).length < rules.rosterMin && offer.salary <= cap.minSalary * 1.05;
+  if (emergency) warnings.push('Emergency minimum-salary signing (roster below league minimum).');
+  if (cap.type === 'none' && !emergency) {
     if (after > club.wageBudget) errors.push(`Exceeds the board's wage budget (${fmt(after)} > ${fmt(club.wageBudget)}).`);
     if (club.cash < offer.salary / 12) errors.push('Not enough cash to pay the first month of wages.');
   } else if (club.cash < -50_000_000) {

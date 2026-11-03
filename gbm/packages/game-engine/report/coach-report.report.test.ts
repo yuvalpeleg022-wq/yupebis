@@ -9,7 +9,7 @@ import { createCareer } from '../src';
 
 it('writes COACH_DATA_REPORT.md', () => {
   const ds = loadRealDataset2026();
-  const world = createCareer({ careerName: 'Report', managerName: 'Report', seed: 1 });
+  const world = createCareer({ careerName: 'Report', managerName: 'Report', seed: 1, rosterPolicy: 'placeholders' });
   const r = coachDataReport(world);
   const clubName = (ref: string) => ds.clubs.find((c) => c.ref === ref)?.name ?? ref;
   const leagueOf = (ref: string) => ds.clubs.find((c) => c.ref === ref)?.league ?? '?';

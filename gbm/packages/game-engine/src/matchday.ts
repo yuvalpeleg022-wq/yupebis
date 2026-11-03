@@ -58,6 +58,9 @@ export function playFixture(world: World, fixture: Fixture): MatchOutcome {
   if (fixture.matchId) throw new Error(`Fixture ${fixture.id} already played`);
   const league = world.leagues[fixture.leagueId];
   const rules = world.rules[league.rulesId];
+  // Forfeit (FIBA 20–0) if a club cannot field five players at all.
+  const size = (id: string) => Object.values(world.players).filter((p) => p.clubId === id && !p.retired).length;
+  if (size(fixture.homeId) < 5 || size(fixture.awayId) < 5) return forfeit(world, fixture, size(fixture.homeId) < 5 ? fixture.homeId : fixture.awayId);
   const home = buildSimTeam(world, fixture.homeId);
   const away = buildSimTeam(world, fixture.awayId);
   const userInvolved = fixture.homeId === world.meta.userClubId || fixture.awayId === world.meta.userClubId;
@@ -158,3 +161,23 @@ export function recentUserMatches(world: World, n = 5): Match[] {
 }
 
 export { addDays };
+
+function forfeit(world: World, fixture: Fixture, loserId: string): MatchOutcome {
+  const winnerHome = loserId !== fixture.homeId;
+  const empty = { pts: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0, ftm: 0, fta: 0, oreb: 0, dreb: 0, ast: 0, stl: 0, blk: 0, tov: 0, pf: 0, possessions: 0, fastBreakPts: 0, pointsInPaint: 0, secondChancePts: 0 };
+  const match: Match = {
+    id: nextId(world, 'm'), fixtureId: fixture.id, leagueId: fixture.leagueId, season: fixture.season, date: fixture.date,
+    homeId: fixture.homeId, awayId: fixture.awayId, homeScore: winnerHome ? 20 : 0, awayScore: winnerHome ? 0 : 20,
+    homeQuarters: [winnerHome ? 20 : 0], awayQuarters: [winnerHome ? 0 : 20], overtimes: 0, attendance: 0,
+    homeStats: { ...empty, pts: winnerHome ? 20 : 0 }, awayStats: { ...empty, pts: winnerHome ? 0 : 20 }, seed: 0, events: null,
+  };
+  world.matches[match.id] = match;
+  fixture.matchId = match.id;
+  addNews(world, 'match', `${world.clubs[loserId].name} forfeit`, `${world.clubs[loserId].name} could not field five players and forfeited 20-0.`, { clubId: loserId, important: loserId === world.meta.userClubId });
+  let championDecided: MatchOutcome['championDecided'] = null;
+  if (fixture.stage === 'playoff' && fixture.seriesId) {
+    const upd = recordPlayoffResult(world, fixture.seriesId, winnerHome ? fixture.homeId : fixture.awayId, fixture.date);
+    if (upd.championDecided && upd.championId) championDecided = { leagueId: fixture.leagueId, championId: upd.championId };
+  }
+  return { match, championDecided };
+}

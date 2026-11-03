@@ -205,6 +205,15 @@ CREATE TABLE job_offers (
 );
 `,
   },
+  {
+    version: 2,
+    description: 'Real-player provenance: rating basis, club roster source, roster policy',
+    sql: `
+ALTER TABLE players ADD COLUMN rating_basis TEXT NOT NULL DEFAULT 'generated';
+ALTER TABLE clubs ADD COLUMN roster_source TEXT NOT NULL DEFAULT 'placeholder';
+ALTER TABLE game_saves ADD COLUMN roster_policy TEXT NOT NULL DEFAULT 'placeholders';
+`,
+  },
 ];
 
 export const SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1].version;

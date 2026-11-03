@@ -58,16 +58,16 @@ export function saveWorld(db: Database, world: World) {
   try {
     for (const t of TABLES) db.exec(`DELETE FROM ${t}`);
     const m = world.meta;
-    insertAll(db, 'game_saves', ['career_id', 'career_name', 'manager_name', 'user_club_id', 'season', 'current_date', 'phase', 'seed', 'save_version', 'board_confidence', 'manager_reputation', 'manager_attributes', 'dataset_name', 'dataset_source', 'fictional_coach_policy', 'created_at', 'updated_at'],
-      [[m.careerId, m.careerName, m.managerName, m.userClubId || null, m.season, m.currentDate, m.phase, m.seed, m.saveVersion, m.boardConfidence, m.managerReputation, j(m.managerAttributes), m.datasetName, m.datasetSource, m.fictionalCoachPolicy, m.createdAt, m.updatedAt]]);
+    insertAll(db, 'game_saves', ['career_id', 'career_name', 'manager_name', 'user_club_id', 'season', 'current_date', 'phase', 'seed', 'save_version', 'board_confidence', 'manager_reputation', 'manager_attributes', 'dataset_name', 'dataset_source', 'fictional_coach_policy', 'roster_policy', 'created_at', 'updated_at'],
+      [[m.careerId, m.careerName, m.managerName, m.userClubId || null, m.season, m.currentDate, m.phase, m.seed, m.saveVersion, m.boardConfidence, m.managerReputation, j(m.managerAttributes), m.datasetName, m.datasetSource, m.fictionalCoachPolicy, m.rosterPolicy, m.createdAt, m.updatedAt]]);
     insertAll(db, 'id_counters', ['prefix', 'value'], Object.entries(m.idCounters));
     insertAll(db, 'data_sources', ['id', 'title', 'url', 'publisher', 'accessed_on', 'method'], Object.values(world.dataSources).map((s) => [s.id, s.title, s.url, s.publisher, s.accessedOn, s.method]));
     insertAll(db, 'data_issues', ['id', 'entity', 'entity_id', 'field', 'severity', 'message', 'candidates', 'status'], Object.values(world.dataIssues).map((d) => [d.id, d.entity, d.entityId, d.field, d.severity, d.message, j(d.candidates), d.status]));
     insertAll(db, 'competition_rules', ['id', 'name', 'family', 'definition'], Object.values(world.rules).map((r) => [r.id, r.name, r.family, j(r)]));
     insertAll(db, 'leagues', ['id', 'name', 'short_name', 'country', 'region', 'rules_id', 'tier', 'active', 'format', 'source'], Object.values(world.leagues).map((l) => [l.id, l.name, l.shortName, l.country, l.region, l.rulesId, l.tier, b(l.active), j(l), l.source]));
     const clubs = Object.values(world.clubs);
-    insertAll(db, 'clubs', ['id', 'name', 'short_name', 'city', 'country', 'league_id', 'reputation', 'arena_capacity', 'ticket_price', 'cash', 'wage_budget', 'staff_budget', 'sponsorship', 'tactics', 'rotation_auto', 'ai_personality', 'youth_rating', 'primary_color', 'source', 'source_ref', 'verification'],
-      clubs.map((c) => [c.id, c.name, c.shortName, c.city, c.country, c.leagueId, c.reputation, c.arenaCapacity, c.ticketPrice, Math.round(c.cash), c.wageBudget, c.staffBudget, c.sponsorshipPerSeason, j(c.tactics), b(c.rotation.auto), c.aiPersonality, c.youthRating, c.primaryColor, c.source, c.sourceRef, j(c.verification)]));
+    insertAll(db, 'clubs', ['id', 'name', 'short_name', 'city', 'country', 'league_id', 'reputation', 'arena_capacity', 'ticket_price', 'cash', 'wage_budget', 'staff_budget', 'sponsorship', 'tactics', 'rotation_auto', 'ai_personality', 'youth_rating', 'primary_color', 'roster_source', 'source', 'source_ref', 'verification'],
+      clubs.map((c) => [c.id, c.name, c.shortName, c.city, c.country, c.leagueId, c.reputation, c.arenaCapacity, c.ticketPrice, Math.round(c.cash), c.wageBudget, c.staffBudget, c.sponsorshipPerSeason, j(c.tactics), b(c.rotation.auto), c.aiPersonality, c.youthRating, c.primaryColor, c.rosterSource, c.source, c.sourceRef, j(c.verification)]));
     insertAll(db, 'competitions', ['club_id', 'league_id', 'is_primary'], clubs.flatMap((c) => c.competitionIds.map((l) => [c.id, l, b(l === c.leagueId)])));
     insertAll(db, 'training_programs', ['club_id', 'focus'], clubs.map((c) => [c.id, c.trainingFocus]));
     insertAll(db, 'club_rosters', ['club_id', 'player_id', 'starter_slot', 'target_minutes'], clubs.flatMap((c) => {
@@ -75,8 +75,8 @@ export function saveWorld(db: Database, world: World) {
       return [...ids].filter((id) => world.players[id]).map((id) => [c.id, id, c.rotation.starters.includes(id) ? c.rotation.starters.indexOf(id) : null, Math.round(c.rotation.minutes[id] ?? 0)]);
     }));
     const players = Object.values(world.players);
-    insertAll(db, 'players', ['id', 'first_name', 'last_name', 'nationality', 'birth_date', 'height_cm', 'weight_kg', 'position', 'secondary_position', 'club_id', 'jersey', 'potential', 'morale', 'fatigue', 'loyalty', 'injury_id', 'retired', 'source', 'source_ref', 'draft_year', 'created_at', 'updated_at'],
-      players.map((p) => [p.id, p.firstName, p.lastName, p.nationality, p.birthDate, p.heightCm, p.weightKg, p.position, p.secondaryPosition, p.clubId, p.jersey, p.potential, p.morale, p.fatigue, p.loyalty, p.injuryId, b(p.retired), p.source, p.sourceRef, p.draftYear, p.createdAt, p.updatedAt]));
+    insertAll(db, 'players', ['id', 'first_name', 'last_name', 'nationality', 'birth_date', 'height_cm', 'weight_kg', 'position', 'secondary_position', 'club_id', 'jersey', 'potential', 'morale', 'fatigue', 'loyalty', 'injury_id', 'retired', 'source', 'source_ref', 'rating_basis', 'draft_year', 'created_at', 'updated_at'],
+      players.map((p) => [p.id, p.firstName, p.lastName, p.nationality, p.birthDate, p.heightCm, p.weightKg, p.position, p.secondaryPosition, p.clubId, p.jersey, p.potential, p.morale, p.fatigue, p.loyalty, p.injuryId, b(p.retired), p.source, p.sourceRef, p.ratingBasis, p.draftYear, p.createdAt, p.updatedAt]));
     insertAll(db, 'player_attributes', ['player_id', 'attribute', 'value'], players.flatMap((p) => ALL_ATTRIBUTES.map((k) => [p.id, k, p.attributes[k]])));
     insertAll(db, 'draft_classes', ['player_id', 'season'], players.filter((p) => p.draftYear !== null).map((p) => [p.id, p.draftYear]));
     insertAll(db, 'player_contracts', ['id', 'player_id', 'club_id', 'salary', 'start_season', 'end_season', 'option_type', 'buyout', 'nba_exit_clause', 'signed_date', 'active'],
@@ -143,7 +143,7 @@ export function readSaveMeta(db: Database): World['meta'] | null {
     season: n(r.season), currentDate: s(r.current_date), phase: s(r.phase) as World['meta']['phase'], seed: n(r.seed),
     saveVersion: n(r.save_version), boardConfidence: n(r.board_confidence), managerReputation: n(r.manager_reputation),
     managerAttributes: pj(r.manager_attributes), datasetName: s(r.dataset_name), datasetSource: s(r.dataset_source) as World['meta']['datasetSource'],
-    fictionalCoachPolicy: s(r.fictional_coach_policy) as World['meta']['fictionalCoachPolicy'], createdAt: s(r.created_at), updatedAt: s(r.updated_at),
+    fictionalCoachPolicy: s(r.fictional_coach_policy) as World['meta']['fictionalCoachPolicy'], rosterPolicy: s(r.roster_policy) as World['meta']['rosterPolicy'], createdAt: s(r.created_at), updatedAt: s(r.updated_at),
     idCounters: {},
   };
 }
@@ -178,7 +178,7 @@ export function loadWorld(db: Database): World {
       wageBudget: n(r.wage_budget), staffBudget: n(r.staff_budget), sponsorshipPerSeason: n(r.sponsorship), tactics: pj(r.tactics),
       rotation: { starters: [], minutes: {}, auto: bool(r.rotation_auto) }, aiPersonality: s(r.ai_personality) as Club['aiPersonality'],
       trainingFocus: (focus.get(s(r.id)) ?? 'balanced') as Club['trainingFocus'], youthRating: n(r.youth_rating),
-      primaryColor: s(r.primary_color), source: s(r.source) as Club['source'], sourceRef: ns(r.source_ref), verification: pj(r.verification),
+      primaryColor: s(r.primary_color), rosterSource: s(r.roster_source) as Club['rosterSource'], source: s(r.source) as Club['source'], sourceRef: ns(r.source_ref), verification: pj(r.verification),
     };
     w.clubs[c.id] = c;
   }
@@ -202,7 +202,7 @@ export function loadWorld(db: Database): World {
       secondaryPosition: ns(r.secondary_position) as Player['secondaryPosition'], clubId: ns(r.club_id), jersey: nn(r.jersey),
       attributes: attrs.get(s(r.id))!, potential: n(r.potential), morale: n(r.morale), fatigue: n(r.fatigue), loyalty: n(r.loyalty),
       injuryId: ns(r.injury_id), retired: bool(r.retired), source: s(r.source) as Player['source'], sourceRef: ns(r.source_ref),
-      draftYear: nn(r.draft_year), createdAt: s(r.created_at), updatedAt: s(r.updated_at),
+      ratingBasis: s(r.rating_basis) as Player['ratingBasis'], draftYear: nn(r.draft_year), createdAt: s(r.created_at), updatedAt: s(r.updated_at),
     };
     w.players[p.id] = p;
   }

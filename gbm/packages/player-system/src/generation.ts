@@ -126,6 +126,7 @@ export function generatePlayer(world: Pick<World, 'meta'>, opts: GeneratePlayerO
     retired: false,
     source: opts.source ?? 'generated',
     sourceRef: null,
+    ratingBasis: 'generated',
     draftYear: null,
     createdAt: now,
     updatedAt: now,
