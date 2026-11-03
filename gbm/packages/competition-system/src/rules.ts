@@ -1,0 +1,156 @@
+import type { CompetitionRules } from '@gbm/shared-types';
+
+const APPROX_NOTE =
+  'Gameplay approximation of this competition format. Financial figures are in-game values, not official league figures.';
+
+/**
+ * Rule-set templates. Game structure values (periods, minutes, foul limits,
+ * shot clock) follow the publicly known NBA / FIBA / NCAA formats; roster and
+ * financial values are gameplay defaults that can be edited via data import.
+ */
+export const RULESETS: Record<string, CompetitionRules> = {
+  nba: {
+    id: 'nba',
+    name: 'NBA rules',
+    family: 'NBA',
+    periods: 4,
+    periodMinutes: 12,
+    overtimeMinutes: 5,
+    shotClock: 24,
+    personalFoulLimit: 6,
+    teamFoulBonus: 4,
+    rosterMin: 13,
+    rosterMax: 15,
+    gameRosterMax: 13,
+    foreignPlayerLimit: null,
+    salaryCap: {
+      type: 'soft',
+      cap: 140_000_000,
+      luxuryTax: 170_000_000,
+      luxuryTaxRate: 1.5,
+      minSalary: 1_200_000,
+      maxSalary: 50_000_000,
+      salaryFloor: 126_000_000,
+    },
+    releaseCostShare: 1,
+    allowBuyouts: false,
+    note: APPROX_NOTE,
+  },
+  euroleague: {
+    id: 'euroleague',
+    name: 'EuroLeague (FIBA) rules',
+    family: 'FIBA',
+    periods: 4,
+    periodMinutes: 10,
+    overtimeMinutes: 5,
+    shotClock: 24,
+    personalFoulLimit: 5,
+    teamFoulBonus: 4,
+    rosterMin: 11,
+    rosterMax: 16,
+    gameRosterMax: 12,
+    foreignPlayerLimit: null,
+    salaryCap: {
+      type: 'none',
+      cap: 0,
+      luxuryTax: null,
+      luxuryTaxRate: 0,
+      minSalary: 80_000,
+      maxSalary: 6_000_000,
+      salaryFloor: null,
+    },
+    releaseCostShare: 0.6,
+    allowBuyouts: true,
+    note: APPROX_NOTE,
+  },
+  eurocup: {
+    id: 'eurocup',
+    name: 'EuroCup (FIBA) rules',
+    family: 'FIBA',
+    periods: 4,
+    periodMinutes: 10,
+    overtimeMinutes: 5,
+    shotClock: 24,
+    personalFoulLimit: 5,
+    teamFoulBonus: 4,
+    rosterMin: 10,
+    rosterMax: 16,
+    gameRosterMax: 12,
+    foreignPlayerLimit: null,
+    salaryCap: {
+      type: 'none',
+      cap: 0,
+      luxuryTax: null,
+      luxuryTaxRate: 0,
+      minSalary: 50_000,
+      maxSalary: 2_500_000,
+      salaryFloor: null,
+    },
+    releaseCostShare: 0.6,
+    allowBuyouts: true,
+    note: APPROX_NOTE,
+  },
+  fiba_domestic: {
+    id: 'fiba_domestic',
+    name: 'FIBA domestic league rules',
+    family: 'FIBA',
+    periods: 4,
+    periodMinutes: 10,
+    overtimeMinutes: 5,
+    shotClock: 24,
+    personalFoulLimit: 5,
+    teamFoulBonus: 4,
+    rosterMin: 10,
+    rosterMax: 15,
+    gameRosterMax: 12,
+    foreignPlayerLimit: 6,
+    salaryCap: {
+      type: 'none',
+      cap: 0,
+      luxuryTax: null,
+      luxuryTaxRate: 0,
+      minSalary: 40_000,
+      maxSalary: 3_000_000,
+      salaryFloor: null,
+    },
+    releaseCostShare: 0.6,
+    allowBuyouts: true,
+    note: APPROX_NOTE,
+  },
+  ncaa: {
+    id: 'ncaa',
+    name: 'NCAA rules (two halves)',
+    family: 'FIBA',
+    periods: 2,
+    periodMinutes: 20,
+    overtimeMinutes: 5,
+    shotClock: 30,
+    personalFoulLimit: 5,
+    teamFoulBonus: 6,
+    rosterMin: 10,
+    rosterMax: 15,
+    gameRosterMax: 15,
+    foreignPlayerLimit: null,
+    salaryCap: {
+      type: 'hard',
+      cap: 0,
+      luxuryTax: null,
+      luxuryTaxRate: 0,
+      minSalary: 0,
+      maxSalary: 0,
+      salaryFloor: null,
+    },
+    releaseCostShare: 0,
+    allowBuyouts: false,
+    note: 'College format: players are not paid salaries in this model. Expansion content — not yet playable.',
+  },
+};
+
+export function regulationSeconds(rules: CompetitionRules): number {
+  return rules.periods * rules.periodMinutes * 60;
+}
+
+/** Total player-minutes available per team in regulation (5 on court). */
+export function teamMinutes(rules: CompetitionRules): number {
+  return rules.periods * rules.periodMinutes * 5;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "global-basketball-manager",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Global Basketball Manager — One World. Every League. Your Legacy.",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @gbm/desktop dev",
+    "dev:mobile": "pnpm --filter @gbm/mobile dev",
+    "build": "pnpm --filter @gbm/desktop build && pnpm --filter @gbm/mobile build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "bench": "vitest run --config vitest.bench.config.ts",
+    "report:coaches": "vitest run --config vitest.report.config.ts"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
+  }
+}

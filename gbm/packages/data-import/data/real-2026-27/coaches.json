@@ -1,0 +1,2736 @@
+[
+ {
+  "ref": "coach:quin-snyder",
+  "firstName": "Quin",
+  "lastName": "Snyder",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:atl",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:joe-mazzulla",
+  "firstName": "Joe",
+  "lastName": "Mazzulla",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_heavy_celtics"
+  ],
+  "assignment": {
+   "club": "nba:bos",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jordi-fernandez",
+  "firstName": "Jordi",
+  "lastName": "Fernández",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_hr_nets"
+  ],
+  "assignment": {
+   "club": "nba:bkn",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:charles-lee",
+  "firstName": "Charles",
+  "lastName": "Lee",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_hr_hornets"
+  ],
+  "assignment": {
+   "club": "nba:cha",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:tiago-splitter",
+  "firstName": "Tiago",
+  "lastName": "Splitter",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_bulls_staff"
+  ],
+  "assignment": {
+   "club": "nba:chi",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:kenny-atkinson",
+  "firstName": "Kenny",
+  "lastName": "Atkinson",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:cle",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:dusty-may",
+  "firstName": "Dusty",
+  "lastName": "May",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_carousel"
+  ],
+  "assignment": {
+   "club": "nba:dal",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:david-adelman",
+  "firstName": "David",
+  "lastName": "Adelman",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:den",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:j-b-bickerstaff",
+  "firstName": "J.B.",
+  "lastName": "Bickerstaff",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:det",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:steve-kerr",
+  "firstName": "Steve",
+  "lastName": "Kerr",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:gsw",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:ime-udoka",
+  "firstName": "Ime",
+  "lastName": "Udoka",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:hou",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:rick-carlisle",
+  "firstName": "Rick",
+  "lastName": "Carlisle",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:ind",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:tyronn-lue",
+  "firstName": "Tyronn",
+  "lastName": "Lue",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_clippers"
+  ],
+  "assignment": {
+   "club": "nba:lac",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jj-redick",
+  "firstName": "JJ",
+  "lastName": "Redick",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_yardbarker_pacific"
+  ],
+  "assignment": {
+   "club": "nba:lal",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:tuomas-iisalo",
+  "firstName": "Tuomas",
+  "lastName": "Iisalo",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_grizzlies"
+  ],
+  "assignment": {
+   "club": "nba:mem",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:erik-spoelstra",
+  "firstName": "Erik",
+  "lastName": "Spoelstra",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_heat_roundtable"
+  ],
+  "assignment": {
+   "club": "nba:mia",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:taylor-jenkins",
+  "firstName": "Taylor",
+  "lastName": "Jenkins",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_carousel"
+  ],
+  "assignment": {
+   "club": "nba:mil",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:chris-finch",
+  "firstName": "Chris",
+  "lastName": "Finch",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:min",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jamahl-mosley",
+  "firstName": "Jamahl",
+  "lastName": "Mosley",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_carousel"
+  ],
+  "assignment": {
+   "club": "nba:nop",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:mike-brown",
+  "firstName": "Mike",
+  "lastName": "Brown",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:nyk",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:mark-daigneault",
+  "firstName": "Mark",
+  "lastName": "Daigneault",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:okc",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:sean-sweeney",
+  "firstName": "Sean",
+  "lastName": "Sweeney",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_carousel"
+  ],
+  "assignment": {
+   "club": "nba:orl",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:nick-nurse",
+  "firstName": "Nick",
+  "lastName": "Nurse",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_espn_pressure"
+  ],
+  "assignment": {
+   "club": "nba:phi",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jordan-ott",
+  "firstName": "Jordan",
+  "lastName": "Ott",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:phx",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:micah-nori",
+  "firstName": "Micah",
+  "lastName": "Nori",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc",
+   "s_nba_carousel"
+  ],
+  "assignment": {
+   "club": "nba:por",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:doug-christie",
+  "firstName": "Doug",
+  "lastName": "Christie",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:sac",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:mitch-johnson",
+  "firstName": "Mitch",
+  "lastName": "Johnson",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:sas",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:darko-rajakovic",
+  "firstName": "Darko",
+  "lastName": "Rajaković",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_raptors"
+  ],
+  "assignment": {
+   "club": "nba:tor",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:will-hardy",
+  "firstName": "Will",
+  "lastName": "Hardy",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "assignment": {
+   "club": "nba:uta",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:brian-keefe",
+  "firstName": "Brian",
+  "lastName": "Keefe",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_wizards"
+  ],
+  "assignment": {
+   "club": "nba:was",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:billy-donovan",
+  "firstName": "Billy",
+  "lastName": "Donovan",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_nba_donovan",
+   "s_suntimes_donovan"
+  ],
+  "assignment": {
+   "club": "nba:sas",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Lead assistant under Mitch Johnson (reported Jul 2026). Former Bulls head coach (stepped down Apr 2026)."
+ },
+ {
+  "ref": "coach:wes-unseld-jr",
+  "firstName": "Wes",
+  "lastName": "Unseld Jr.",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_nba_bulls_staff"
+  ],
+  "assignment": {
+   "club": "nba:chi",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Third season as assistant."
+ },
+ {
+  "ref": "coach:blake-ahearn",
+  "firstName": "Blake",
+  "lastName": "Ahearn",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_nba_bulls_staff"
+  ],
+  "assignment": {
+   "club": "nba:chi",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Joined from Memphis Grizzlies staff."
+ },
+ {
+  "ref": "coach:rex-kalamian",
+  "firstName": "Rex",
+  "lastName": "Kalamian",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_nba_bulls_staff"
+  ],
+  "assignment": {
+   "club": "nba:chi",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Joined after three seasons with the Bucks."
+ },
+ {
+  "ref": "coach:jason-love",
+  "firstName": "Jason",
+  "lastName": "Love",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_si_hawks_staff"
+  ],
+  "assignment": {
+   "club": "nba:atl",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Former Bucks assistant."
+ },
+ {
+  "ref": "coach:ettore-messina",
+  "firstName": "Ettore",
+  "lastName": "Messina",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_si_hawks_staff",
+   "s_el_messina_poeta"
+  ],
+  "assignment": {
+   "club": "nba:atl",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Hired as coaching consultant (modelled as assistant). Stepped down as Olimpia Milano head coach (Nov 2025)."
+ },
+ {
+  "ref": "coach:pedro-martinez",
+  "firstName": "Pedro",
+  "lastName": "Martínez",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_el_tx",
+   "s_acb_banquillos"
+  ],
+  "assignment": {
+   "club": "el:rma",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07-06"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:aleksander-sekulic",
+  "firstName": "Aleksander",
+  "lastName": "Sekulić",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_el_tx",
+   "s_acb_banquillos"
+  ],
+  "assignment": {
+   "club": "el:fcb",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07-22"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:xavi-albert",
+  "firstName": "Xavi",
+  "lastName": "Albert",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_el_tx",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "el:val",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07-07"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:velimir-perasovic",
+  "firstName": "Velimir",
+  "lastName": "Perasović",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_baskonia",
+   "s_wiki_acb"
+  ],
+  "assignment": {
+   "club": "el:bkn",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-10-14"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced Paolo Galbiati."
+ },
+ {
+  "ref": "coach:zeljko-obradovic",
+  "firstName": "Željko",
+  "lastName": "Obradović",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "assignment": {
+   "club": "el:pao",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-06-21"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:georgios-bartzokas",
+  "firstName": "Georgios",
+  "lastName": "Bartzokas",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_olympiacos",
+   "s_eurohoops_preview"
+  ],
+  "assignment": {
+   "club": "el:oly",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Contract end date unconfirmed (sources disagree)."
+ },
+ {
+  "ref": "coach:sarunas-jasikevicius",
+  "firstName": "Šarūnas",
+  "lastName": "Jasikevičius",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_paris_fener",
+   "s_talkbasket_saras"
+  ],
+  "assignment": {
+   "club": "el:fen",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Extension reportedly through 2028-29 (article undated)."
+ },
+ {
+  "ref": "coach:pablo-laso",
+  "firstName": "Pablo",
+  "lastName": "Laso",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_efes_practice"
+  ],
+  "assignment": {
+   "club": "el:efs",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Contract through 2026-27."
+ },
+ {
+  "ref": "coach:dusan-alimpijevic",
+  "firstName": "Dušan",
+  "lastName": "Alimpijević",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_besiktas"
+  ],
+  "assignment": {
+   "club": "el:bjk",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Extended through 2027-28 (Jul 2026)."
+ },
+ {
+  "ref": "coach:kenny-miller",
+  "firstName": "Kenny",
+  "lastName": "Miller",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_maccabi_miller"
+  ],
+  "assignment": {
+   "club": "el:mta",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-06"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Club announcement; other listings still name Oded Kattash."
+ },
+ {
+  "ref": "coach:dimitris-itoudis",
+  "firstName": "Dimitris",
+  "lastName": "Itoudis",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_hapoel"
+  ],
+  "assignment": {
+   "club": "el:hta",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Contract reportedly to 2027."
+ },
+ {
+  "ref": "coach:ibon-navarro",
+  "firstName": "Ibon",
+  "lastName": "Navarro",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_el_coaches_meeting",
+   "s_twowayhoops_el"
+  ],
+  "assignment": {
+   "club": "el:czv",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:joan-penarroya",
+  "firstName": "Joan",
+  "lastName": "Peñarroya",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_el_coaches_meeting"
+  ],
+  "assignment": {
+   "club": "el:par",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:tomas-masiulis",
+  "firstName": "Tomas",
+  "lastName": "Masiulis",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_zalgiris_masiulis"
+  ],
+  "assignment": {
+   "club": "el:zal",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Head coach since June 2025; no explicit 2026-27 club statement found."
+ },
+ {
+  "ref": "coach:anton-gavel",
+  "firstName": "Anton",
+  "lastName": "Gavel",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_bayern",
+   "s_bayern_gavel"
+  ],
+  "assignment": {
+   "club": "el:bay",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-06-29"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Contract to 30 Jun 2029."
+ },
+ {
+  "ref": "coach:alex-mumbru",
+  "firstName": "Álex",
+  "lastName": "Mumbrú",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "assignment": {
+   "club": "el:vir",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-06-19"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:giuseppe-poeta",
+  "firstName": "Giuseppe",
+  "lastName": "Poeta",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_el_messina_poeta"
+  ],
+  "assignment": {
+   "club": "el:mil",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2025-11"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Took over from Messina in Nov 2025; 2026-27 continuation expected, no explicit contract statement found."
+ },
+ {
+  "ref": "coach:tony-parker",
+  "firstName": "Tony",
+  "lastName": "Parker",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_twowayhoops_el",
+   "s_basketeurope_launch"
+  ],
+  "assignment": {
+   "club": "el:asv",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:maxime-lefevre",
+  "firstName": "Maxime",
+  "lastName": "Lefèvre",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_paris",
+   "s_bebasket_transfers"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07-22"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Former Minnesota Timberwolves staff."
+ },
+ {
+  "ref": "coach:xavi-pascual",
+  "firstName": "Xavi",
+  "lastName": "Pascual",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Three-year deal through 2029."
+ },
+ {
+  "ref": "coach:inigo-zorzano",
+  "firstName": "Íñigo",
+  "lastName": "Zorzano",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:adam-panagiotopoulos",
+  "firstName": "Adam",
+  "lastName": "Panagiotopoulos",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:oscar-orellana",
+  "firstName": "Òscar",
+  "lastName": "Orellana",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:velibor-njegovanovic",
+  "firstName": "Velibor",
+  "lastName": "Njegovanović",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jan-sentjurc",
+  "firstName": "Jan",
+  "lastName": "Šentjurc",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "assignment": {
+   "club": "el:dub",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:arne-woltmann",
+  "firstName": "Arne",
+  "lastName": "Woltmann",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_bayern"
+  ],
+  "assignment": {
+   "club": "el:bay",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Lead assistant; previously with Gavel at Bamberg."
+ },
+ {
+  "ref": "coach:pierric-poupet",
+  "firstName": "Pierric",
+  "lastName": "Poupet",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_paris"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Assistant head coach; formerly ASVEL head coach."
+ },
+ {
+  "ref": "coach:peter-dominguez",
+  "firstName": "Peter",
+  "lastName": "Dominguez",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_paris_staff"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:bienvenu-kindoki",
+  "firstName": "Bienvenu",
+  "lastName": "Kindoki",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_paris_staff"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:giovanni-spessotto",
+  "firstName": "Giovanni",
+  "lastName": "Spessotto",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_paris_staff"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:michael-fallone-jr",
+  "firstName": "Michael",
+  "lastName": "Fallone Jr.",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_paris_staff"
+  ],
+  "assignment": {
+   "club": "el:prs",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:dani-miret",
+  "firstName": "Dani",
+  "lastName": "Miret",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:joventut",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:moncho-fernandez",
+  "firstName": "Moncho",
+  "lastName": "Fernández",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:girona",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:gerard-encuentra",
+  "firstName": "Gerard",
+  "lastName": "Encuentra",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:lleida",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jaka-lakovic",
+  "firstName": "Jaka",
+  "lastName": "Lakovič",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:tenerife",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:jaume-ponsarnau",
+  "firstName": "Jaume",
+  "lastName": "Ponsarnau",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:bilbao",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:txus-vidorreta",
+  "firstName": "Txus",
+  "lastName": "Vidorreta",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:unicaja",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:sito-alonso",
+  "firstName": "Sito",
+  "lastName": "Alonso",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:murcia",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:gonzalo-garcia-de-vitoria",
+  "firstName": "Gonzalo",
+  "lastName": "García de Vitoria",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:zaragoza",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:carles-marco",
+  "firstName": "Carles",
+  "lastName": "Marco",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_gigantes_mercado"
+  ],
+  "assignment": {
+   "club": "acb:coruna",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:porfirio-fisac",
+  "firstName": "Porfirio",
+  "lastName": "Fisac",
+  "nationality": null,
+  "birthDate": null,
+  "status": "conflicting",
+  "sources": [
+   "s_gigantes_mercado"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Burgos: renewal reported, but sources disagree on Burgos. Not assigned. (First name given as 'Porfi' in source.)"
+ },
+ {
+  "ref": "coach:zan-tabak",
+  "firstName": "Žan",
+  "lastName": "Tabak",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_acb_banquillos"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Andorra: 'signed until end of season' — unclear whether this covers 2026-27. Not assigned."
+ },
+ {
+  "ref": "coach:serhan-kavut",
+  "firstName": "Serhan",
+  "lastName": "Kavut",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:korfez",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:tutku-ack",
+  "firstName": "Tutku",
+  "lastName": "Açık",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:bandirma",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:massimo-cancellieri",
+  "firstName": "Massimo",
+  "lastName": "Cancellieri",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:tofas",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-05"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:aleksandar-orevic",
+  "firstName": "Aleksandar",
+  "lastName": "Đorđević",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:bahcesehir",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-06-12"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:nenad-markovic",
+  "firstName": "Nenad",
+  "lastName": "Marković",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:karsiyaka",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-07-29"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:manuchar-markoishvili",
+  "firstName": "Manuchar",
+  "lastName": "Markoishvili",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": {
+   "club": "bsl:galatasaray",
+   "role": "head_coach",
+   "season": 2026,
+   "since": "2026-10-16"
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:yehu-orland",
+  "firstName": "Yehu",
+  "lastName": "Orland",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "assignment": {
+   "club": "isr:herzliya",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:elad-hasin",
+  "firstName": "Elad",
+  "lastName": "Hasin",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_hasin"
+  ],
+  "assignment": {
+   "club": "isr:ramatgan",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:doug-spradley",
+  "firstName": "Doug",
+  "lastName": "Spradley",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Hapoel Be'er Sheva: infobox may be outdated; club reportedly appointed a different coach for 2026-27. Not assigned."
+ },
+ {
+  "ref": "coach:guni-israeli",
+  "firstName": "Guni",
+  "lastName": "Israeli",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_wiki_guni"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Reported head coach of Maccabi Ra'anana; that club's 2026-27 league status not confirmed. Not assigned."
+ },
+ {
+  "ref": "coach:frank-vitucci",
+  "firstName": "Frank",
+  "lastName": "Vitucci",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:cantu",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:alessandro-magro",
+  "firstName": "Alessandro",
+  "lastName": "Magro",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:romaspqr",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:alessandro-rossi",
+  "firstName": "Alessandro",
+  "lastName": "Rossi",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:trento",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:piero-bucchi",
+  "firstName": "Piero",
+  "lastName": "Bucchi",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:scafati",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:matteo-cotelli",
+  "firstName": "Matteo",
+  "lastName": "Cotelli",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:maximaroma",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:francesco-taccetti",
+  "firstName": "Francesco",
+  "lastName": "Taccetti",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "assignment": {
+   "club": "lba:trieste",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "coach:dimitrios-priftis",
+  "firstName": "Dimitrios",
+  "lastName": "Priftis",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Profile links him to Reggiana; date unclear. Not assigned."
+ },
+ {
+  "ref": "coach:raphael-pascual",
+  "firstName": "Raphaël",
+  "lastName": "Pascual",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_twowayhoops_lnb"
+  ],
+  "assignment": {
+   "club": "lnb:saintquentin",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced Pedro Nuno Monteiro."
+ },
+ {
+  "ref": "coach:freddy-fauthoux",
+  "firstName": "Freddy",
+  "lastName": "Fauthoux",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_basketeurope_launch"
+  ],
+  "assignment": {
+   "club": "lnb:bourg",
+   "role": "head_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Suspended for matchday 1."
+ },
+ {
+  "ref": "coach:vangelis-ziagkos",
+  "firstName": "Vangelis",
+  "lastName": "Ziagkos",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Profile says he manages Mykonos; currency not confirmed. Not assigned."
+ },
+ {
+  "ref": "coach:georgios-vovoras",
+  "firstName": "Georgios",
+  "lastName": "Vovoras",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Profile links him to Promitheas Patras; date unclear. Not assigned."
+ },
+ {
+  "ref": "coach:ilias-kantzouris",
+  "firstName": "Ilias",
+  "lastName": "Kantzouris",
+  "nationality": null,
+  "birthDate": null,
+  "status": "conflicting",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Linked to Iraklis as head coach and Aris as assistant. Not assigned."
+ },
+ {
+  "ref": "coach:georgios-dedas",
+  "firstName": "Georgios",
+  "lastName": "Dedas",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "assignment": {
+   "club": "gbl:paok",
+   "role": "assistant_coach",
+   "season": 2026,
+   "since": null
+  },
+  "employment": "employed",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Joined PAOK as assistant after being dismissed in Feb 2026."
+ },
+ {
+  "ref": "coach:jacques-schneider",
+  "firstName": "Jacques",
+  "lastName": "Schneider",
+  "nationality": null,
+  "birthDate": null,
+  "status": "unverified",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Gladiators Trier head coach per 2025/26 preview; 2026-27 not confirmed. Not assigned."
+ },
+ {
+  "ref": "coach:ergin-ataman",
+  "firstName": "Ergin",
+  "lastName": "Ataman",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_protothema_ataman"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Left Panathinaikos (Jun 2026); no new job found. No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:paolo-galbiati",
+  "firstName": "Paolo",
+  "lastName": "Galbiati",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_baskonia"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Left Baskonia (14 Oct 2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:gianmarco-pozzecco",
+  "firstName": "Gianmarco",
+  "lastName": "Pozzecco",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced at Galatasaray (16 Oct 2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:sergio-scariolo",
+  "firstName": "Sergio",
+  "lastName": "Scariolo",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_eurohoops_scariolo",
+   "s_wiki_el_tx"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Left Real Madrid (2 Jul 2026); now a strategic advisor (non-coaching) at BC Roma SPQR. No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:ahmet-kandemir",
+  "firstName": "Ahmet",
+  "lastName": "Kandemir",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced at Karşıyaka (29 Jul 2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:marko-barac",
+  "firstName": "Marko",
+  "lastName": "Barać",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced at Bahçeşehir Koleji (12 Jun 2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:murat-huseyin-ylmaz",
+  "firstName": "Murat Hüseyin",
+  "lastName": "Yılmaz",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Replaced at Tofaş (May 2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:pedro-nuno-monteiro",
+  "firstName": "Pedro Nuno",
+  "lastName": "Monteiro",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_bebasket_transfers"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Left Saint-Quentin (2026). No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:oded-kattash",
+  "firstName": "Oded",
+  "lastName": "Kattash",
+  "nationality": null,
+  "birthDate": null,
+  "status": "reported",
+  "sources": [
+   "s_maccabi_miller"
+  ],
+  "assignment": null,
+  "employment": "unattached",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Maccabi Tel Aviv appointed Kenny Miller (Jun 2026) after Kattash's April extension; current status unclear. No current coaching job found as of 2026-11-03."
+ },
+ {
+  "ref": "coach:kevin-ollie",
+  "firstName": "Kevin",
+  "lastName": "Ollie",
+  "nationality": null,
+  "birthDate": null,
+  "status": "incomplete",
+  "sources": [
+   "s_hr_nets"
+  ],
+  "assignment": null,
+  "employment": "unknown",
+  "careerHistory": [],
+  "missingFields": [
+   "nationality",
+   "birthDate",
+   "careerHistory"
+  ],
+  "notes": "Former Nets interim head coach (2024). Current status unknown."
+ }
+]

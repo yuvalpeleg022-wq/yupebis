@@ -1,0 +1,19 @@
+{
+  "name": "@gbm/ai-manager",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@gbm/shared-types": "workspace:*",
+    "@gbm/player-system": "workspace:*",
+    "@gbm/transfer-system": "workspace:*",
+    "@gbm/competition-system": "workspace:*",
+    "@gbm/finance-system": "workspace:*",
+    "@gbm/staff-system": "workspace:*"
+  }
+}

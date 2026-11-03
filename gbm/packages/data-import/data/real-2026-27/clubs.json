@@ -1,0 +1,1338 @@
+[
+ {
+  "ref": "nba:atl",
+  "name": "Atlanta Hawks",
+  "shortName": "ATL",
+  "city": "Atlanta",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:bos",
+  "name": "Boston Celtics",
+  "shortName": "BOS",
+  "city": "Boston",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:bkn",
+  "name": "Brooklyn Nets",
+  "shortName": "BKN",
+  "city": "Brooklyn",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:cha",
+  "name": "Charlotte Hornets",
+  "shortName": "CHA",
+  "city": "Charlotte",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:chi",
+  "name": "Chicago Bulls",
+  "shortName": "CHI",
+  "city": "Chicago",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:cle",
+  "name": "Cleveland Cavaliers",
+  "shortName": "CLE",
+  "city": "Cleveland",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:dal",
+  "name": "Dallas Mavericks",
+  "shortName": "DAL",
+  "city": "Dallas",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:den",
+  "name": "Denver Nuggets",
+  "shortName": "DEN",
+  "city": "Denver",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:det",
+  "name": "Detroit Pistons",
+  "shortName": "DET",
+  "city": "Detroit",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:gsw",
+  "name": "Golden State Warriors",
+  "shortName": "GSW",
+  "city": "San Francisco",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:hou",
+  "name": "Houston Rockets",
+  "shortName": "HOU",
+  "city": "Houston",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:ind",
+  "name": "Indiana Pacers",
+  "shortName": "IND",
+  "city": "Indianapolis",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:lac",
+  "name": "Los Angeles Clippers",
+  "shortName": "LAC",
+  "city": "Los Angeles",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:lal",
+  "name": "Los Angeles Lakers",
+  "shortName": "LAL",
+  "city": "Los Angeles",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:mem",
+  "name": "Memphis Grizzlies",
+  "shortName": "MEM",
+  "city": "Memphis",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:mia",
+  "name": "Miami Heat",
+  "shortName": "MIA",
+  "city": "Miami",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:mil",
+  "name": "Milwaukee Bucks",
+  "shortName": "MIL",
+  "city": "Milwaukee",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:min",
+  "name": "Minnesota Timberwolves",
+  "shortName": "MIN",
+  "city": "Minneapolis",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:nop",
+  "name": "New Orleans Pelicans",
+  "shortName": "NOP",
+  "city": "New Orleans",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:nyk",
+  "name": "New York Knicks",
+  "shortName": "NYK",
+  "city": "New York",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:okc",
+  "name": "Oklahoma City Thunder",
+  "shortName": "OKC",
+  "city": "Oklahoma City",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:orl",
+  "name": "Orlando Magic",
+  "shortName": "ORL",
+  "city": "Orlando",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:phi",
+  "name": "Philadelphia 76ers",
+  "shortName": "PHI",
+  "city": "Philadelphia",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:phx",
+  "name": "Phoenix Suns",
+  "shortName": "PHX",
+  "city": "Phoenix",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:por",
+  "name": "Portland Trail Blazers",
+  "shortName": "POR",
+  "city": "Portland",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:sac",
+  "name": "Sacramento Kings",
+  "shortName": "SAC",
+  "city": "Sacramento",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:sas",
+  "name": "San Antonio Spurs",
+  "shortName": "SAS",
+  "city": "San Antonio",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:tor",
+  "name": "Toronto Raptors",
+  "shortName": "TOR",
+  "city": "Toronto",
+  "country": "CAN",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:uta",
+  "name": "Utah Jazz",
+  "shortName": "UTA",
+  "city": "Salt Lake City",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "nba:was",
+  "name": "Washington Wizards",
+  "shortName": "WAS",
+  "city": "Washington",
+  "country": "USA",
+  "league": "nba",
+  "participation": "reported",
+  "sources": [
+   "s_realgm_hc"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "el:rma",
+  "name": "Real Madrid",
+  "shortName": "RMB",
+  "city": "Madrid",
+  "country": "ESP",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:fcb",
+  "name": "FC Barcelona",
+  "shortName": "BAR",
+  "city": "Barcelona",
+  "country": "ESP",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:val",
+  "name": "Valencia Basket",
+  "shortName": "VAL",
+  "city": "Valencia",
+  "country": "ESP",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:bkn",
+  "name": "Baskonia",
+  "shortName": "BKN",
+  "city": "Vitoria-Gasteiz",
+  "country": "ESP",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_baskonia"
+  ],
+  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:pao",
+  "name": "Panathinaikos",
+  "shortName": "PAO",
+  "city": "Athens",
+  "country": "GRC",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "notes": "Also competes domestically (gbl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:oly",
+  "name": "Olympiacos",
+  "shortName": "OLY",
+  "city": "Piraeus",
+  "country": "GRC",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_olympiacos"
+  ],
+  "notes": "Also competes domestically (gbl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:fen",
+  "name": "Fenerbahçe",
+  "shortName": "FEN",
+  "city": "Istanbul",
+  "country": "TUR",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_paris_fener"
+  ],
+  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:efs",
+  "name": "Anadolu Efes",
+  "shortName": "EFS",
+  "city": "Istanbul",
+  "country": "TUR",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_efes_practice"
+  ],
+  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:bjk",
+  "name": "Beşiktaş",
+  "shortName": "BJK",
+  "city": "Istanbul",
+  "country": "TUR",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_field",
+   "s_eurohoops_besiktas"
+  ],
+  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:mta",
+  "name": "Maccabi Tel Aviv",
+  "shortName": "MTA",
+  "city": "Tel Aviv",
+  "country": "ISR",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_maccabi_miller"
+  ],
+  "notes": "Also competes domestically (isr); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:hta",
+  "name": "Hapoel Tel Aviv",
+  "shortName": "HTA",
+  "city": "Tel Aviv",
+  "country": "ISR",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_hapoel"
+  ],
+  "notes": "Also competes domestically (isr); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:czv",
+  "name": "Crvena Zvezda",
+  "shortName": "CZV",
+  "city": "Belgrade",
+  "country": "SRB",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_el_coaches_meeting"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "el:par",
+  "name": "Partizan",
+  "shortName": "PAR",
+  "city": "Belgrade",
+  "country": "SRB",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_el_coaches_meeting"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "el:zal",
+  "name": "Žalgiris",
+  "shortName": "ZAL",
+  "city": "Kaunas",
+  "country": "LTU",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_zalgiris_teams"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "el:bay",
+  "name": "Bayern Munich",
+  "shortName": "BAY",
+  "city": "Munich",
+  "country": "DEU",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_bayern"
+  ],
+  "notes": "Also competes domestically (bbl); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:vir",
+  "name": "Virtus Bologna",
+  "shortName": "VIR",
+  "city": "Bologna",
+  "country": "ITA",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_el_tx"
+  ],
+  "notes": "Also competes domestically (lba); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:mil",
+  "name": "Olimpia Milano",
+  "shortName": "MIL",
+  "city": "Milan",
+  "country": "ITA",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_el_messina_poeta"
+  ],
+  "notes": "Also competes domestically (lba); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:asv",
+  "name": "ASVEL",
+  "shortName": "ASV",
+  "city": "Villeurbanne",
+  "country": "FRA",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_twowayhoops_el"
+  ],
+  "notes": "Also competes domestically (lnb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:prs",
+  "name": "Paris Basketball",
+  "shortName": "PRS",
+  "city": "Paris",
+  "country": "FRA",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_eurohoops_field",
+   "s_eurohoops_paris"
+  ],
+  "notes": "Also competes domestically (lnb); domestic schedule not simulated yet."
+ },
+ {
+  "ref": "el:dub",
+  "name": "Dubai Basketball",
+  "shortName": "DUB",
+  "city": "Dubai",
+  "country": "ARE",
+  "league": "euroleague",
+  "participation": "reported",
+  "sources": [
+   "s_dubai_staff"
+  ],
+  "notes": ""
+ },
+ {
+  "ref": "acb:joventut",
+  "name": "Joventut Badalona",
+  "shortName": "JOV",
+  "city": "Badalona",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:girona",
+  "name": "Bàsquet Girona",
+  "shortName": "GIR",
+  "city": "Girona",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:lleida",
+  "name": "Força Lleida",
+  "shortName": "LLE",
+  "city": "Lleida",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:tenerife",
+  "name": "CB Canarias (Tenerife)",
+  "shortName": "TEN",
+  "city": "La Laguna",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:bilbao",
+  "name": "Bilbao Basket",
+  "shortName": "BIL",
+  "city": "Bilbao",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:unicaja",
+  "name": "Unicaja",
+  "shortName": "UNI",
+  "city": "Málaga",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:murcia",
+  "name": "UCAM Murcia",
+  "shortName": "MUR",
+  "city": "Murcia",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:burgos",
+  "name": "Burgos",
+  "shortName": "BUR",
+  "city": "Burgos",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:zaragoza",
+  "name": "Basket Zaragoza",
+  "shortName": "ZAR",
+  "city": "Zaragoza",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:coruna",
+  "name": "Leyma Coruña",
+  "shortName": "COR",
+  "city": "A Coruña",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:andorra",
+  "name": "MoraBanc Andorra",
+  "shortName": "AND",
+  "city": "Andorra la Vella",
+  "country": "AND",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:grancanaria",
+  "name": "Gran Canaria",
+  "shortName": "GCA",
+  "city": "Las Palmas",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:manresa",
+  "name": "Manresa",
+  "shortName": "MAN",
+  "city": "Manresa",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "acb:granada",
+  "name": "Covirán Granada",
+  "shortName": "GRA",
+  "city": "Granada",
+  "country": "ESP",
+  "league": "acb",
+  "participation": "reported",
+  "sources": [
+   "s_acb_banquillos",
+   "s_wiki_acb"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:korfez",
+  "name": "Biotekno Körfez Basket",
+  "shortName": "KOR",
+  "city": "Kocaeli",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:bandirma",
+  "name": "Bandırma Bordo",
+  "shortName": "BAN",
+  "city": "Bandırma",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:tofas",
+  "name": "Tofaş",
+  "shortName": "TOF",
+  "city": "Bursa",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:bahcesehir",
+  "name": "Bahçeşehir Koleji",
+  "shortName": "BAH",
+  "city": "Istanbul",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:karsiyaka",
+  "name": "Karşıyaka Basket",
+  "shortName": "KSK",
+  "city": "Izmir",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bsl:galatasaray",
+  "name": "Galatasaray",
+  "shortName": "GSY",
+  "city": "Istanbul",
+  "country": "TUR",
+  "league": "bsl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_bsl"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "gbl:mykonos",
+  "name": "Mykonos",
+  "shortName": "MYK",
+  "city": "Mykonos",
+  "country": "GRC",
+  "league": "gbl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "gbl:promitheas",
+  "name": "Promitheas Patras",
+  "shortName": "PRO",
+  "city": "Patras",
+  "country": "GRC",
+  "league": "gbl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "gbl:iraklis",
+  "name": "Iraklis Thessaloniki",
+  "shortName": "IRA",
+  "city": "Thessaloniki",
+  "country": "GRC",
+  "league": "gbl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "gbl:paok",
+  "name": "PAOK",
+  "shortName": "PAOK",
+  "city": "Thessaloniki",
+  "country": "GRC",
+  "league": "gbl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "gbl:aris",
+  "name": "Aris Thessaloniki",
+  "shortName": "ARI",
+  "city": "Thessaloniki",
+  "country": "GRC",
+  "league": "gbl",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_gbl_bios"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "isr:herzliya",
+  "name": "Bnei Herzliya",
+  "shortName": "HER",
+  "city": "Herzliya",
+  "country": "ISR",
+  "league": "isr",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "isr:ramatgan",
+  "name": "Maccabi Ramat Gan",
+  "shortName": "MRG",
+  "city": "Ramat Gan",
+  "country": "ISR",
+  "league": "isr",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "isr:beersheva",
+  "name": "Hapoel Be'er Sheva",
+  "shortName": "HBS",
+  "city": "Be'er Sheva",
+  "country": "ISR",
+  "league": "isr",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "isr:eilat",
+  "name": "Hapoel Ironi Eilat",
+  "shortName": "EIL",
+  "city": "Eilat",
+  "country": "ISR",
+  "league": "isr",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "isr:ashdod",
+  "name": "Maccabi Ashdod",
+  "shortName": "ASH",
+  "city": "Ashdod",
+  "country": "ISR",
+  "league": "isr",
+  "participation": "reported",
+  "sources": [
+   "s_wiki_isr"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:cantu",
+  "name": "Pallacanestro Cantù",
+  "shortName": "CAN",
+  "city": "Cantù",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:romaspqr",
+  "name": "BC Roma SPQR",
+  "shortName": "RSP",
+  "city": "Rome",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:trento",
+  "name": "Dolomiti Energia Trentino",
+  "shortName": "TRE",
+  "city": "Trento",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:scafati",
+  "name": "Scafati Basket",
+  "shortName": "SCA",
+  "city": "Scafati",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:maximaroma",
+  "name": "Maxima Roma",
+  "shortName": "MXR",
+  "city": "Rome",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:trieste",
+  "name": "Pallacanestro Trieste",
+  "shortName": "TRI",
+  "city": "Trieste",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lba:reggiana",
+  "name": "Pallacanestro Reggiana",
+  "shortName": "REG",
+  "city": "Reggio Emilia",
+  "country": "ITA",
+  "league": "lba",
+  "participation": "reported",
+  "sources": [
+   "s_sky_lba"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:saintquentin",
+  "name": "Saint-Quentin Basket",
+  "shortName": "SQB",
+  "city": "Saint-Quentin",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:bourg",
+  "name": "JL Bourg",
+  "shortName": "JLB",
+  "city": "Bourg-en-Bresse",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:monaco",
+  "name": "AS Monaco",
+  "shortName": "MCO",
+  "city": "Monaco",
+  "country": "MCO",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:cholet",
+  "name": "Cholet Basket",
+  "shortName": "CHO",
+  "city": "Cholet",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:chalon",
+  "name": "Élan Chalon",
+  "shortName": "CHA",
+  "city": "Chalon-sur-Saône",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:nancy",
+  "name": "SLUC Nancy",
+  "shortName": "NAN",
+  "city": "Nancy",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "lnb:lemans",
+  "name": "Le Mans Sarthe",
+  "shortName": "LMS",
+  "city": "Le Mans",
+  "country": "FRA",
+  "league": "lnb",
+  "participation": "reported",
+  "sources": [
+   "s_bebasket_transfers",
+   "s_basketeurope_launch"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:trier",
+  "name": "Gladiators Trier",
+  "shortName": "TRI",
+  "city": "Trier",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:bamberg",
+  "name": "Bamberg Baskets",
+  "shortName": "BAM",
+  "city": "Bamberg",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:frankfurt",
+  "name": "Skyliners Frankfurt",
+  "shortName": "FRA",
+  "city": "Frankfurt",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:wurzburg",
+  "name": "Würzburg Baskets",
+  "shortName": "WUE",
+  "city": "Würzburg",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:braunschweig",
+  "name": "Basketball Löwen Braunschweig",
+  "shortName": "BRA",
+  "city": "Braunschweig",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:ludwigsburg",
+  "name": "MHP Riesen Ludwigsburg",
+  "shortName": "LUD",
+  "city": "Ludwigsburg",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ },
+ {
+  "ref": "bbl:jena",
+  "name": "Science City Jena",
+  "shortName": "JEN",
+  "city": "Jena",
+  "country": "DEU",
+  "league": "bbl",
+  "participation": "reported",
+  "sources": [
+   "s_bbl_preview_2025"
+  ],
+  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+ }
+]
