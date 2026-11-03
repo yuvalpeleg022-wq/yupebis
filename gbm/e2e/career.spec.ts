@@ -59,7 +59,7 @@ for (const width of [360, 390, 430, 768, 1280, 1920]) {
     await page.getByTestId('club-row').first().click();
     await page.getByTestId('take-job').click();
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
-    const screens = ['Squad', 'Tactics', 'Transfers', 'Competitions', 'Finances', 'Staff', 'Statistics', 'Data Sources', 'Settings'];
+    const screens = ['Squad', 'Tactics', 'Transfers', 'Competitions', 'Qualification', 'Competition Rules', 'Finances', 'Staff', 'Statistics', 'Data Sources', 'Settings'];
     for (const s of screens) {
       if (width < 1024) {
         const direct = page.locator('nav.fixed').getByRole('button', { name: s });

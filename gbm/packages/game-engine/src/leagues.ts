@@ -48,6 +48,23 @@ export const LEAGUE_DEFS: Record<string, League> = {
     source: 'generated',
     active: true,
   },
+  eurocup: {
+    id: 'lg_eurocup', name: 'EuroCup', shortName: 'EC', country: 'EUR', region: 'europe', rulesId: 'eurocup', tier: 2,
+    roundRobins: 1, daysBetweenRounds: 7, seasonStartMonthDay: '09-30',
+    playoff: { teams: 8, seriesLengths: [3, 3, 3], neutralRounds: [] },
+    tvRevenuePerClub: 2_000_000, salaryScale: { min: 50_000, max: 2_500_000 }, currency: 'EUR', source: 'generated',
+    // 2026-27 participants are not in the database; filled by qualification from 2027-28.
+    active: false,
+    dataNote: '2026-27 participants not in the database (real field: 32 clubs, reported). Populated by qualification from 2027-28.',
+  },
+  bcl: {
+    id: 'lg_bcl', name: 'Basketball Champions League', shortName: 'BCL', country: 'EUR', region: 'europe', rulesId: 'eurocup', tier: 3,
+    roundRobins: 1, daysBetweenRounds: 7, seasonStartMonthDay: '10-07',
+    playoff: { teams: 8, seriesLengths: [3, 1, 1], neutralRounds: [1, 2] },
+    tvRevenuePerClub: 1_000_000, salaryScale: { min: 40_000, max: 2_000_000 }, currency: 'EUR', source: 'generated',
+    active: false,
+    dataNote: '2026-27 participants not in the database. Populated by qualification (with a qualifying round) from 2027-28.',
+  },
 };
 
 function domestic(id: string, name: string, shortName: string, country: string, max: number, tv: number, dataNote: string): League {

@@ -32,6 +32,8 @@ import {
 import { ASSIGNABLE, SIMULATED_APPOINTMENT, type RealCoach, type RealDataset, loadRealDataset2026, openDataIssue } from '@gbm/data-import';
 import { DOMESTIC_LEAGUE_DEFS, LEAGUE_DEFS } from './leagues';
 import { addNews, emptyWorld } from './world';
+import { foundingEntries } from './transition';
+import { defaultRegulations } from './regulations';
 import { EXPERIENCE_PROFILES, type ManagerExperience, assignUserToClub, managerAttributesFor } from './manager';
 
 export interface NewCareerOptions {
@@ -114,7 +116,7 @@ export function createCareer(opts: NewCareerOptions): World {
   for (const s of dataset.sources) world.dataSources[s.id] = { ...s };
   const leagueIdByKey: Record<string, string> = {};
   for (const [key, def] of Object.entries(ALL_LEAGUES)) {
-    if (!dataset.clubs.some((c) => c.league === key)) continue;
+    if (!dataset.clubs.some((c) => c.league === key) && key !== 'eurocup' && key !== 'bcl') continue;
     world.leagues[def.id] = structuredClone(def);
     leagueIdByKey[key] = def.id;
   }
@@ -221,6 +223,10 @@ export function createCareer(opts: NewCareerOptions): World {
     }
   }
   for (const club of Object.values(world.clubs)) club.competitionIds = club.competitionIds.filter((id) => world.leagues[id].active || id === club.leagueId);
+  // Competition history starts with the real 2026-27 participation; simulated
+  // seasons follow the (editable) regulations.
+  foundingEntries(world);
+  world.regulations = defaultRegulations(world, season + 1);
 
   // ---- Finances & staff budgets -----------------------------------------
   for (const club of Object.values(world.clubs)) setupClubFinances(world, club);

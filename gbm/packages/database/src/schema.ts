@@ -214,6 +214,22 @@ ALTER TABLE clubs ADD COLUMN roster_source TEXT NOT NULL DEFAULT 'placeholder';
 ALTER TABLE game_saves ADD COLUMN roster_policy TEXT NOT NULL DEFAULT 'placeholders';
 `,
   },
+  {
+    version: 3,
+    description: 'Competition regulations (versioned by season) and competition entries history',
+    sql: `
+CREATE TABLE competition_regulations (
+  league_id TEXT NOT NULL, from_season INTEGER NOT NULL, provenance TEXT NOT NULL, definition TEXT NOT NULL,
+  PRIMARY KEY (league_id, from_season)
+);
+CREATE TABLE competition_entries (
+  season INTEGER NOT NULL, league_id TEXT NOT NULL, club_id TEXT NOT NULL REFERENCES clubs(id), reason TEXT NOT NULL,
+  rule_id TEXT, status TEXT NOT NULL, detail TEXT NOT NULL,
+  PRIMARY KEY (season, league_id, club_id)
+);
+CREATE INDEX idx_entries_club ON competition_entries(club_id, season);
+`,
+  },
 ];
 
 export const SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1].version;

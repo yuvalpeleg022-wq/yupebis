@@ -487,3 +487,56 @@ export function playerDataReport(world: World): PlayerDataReport {
     playableCompetitions: leagues.filter((l) => l.active).map((l) => l.name),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Competition regulation schema (rules editor)
+// ---------------------------------------------------------------------------
+
+const SourceSchemaQ = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('league_position'), leagueId: z.string(), from: z.number().int().min(1), to: z.number().int().min(1) }),
+  z.object({ type: z.literal('playoff_champion'), leagueId: z.string() }),
+  z.object({ type: z.literal('playoff_runner_up'), leagueId: z.string() }),
+  z.object({ type: z.literal('license'), clubIds: z.array(z.string()), untilSeason: z.number().int() }),
+  z.object({ type: z.literal('wildcard'), minReputation: z.number().min(0).max(100), pool: z.enum(['any', 'european', 'domestic']) }),
+  z.object({ type: z.literal('country_allocation'), country: z.string().length(3), leagueId: z.string() }),
+  z.object({ type: z.literal('dropped_from'), leagueId: z.string() }),
+]);
+
+export const CompetitionRegulationSchema = z.object({
+  leagueId: z.string(),
+  fromSeason: z.number().int(),
+  size: z.number().int().min(2).max(64),
+  membership: z.enum(['closed', 'open', 'qualification']),
+  promotion: z.object({ fromLeagueId: z.string(), places: z.number().int().min(1) }).nullable(),
+  relegation: z.object({ toLeagueId: z.string(), places: z.number().int().min(1) }).nullable(),
+  qualification: z.array(z.object({
+    id: z.string().min(1), label: z.string(), source: SourceSchemaQ, entry: z.enum(['direct', 'qualifying_round']), places: z.number().int().min(1),
+  })),
+  qualifyingRound: z.object({ places: z.number().int().min(1) }).nullable(),
+  priority: z.number().int().min(0),
+  exclusive: z.boolean(),
+  provenance: z.enum(['real_world', 'game_regulation']),
+  notes: z.string(),
+});
+
+/** Validates an edited regulation against the world (ids must exist, rules must be coherent). */
+export function validateRegulation(world: World, raw: unknown): { ok: true; value: import('@gbm/shared-types').CompetitionRegulation } | { ok: false; errors: string[] } {
+  const parsed = CompetitionRegulationSchema.safeParse(raw);
+  if (!parsed.success) return { ok: false, errors: parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`) };
+  const r = parsed.data;
+  const errors: string[] = [];
+  if (!world.leagues[r.leagueId]) errors.push(`Unknown competition ${r.leagueId}`);
+  if (r.fromSeason <= world.meta.season) errors.push(`Rules can only change for future seasons (from ${world.meta.season + 1}).`);
+  if (r.qualifyingRound && r.qualifyingRound.places >= r.size) errors.push('Qualifying-round places must be fewer than the competition size.');
+  if (r.membership !== 'qualification' && r.qualification.length) errors.push('Only qualification competitions use qualification rules.');
+  for (const q of r.qualification) {
+    const s = q.source;
+    if ('leagueId' in s && !world.leagues[s.leagueId]) errors.push(`${q.id}: unknown competition ${s.leagueId}`);
+    if (s.type === 'league_position' && s.to < s.from) errors.push(`${q.id}: 'to' must be >= 'from'`);
+    if (s.type === 'license') for (const c of s.clubIds) if (!world.clubs[c]) errors.push(`${q.id}: unknown club ${c}`);
+    if (q.entry === 'qualifying_round' && !r.qualifyingRound) errors.push(`${q.id}: uses a qualifying round but the competition has none`);
+  }
+  if (new Set(r.qualification.map((q) => q.id)).size !== r.qualification.length) errors.push('Rule ids must be unique.');
+  if (r.relegation && r.relegation.toLeagueId === r.leagueId) errors.push('A league cannot relegate into itself.');
+  return errors.length ? { ok: false, errors } : { ok: true, value: r };
+}

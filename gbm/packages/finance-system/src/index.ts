@@ -105,8 +105,10 @@ export function processMonthlyFinances(world: World, clubId: string) {
   if (staff > 0) recordTransaction(world, clubId, 'staff', -staff, 'Monthly staff wages');
   recordTransaction(world, clubId, 'operations', -operations, 'Arena and operating costs');
   recordTransaction(world, clubId, 'sponsorship', club.sponsorshipPerSeason / 12, 'Sponsorship income');
-  if (league && league.tvRevenuePerClub > 0) {
-    recordTransaction(world, clubId, 'tv', league.tvRevenuePerClub / 12, 'Broadcast revenue share');
+  // Broadcast and competition revenue from every competition the club plays.
+  for (const id of club.competitionIds ?? [club.leagueId]) {
+    const comp = world.leagues[id];
+    if (comp && comp.active && comp.tvRevenuePerClub > 0) recordTransaction(world, clubId, 'tv', comp.tvRevenuePerClub / 12, `${comp.shortName} broadcast & distribution share`);
   }
 }
 
@@ -150,7 +152,8 @@ export function projectedSeasonIncome(world: World, club: Club): number {
   const league = world.leagues[club.leagueId];
   const homeGames = league ? Math.max(1, (Object.values(world.clubs).filter((c) => c.leagueId === league.id).length - 1) * league.roundRobins / 2) : 10;
   const gate = club.arenaCapacity * 0.85 * club.ticketPrice * homeGames;
-  return gate + club.sponsorshipPerSeason + (league?.tvRevenuePerClub ?? 0);
+  const tv = (club.competitionIds ?? [club.leagueId]).reduce((sum, id) => sum + (world.leagues[id]?.tvRevenuePerClub ?? 0), 0);
+  return gate + club.sponsorshipPerSeason + tv;
 }
 
 export const FINANCE_CATEGORY_LABEL: Record<FinanceCategory, string> = {

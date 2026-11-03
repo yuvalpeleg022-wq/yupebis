@@ -9,7 +9,7 @@ import type { PlatformServices } from './platform';
 
 export type ScreenId =
   | 'dashboard' | 'club' | 'squad' | 'player' | 'tactics' | 'training' | 'transfers' | 'scouting' | 'competitions'
-  | 'schedule' | 'match' | 'finances' | 'staff' | 'coach' | 'stats' | 'career' | 'news' | 'data' | 'settings';
+  | 'schedule' | 'match' | 'finances' | 'staff' | 'coach' | 'stats' | 'career' | 'news' | 'data' | 'settings' | 'qualification' | 'rules';
 
 export interface Route {
   screen: ScreenId;

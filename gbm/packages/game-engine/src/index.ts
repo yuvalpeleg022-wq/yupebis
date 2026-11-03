@@ -5,3 +5,5 @@ export * from './matchday';
 export * from './season';
 export * from './calendar';
 export * from './manager';
+export * from './regulations';
+export * from './transition';

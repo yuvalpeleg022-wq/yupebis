@@ -197,7 +197,9 @@ export function aiFillRoster(world: World, clubId: string, rng: Rng, maxSignings
   const signings: AiSigning[] = [];
   for (let i = 0; i < maxSignings; i++) {
     const roster = rosterOf(world, clubId);
-    const desired = club.aiPersonality === 'financial_conservative' ? rules.rosterMin : Math.min(rules.rosterMax, rules.rosterMin + 1);
+    // Clubs in several competitions carry deeper rosters to manage fatigue.
+    const multi = (club.competitionIds?.length ?? 1) > 1;
+    const desired = multi ? rules.rosterMax : club.aiPersonality === 'financial_conservative' ? rules.rosterMin : Math.min(rules.rosterMax, rules.rosterMin + 1);
     if (roster.length >= desired) break;
     const needGuard = roster.filter(isGuard).length < 4;
     const needBig = roster.filter(isBig).length < 4;

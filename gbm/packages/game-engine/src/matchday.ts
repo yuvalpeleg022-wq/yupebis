@@ -1,16 +1,17 @@
 import type { Fixture, Injury, Match, World } from '@gbm/shared-types';
 import { addDays, clamp, combineSeeds, nextId } from '@gbm/shared-types';
 import { playerOverall } from '@gbm/player-system';
-import { recordPlayoffResult, roundName } from '@gbm/competition-system';
+import { computeStandings, recordPlayoffResult, roundName, standingsZones } from '@gbm/competition-system';
 import { simulateMatch, type SimTeamInput } from '@gbm/simulation';
 import { bookGateReceipts } from '@gbm/finance-system';
 import { gameDayRotation } from '@gbm/ai-manager';
 import { rosterOf } from '@gbm/transfer-system';
 import { staffEffects } from '@gbm/staff-system';
 import { addNews } from './world';
+import { recordQualifier } from './transition';
 
 /** Builds the simulation input for a club from its rotation, staff and tactics. */
-export function buildSimTeam(world: World, clubId: string): SimTeamInput & { warnings: string[] } {
+export function buildSimTeam(world: World, clubId: string, fixture?: Fixture): SimTeamInput & { warnings: string[] } {
   const club = world.clubs[clubId];
   const rot = gameDayRotation(world, clubId);
   let available = rot.available;
@@ -21,6 +22,13 @@ export function buildSimTeam(world: World, clubId: string): SimTeamInput & { war
     available = [...available, ...extra].slice(0, Math.max(5, available.length));
     warnings.push('Not enough healthy players — injured players were forced to play.');
     for (const p of available) if (!(p.id in rot.minutes)) rot.minutes[p.id] = 10;
+  }
+  // AI clubs manage workload across competitions: rest starters in low-stakes
+  // games when playing several competitions, push them in high-stakes games.
+  if (clubId !== world.meta.userClubId && fixture) {
+    const importance = matchImportance(world, clubId, fixture);
+    const factor = importance === 'low' ? 0.85 : importance === 'high' ? 1.06 : 1;
+    if (factor !== 1) for (const id of rot.starters) if (rot.minutes[id]) rot.minutes[id] = Math.round(rot.minutes[id] * factor);
   }
   const effects = staffEffects(world, clubId);
   const chemAvg = available.reduce((s, p) => s + p.attributes.teamChemistry, 0) / Math.max(1, available.length);
@@ -61,8 +69,8 @@ export function playFixture(world: World, fixture: Fixture): MatchOutcome {
   // Forfeit (FIBA 20–0) if a club cannot field five players at all.
   const size = (id: string) => Object.values(world.players).filter((p) => p.clubId === id && !p.retired).length;
   if (size(fixture.homeId) < 5 || size(fixture.awayId) < 5) return forfeit(world, fixture, size(fixture.homeId) < 5 ? fixture.homeId : fixture.awayId);
-  const home = buildSimTeam(world, fixture.homeId);
-  const away = buildSimTeam(world, fixture.awayId);
+  const home = buildSimTeam(world, fixture.homeId, fixture);
+  const away = buildSimTeam(world, fixture.awayId, fixture);
   const userInvolved = fixture.homeId === world.meta.userClubId || fixture.awayId === world.meta.userClubId;
   const seed = combineSeeds(world.meta.seed, fixture.id);
   const r = simulateMatch(home, away, { rules, seed, homeCourt: !fixture.neutral, recordEvents: userInvolved });
@@ -124,6 +132,7 @@ export function playFixture(world: World, fixture: Fixture): MatchOutcome {
   }
 
   let championDecided: MatchOutcome['championDecided'] = null;
+  if (fixture.stage === 'qualifier') recordQualifier(world, fixture, winnerId);
   if (fixture.stage === 'playoff' && fixture.seriesId) {
     const upd = recordPlayoffResult(world, fixture.seriesId, winnerId, fixture.date);
     const s = upd.series;
@@ -180,4 +189,21 @@ function forfeit(world: World, fixture: Fixture, loserId: string): MatchOutcome 
     if (upd.championDecided && upd.championId) championDecided = { leagueId: fixture.leagueId, championId: upd.championId };
   }
   return { match, championDecided };
+}
+
+/**
+ * How much a game matters to a club: playoff and qualifier games, and
+ * regular-season games while in a qualification or relegation race, are high;
+ * games in a secondary competition for a club out of contention are low.
+ */
+export function matchImportance(world: World, clubId: string, fixture: Fixture): 'low' | 'normal' | 'high' {
+  if (fixture.stage !== 'regular') return 'high';
+  const club = world.clubs[clubId];
+  const standings = computeStandings(world, fixture.leagueId, fixture.season);
+  const rank = standings.findIndex((r) => r.clubId === clubId) + 1;
+  const zones = standingsZones(world, fixture.leagueId, fixture.season);
+  const league = world.leagues[fixture.leagueId];
+  const inRace = zones.some((z) => rank >= z.from - 2 && rank <= z.to + 2) || rank <= league.playoff.teams + 1;
+  if (inRace) return 'high';
+  return club.competitionIds.length > 1 ? 'low' : 'normal';
 }

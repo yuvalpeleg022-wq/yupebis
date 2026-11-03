@@ -30,6 +30,8 @@ export function emptyWorld(meta: Omit<CareerMeta, 'saveVersion' | 'idCounters' |
     scoutingReports: {},
     dataIssues: {},
     jobOffers: [],
+    regulations: [],
+    competitionEntries: [],
     dataSources: {},
   };
 }

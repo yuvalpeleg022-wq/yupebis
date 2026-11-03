@@ -48,6 +48,7 @@ const TABLES = [
   'club_rosters', 'club_staff', 'staff_career_history', 'staff_negotiations', 'fixtures', 'matches', 'match_events',
   'match_player_stats', 'playoff_series', 'standings', 'seasons', 'player_seasons', 'player_career_history', 'awards',
   'transfers', 'transfer_negotiations', 'scouting_reports', 'club_finances', 'news_events', 'manager_history', 'job_offers',
+  'competition_regulations', 'competition_entries',
 ];
 
 /** Writes the full world into normalized tables inside one transaction. */
@@ -120,6 +121,8 @@ export function saveWorld(db: Database, world: World) {
     insertAll(db, 'news_events', ['id', 'date', 'type', 'title', 'body', 'club_id', 'player_id', 'important', 'read'], world.news.map((n) => [n.id, n.date, n.type, n.title, n.body, n.clubId, n.playerId, b(n.important), b(n.read)]));
     insertAll(db, 'manager_history', ['id', 'club_id', 'start_season', 'end_season', 'wins', 'losses', 'titles', 'end_reason'], world.managerHistory.map((h) => [h.id, h.clubId, h.startSeason, h.endSeason, h.wins, h.losses, h.titles, h.endReason]));
     insertAll(db, 'job_offers', ['id', 'club_id', 'kind', 'date', 'expires', 'status', 'message'], world.jobOffers.map((o) => [o.id, o.clubId, o.kind, o.date, o.expires, o.status, o.message]));
+    insertAll(db, 'competition_regulations', ['league_id', 'from_season', 'provenance', 'definition'], world.regulations.map((r) => [r.leagueId, r.fromSeason, r.provenance, j(r)]));
+    insertAll(db, 'competition_entries', ['season', 'league_id', 'club_id', 'reason', 'rule_id', 'status', 'detail'], world.competitionEntries.map((e) => [e.season, e.leagueId, e.clubId, e.reason, e.ruleId, e.status, e.detail]));
     db.exec('COMMIT');
   } catch (e) {
     db.exec('ROLLBACK');
@@ -158,7 +161,7 @@ export function loadWorld(db: Database): World {
     meta, rules: {}, leagues: {}, clubs: {}, players: {}, contracts: {}, staff: {}, injuries: {}, fixtures: {}, matches: {},
     playerGameStats: [], series: {}, news: [], finances: [], transfers: [], negotiations: {}, playerSeasons: [], seasonStandings: [],
     seasonSummaries: [], awards: [], managerHistory: [], staffHistory: [], staffNegotiations: {}, scoutingReports: {}, dataIssues: {},
-    jobOffers: [], dataSources: {},
+    jobOffers: [], dataSources: {}, regulations: [], competitionEntries: [],
   };
   for (const r of select<Row>(db, 'SELECT * FROM data_sources')) w.dataSources[s(r.id)] = { id: s(r.id), title: s(r.title), url: s(r.url), publisher: s(r.publisher), accessedOn: s(r.accessed_on), method: s(r.method) };
   for (const r of select<Row>(db, 'SELECT * FROM data_issues')) w.dataIssues[s(r.id)] = { id: s(r.id), entity: s(r.entity) as never, entityId: s(r.entity_id), field: s(r.field), severity: s(r.severity) as never, message: s(r.message), candidates: pj(r.candidates), status: s(r.status) as never };
@@ -243,6 +246,8 @@ export function loadWorld(db: Database): World {
   for (const r of select<Row>(db, 'SELECT * FROM news_events ORDER BY rowid')) w.news.push({ id: s(r.id), date: s(r.date), type: s(r.type) as never, title: s(r.title), body: s(r.body), clubId: ns(r.club_id), playerId: ns(r.player_id), important: bool(r.important), read: bool(r.read) });
   for (const r of select<Row>(db, 'SELECT * FROM manager_history ORDER BY rowid')) w.managerHistory.push({ id: s(r.id), clubId: s(r.club_id), startSeason: n(r.start_season), endSeason: nn(r.end_season), wins: n(r.wins), losses: n(r.losses), titles: n(r.titles), endReason: s(r.end_reason) as never });
   for (const r of select<Row>(db, 'SELECT * FROM job_offers ORDER BY rowid')) w.jobOffers.push({ id: s(r.id), clubId: s(r.club_id), kind: s(r.kind) as never, date: s(r.date), expires: s(r.expires), status: s(r.status) as never, message: s(r.message) });
+  for (const r of select<Row>(db, 'SELECT * FROM competition_regulations ORDER BY rowid')) w.regulations.push(pj(r.definition));
+  for (const r of select<Row>(db, 'SELECT * FROM competition_entries ORDER BY rowid')) w.competitionEntries.push({ season: n(r.season), leagueId: s(r.league_id), clubId: s(r.club_id), reason: s(r.reason) as never, ruleId: ns(r.rule_id), status: s(r.status) as never, detail: s(r.detail) });
   return w;
 }
 

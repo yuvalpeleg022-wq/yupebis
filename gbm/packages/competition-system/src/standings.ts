@@ -40,7 +40,10 @@ export function regularSeasonMatches(world: World, leagueId: string, season: num
  */
 export function computeStandings(world: World, leagueId: string, season: number): StandingRow[] {
   const rows = new Map<string, StandingRow>();
-  for (const c of Object.values(world.clubs)) if (c.competitionIds.includes(leagueId)) rows.set(c.id, emptyRow(c.id));
+  // Participants of that season (history), falling back to current membership.
+  const entries = (world.competitionEntries ?? []).filter((e) => e.season === season && e.leagueId === leagueId && e.status === 'confirmed');
+  if (entries.length) for (const e of entries) rows.set(e.clubId, emptyRow(e.clubId));
+  else for (const c of Object.values(world.clubs)) if (c.competitionIds.includes(leagueId)) rows.set(c.id, emptyRow(c.id));
   const matches = regularSeasonMatches(world, leagueId, season);
   const results = new Map<string, boolean[]>();
   for (const m of matches) {

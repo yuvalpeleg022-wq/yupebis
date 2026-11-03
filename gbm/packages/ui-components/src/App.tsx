@@ -22,6 +22,7 @@ import { News } from './screens/News';
 import { DataSources } from './screens/DataSources';
 import { Settings } from './screens/Settings';
 import { MyClub } from './screens/MyClub';
+import { Qualification, RulesEditor } from './screens/Qualification';
 
 interface NavItem {
   id: ScreenId;
@@ -39,6 +40,8 @@ export const NAV: NavItem[] = [
   { id: 'transfers', label: 'Transfers', icon: '⇄', needsClub: true },
   { id: 'scouting', label: 'Scouting', icon: '⌕', needsClub: true },
   { id: 'competitions', label: 'Competitions', icon: '♜', needsClub: false },
+  { id: 'qualification', label: 'Qualification', icon: '⇅', needsClub: false },
+  { id: 'rules', label: 'Competition Rules', icon: '§', needsClub: false },
   { id: 'schedule', label: 'Schedule', icon: '▦', needsClub: true },
   { id: 'match', label: 'Match Center', icon: '▶', needsClub: false },
   { id: 'finances', label: 'Finances', icon: '$', needsClub: true },
@@ -296,6 +299,8 @@ function Screen() {
     news: () => <News />,
     data: () => <DataSources />,
     settings: () => <Settings />,
+    qualification: () => <Qualification />,
+    rules: () => <RulesEditor />,
   };
   return <>{screens[route.screen]()}</>;
 }

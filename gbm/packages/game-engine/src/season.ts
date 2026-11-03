@@ -1,7 +1,7 @@
 import type { Award, Fixture, FixtureStage, PlayerSeasonStats, Staff, StaffRole, World } from '@gbm/shared-types';
 import { Rng, addDays, ageOn, cachedIndex, combineSeeds, invalidateIndexes, nextId } from '@gbm/shared-types';
 import { generatePlayer, playerOverall, randomNationality, retirementChance, seasonPotentialShift } from '@gbm/player-system';
-import { computeStandings, generateLeagueSchedule, lastRegularSeasonDate, seasonStartDate, seriesForLeague, startPlayoffs } from '@gbm/competition-system';
+import { computeStandings, lastRegularSeasonDate, seasonStartDate, seriesForLeague, startPlayoffs } from '@gbm/competition-system';
 import { chargeLuxuryTax, projectedSeasonIncome } from '@gbm/finance-system';
 import { aiBudget, aiFillRoster, aiRenewals, aiTactics, aiTrimRoster, autoRotation } from '@gbm/ai-manager';
 import { removeFromRotation } from '@gbm/transfer-system';
@@ -9,6 +9,7 @@ import { staffSeasonRollover } from '@gbm/staff-system';
 import { makeFictionalCoach } from './career';
 import { addNews } from './world';
 import { seasonEndManagerReview } from './manager';
+import { applySeasonEntries, confirmNextSeasonQualification } from './transition';
 
 export type LeagueStatus = 'not_started' | 'regular' | 'awaiting_playoffs' | 'playoffs' | 'finished';
 
@@ -24,7 +25,8 @@ export function leagueStatus(world: World, leagueId: string): LeagueStatus {
     return m;
   });
   const regular = byLeague.get(leagueId) ?? [];
-  if (regular.length === 0) return 'finished';
+  // No schedule yet: published at the registration deadline before the start date.
+  if (regular.length === 0) return world.meta.currentDate < seasonStartDate(league, season) ? 'not_started' : 'finished';
   if (world.meta.currentDate < seasonStartDate(league, season) && regular.every((f) => !f.matchId)) return 'not_started';
   if (regular.some((f) => !f.matchId)) return 'regular';
   const series = seriesForLeague(world, leagueId, season);
@@ -116,6 +118,7 @@ function endOfSeason(world: World) {
     }
     if (world.seasonSummaries.some((s) => s.season === season && s.championId === stint.clubId)) stint.titles++;
   }
+  confirmNextSeasonQualification(world);
   seasonEndManagerReview(world);
   addNews(world, 'season', `The ${season}-${String((season + 1) % 100).padStart(2, '0')} season is over`, 'All competitions have finished. The off-season begins: contracts expire on 1 July, when the new season starts.', { important: true });
 }
@@ -174,6 +177,9 @@ export function rolloverSeason(world: World) {
     p.fatigue = 0;
     p.morale = Math.round(p.morale * 0.7 + 65 * 0.3);
   }
+  // Competition memberships from qualification (promotion, relegation, European
+  // places); schedules are generated at each registration deadline.
+  applySeasonEntries(world);
   generateRookies(world, rng);
   youthIntake(world, rng);
   pruneHistory(world);
@@ -187,9 +193,8 @@ export function rolloverSeason(world: World) {
     }
     if (club.rotation.auto || club.id !== user) club.rotation = autoRotation(world, club.id);
   }
-  for (const league of Object.values(world.leagues)) if (league.active) generateLeagueSchedule(world, league, world.meta.season);
   invalidateIndexes(world);
-  addNews(world, 'season', `Welcome to the ${world.meta.season}-${String((world.meta.season + 1) % 100).padStart(2, '0')} season`, 'Contracts have rolled over, rookies have entered the league and the new schedule has been released.', { important: true });
+  addNews(world, 'season', `Welcome to the ${world.meta.season}-${String((world.meta.season + 1) % 100).padStart(2, '0')} season`, 'Contracts have rolled over, rookies have entered the league, and competition memberships have been updated. Schedules are published at each competition\'s registration deadline.', { important: true });
 }
 
 /**

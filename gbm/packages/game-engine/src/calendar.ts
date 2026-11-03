@@ -5,12 +5,13 @@ import { processMonthlyFinances } from '@gbm/finance-system';
 import { aiFillRoster, aiTactics, autoRotation } from '@gbm/ai-manager';
 import { clubRules, rosterOf } from '@gbm/transfer-system';
 import { aiMonthlyStaffReview, aiStaffMarketTick, clubRecord, rosterStrength, staffEffects } from '@gbm/staff-system';
-import { seasonStartDate } from '@gbm/competition-system';
+import { seasonStartDate, standingsZones } from '@gbm/competition-system';
 import { fixturesOn, playFixture } from './matchday';
 import { checkPlayoffStarts, recordChampion, rolloverSeason } from './season';
 import { addNews } from './world';
 import { makeFictionalCoach } from './career';
 import { monthlyManagerReview } from './manager';
+import { registrationCheck } from './transition';
 
 export interface DayResult {
   date: string;
@@ -49,6 +50,9 @@ export function advanceDay(world: World): DayResult {
     const starts = Object.values(world.leagues).filter((l) => l.active).map((l) => seasonStartDate(l, world.meta.season)).sort();
     if (starts[0] && date >= starts[0]) world.meta.phase = 'regular';
   }
+
+  // Registration deadlines: lock entrants and publish schedules.
+  registrationCheck(world);
 
   // Matches.
   let played = 0;
@@ -166,7 +170,17 @@ export function boardExpectation(world: World): { rank: number; size: number; ta
   const rank = peers.findIndex((p) => p.id === club.id) + 1;
   const size = peers.length;
   const league = world.leagues[club.leagueId];
-  const target = rank <= 2 ? 'Win the championship' : rank <= Math.ceil(league.playoff.teams / 2) ? 'Reach the playoffs with home court' : rank <= league.playoff.teams ? 'Make the playoffs' : 'Develop the team and stay competitive';
+  // Qualification and relegation zones of the club's league shape the objective.
+  const zones = standingsZones(world, league.id, world.meta.season);
+  const zone = zones.find((z) => rank >= z.from && rank <= z.to && z.kind !== 'relegation');
+  const relegation = zones.find((z) => z.kind === 'relegation');
+  const target = rank <= 2
+    ? 'Win the championship'
+    : zone
+      ? `Finish in the ${zone.label} places (${zone.from}–${zone.to})`
+      : relegation && rank >= relegation.from - 2
+        ? 'Avoid relegation'
+        : rank <= Math.ceil(league.playoff.teams / 2) ? 'Reach the playoffs with home court' : rank <= league.playoff.teams ? 'Make the playoffs' : 'Develop the team and stay competitive';
   return { rank, size, target, expectedPct: 0.75 - ((rank - 1) / Math.max(1, size - 1)) * 0.5 };
 }
 

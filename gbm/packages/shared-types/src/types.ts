@@ -431,7 +431,7 @@ export interface League {
   active: boolean;
 }
 
-export type FixtureStage = 'regular' | 'playoff';
+export type FixtureStage = 'regular' | 'playoff' | 'qualifier';
 
 export interface Fixture {
   id: string;
@@ -788,7 +788,79 @@ export interface World {
   scoutingReports: Record<string, ScoutingReport>;
   dataIssues: Record<string, DataIssue>;
   jobOffers: JobOffer[];
+  /** Competition regulations (qualification, promotion, relegation), versioned by season. */
+  regulations: CompetitionRegulation[];
+  /** Who plays in which competition, every season (permanent history). */
+  competitionEntries: CompetitionEntry[];
   dataSources: Record<string, DataSourceRecord>;
+}
+
+// ---------------------------------------------------------------------------
+// Competition regulations & qualification
+// ---------------------------------------------------------------------------
+
+export type QualificationSource =
+  /** Final regular-season positions from..to (cascades to the next eligible club). */
+  | { type: 'league_position'; leagueId: string; from: number; to: number }
+  | { type: 'playoff_champion'; leagueId: string }
+  | { type: 'playoff_runner_up'; leagueId: string }
+  /** Clubs holding a licence valid through `untilSeason`. */
+  | { type: 'license'; clubIds: string[]; untilSeason: number }
+  /** Invitations by club reputation to fill remaining places. */
+  | { type: 'wildcard'; minReputation: number; pool: 'any' | 'european' | 'domestic' }
+  /** Best clubs from one country's league not yet qualified elsewhere. */
+  | { type: 'country_allocation'; country: string; leagueId: string }
+  /** Clubs that played this competition last season but did not re-qualify drop here. */
+  | { type: 'dropped_from'; leagueId: string };
+
+export interface QualificationRule {
+  id: string;
+  label: string;
+  source: QualificationSource;
+  /** Main draw directly, or a qualifying round first. */
+  entry: 'direct' | 'qualifying_round';
+  /** Maximum clubs this rule may place. */
+  places: number;
+}
+
+export type MembershipModel = 'closed' | 'open' | 'qualification';
+
+export interface CompetitionRegulation {
+  leagueId: string;
+  /** Applies to this season and later, until a newer version exists. */
+  fromSeason: number;
+  /** Target number of clubs in the main competition. */
+  size: number;
+  /**
+   * closed: fixed membership (e.g. NBA). open: domestic league with optional
+   * promotion/relegation. qualification: entry via the rules below.
+   */
+  membership: MembershipModel;
+  promotion: { fromLeagueId: string; places: number } | null;
+  relegation: { toLeagueId: string; places: number } | null;
+  qualification: QualificationRule[];
+  /** Main-draw places decided by a knockout qualifying round. */
+  qualifyingRound: { places: number } | null;
+  /** Allocation order for qualification competitions (lower first). */
+  priority: number;
+  /** A club may enter only one exclusive competition per season. */
+  exclusive: boolean;
+  provenance: 'real_world' | 'game_regulation';
+  notes: string;
+}
+
+export type EntryReason =
+  | 'founding' | 'member' | 'license' | 'champion' | 'runner_up' | 'position' | 'country' | 'wildcard' | 'dropped'
+  | 'promoted' | 'relegated' | 'qualifying_round';
+
+export interface CompetitionEntry {
+  season: number;
+  leagueId: string;
+  clubId: string;
+  reason: EntryReason;
+  ruleId: string | null;
+  status: 'confirmed' | 'pending_qualifier' | 'eliminated';
+  detail: string;
 }
 
 /** A head-coaching job offer to the user, or the user's application. */
