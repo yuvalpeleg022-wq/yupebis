@@ -1,15 +1,29 @@
 import type { Club, Contract, FinanceCategory, FinanceTransaction, League, World } from '@gbm/shared-types';
-import { clamp, nextId } from '@gbm/shared-types';
+import { cachedIndex, clamp, nextId } from '@gbm/shared-types';
 
+function contractIndex(world: World) {
+  return cachedIndex(world, 'contracts', () => {
+    const byClub = new Map<string, Contract[]>();
+    const byPlayer = new Map<string, Contract>();
+    for (const c of Object.values(world.contracts)) {
+      if (!c.active) continue;
+      (byClub.get(c.clubId) ?? byClub.set(c.clubId, []).get(c.clubId)!).push(c);
+      const prev = byPlayer.get(c.playerId);
+      // The current deal is the one that started earliest (extensions start later).
+      if (!prev || c.startSeason < prev.startSeason) byPlayer.set(c.playerId, c);
+    }
+    return { byClub, byPlayer };
+  });
+}
+
+/** Active contracts covering a season (indexed; call invalidateIndexes after changes). */
 export function activeContracts(world: World, clubId: string, season: number): Contract[] {
-  return Object.values(world.contracts).filter(
-    (c) => c.active && c.clubId === clubId && c.startSeason <= season && c.endSeason >= season,
-  );
+  return (contractIndex(world).byClub.get(clubId) ?? []).filter((c) => c.active && c.startSeason <= season && c.endSeason >= season);
 }
 
 export function contractForPlayer(world: World, playerId: string): Contract | null {
-  for (const c of Object.values(world.contracts)) if (c.active && c.playerId === playerId) return c;
-  return null;
+  const c = contractIndex(world).byPlayer.get(playerId);
+  return c && c.active ? c : null;
 }
 
 /** Total salary committed for a season. */

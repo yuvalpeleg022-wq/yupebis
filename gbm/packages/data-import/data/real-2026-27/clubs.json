@@ -6,6 +6,7 @@
   "city": "Atlanta",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -19,6 +20,7 @@
   "city": "Boston",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -32,6 +34,7 @@
   "city": "Brooklyn",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -45,6 +48,7 @@
   "city": "Charlotte",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -58,6 +62,7 @@
   "city": "Chicago",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -71,6 +76,7 @@
   "city": "Cleveland",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -84,6 +90,7 @@
   "city": "Dallas",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -97,6 +104,7 @@
   "city": "Denver",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -110,6 +118,7 @@
   "city": "Detroit",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -123,6 +132,7 @@
   "city": "San Francisco",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -136,6 +146,7 @@
   "city": "Houston",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -149,6 +160,7 @@
   "city": "Indianapolis",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -162,6 +174,7 @@
   "city": "Los Angeles",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -175,6 +188,7 @@
   "city": "Los Angeles",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -188,6 +202,7 @@
   "city": "Memphis",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -201,6 +216,7 @@
   "city": "Miami",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -214,6 +230,7 @@
   "city": "Milwaukee",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -227,6 +244,7 @@
   "city": "Minneapolis",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -240,6 +258,7 @@
   "city": "New Orleans",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -253,6 +272,7 @@
   "city": "New York",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -266,6 +286,7 @@
   "city": "Oklahoma City",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -279,6 +300,7 @@
   "city": "Orlando",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -292,6 +314,7 @@
   "city": "Philadelphia",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -305,6 +328,7 @@
   "city": "Phoenix",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -318,6 +342,7 @@
   "city": "Portland",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -331,6 +356,7 @@
   "city": "Sacramento",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -344,6 +370,7 @@
   "city": "San Antonio",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -357,6 +384,7 @@
   "city": "Toronto",
   "country": "CAN",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -370,6 +398,7 @@
   "city": "Salt Lake City",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -383,6 +412,7 @@
   "city": "Washington",
   "country": "USA",
   "league": "nba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_realgm_hc"
@@ -396,11 +426,12 @@
   "city": "Madrid",
   "country": "ESP",
   "league": "euroleague",
+  "domestic": "acb",
   "participation": "reported",
   "sources": [
    "s_wiki_el_tx"
   ],
-  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:fcb",
@@ -409,11 +440,12 @@
   "city": "Barcelona",
   "country": "ESP",
   "league": "euroleague",
+  "domestic": "acb",
   "participation": "reported",
   "sources": [
    "s_wiki_el_tx"
   ],
-  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:val",
@@ -422,11 +454,12 @@
   "city": "Valencia",
   "country": "ESP",
   "league": "euroleague",
+  "domestic": "acb",
   "participation": "reported",
   "sources": [
    "s_wiki_el_tx"
   ],
-  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:bkn",
@@ -435,11 +468,12 @@
   "city": "Vitoria-Gasteiz",
   "country": "ESP",
   "league": "euroleague",
+  "domestic": "acb",
   "participation": "reported",
   "sources": [
    "s_eurohoops_baskonia"
   ],
-  "notes": "Also competes domestically (acb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:pao",
@@ -448,11 +482,12 @@
   "city": "Athens",
   "country": "GRC",
   "league": "euroleague",
+  "domestic": "gbl",
   "participation": "reported",
   "sources": [
    "s_wiki_el_tx"
   ],
-  "notes": "Also competes domestically (gbl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:oly",
@@ -461,11 +496,12 @@
   "city": "Piraeus",
   "country": "GRC",
   "league": "euroleague",
+  "domestic": "gbl",
   "participation": "reported",
   "sources": [
    "s_eurohoops_olympiacos"
   ],
-  "notes": "Also competes domestically (gbl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:fen",
@@ -474,11 +510,12 @@
   "city": "Istanbul",
   "country": "TUR",
   "league": "euroleague",
+  "domestic": "bsl",
   "participation": "reported",
   "sources": [
    "s_paris_fener"
   ],
-  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:efs",
@@ -487,11 +524,12 @@
   "city": "Istanbul",
   "country": "TUR",
   "league": "euroleague",
+  "domestic": "bsl",
   "participation": "reported",
   "sources": [
    "s_efes_practice"
   ],
-  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:bjk",
@@ -500,12 +538,13 @@
   "city": "Istanbul",
   "country": "TUR",
   "league": "euroleague",
+  "domestic": "bsl",
   "participation": "reported",
   "sources": [
    "s_eurohoops_field",
    "s_eurohoops_besiktas"
   ],
-  "notes": "Also competes domestically (bsl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:mta",
@@ -514,11 +553,12 @@
   "city": "Tel Aviv",
   "country": "ISR",
   "league": "euroleague",
+  "domestic": "isr",
   "participation": "reported",
   "sources": [
    "s_maccabi_miller"
   ],
-  "notes": "Also competes domestically (isr); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:hta",
@@ -527,11 +567,12 @@
   "city": "Tel Aviv",
   "country": "ISR",
   "league": "euroleague",
+  "domestic": "isr",
   "participation": "reported",
   "sources": [
    "s_eurohoops_hapoel"
   ],
-  "notes": "Also competes domestically (isr); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:czv",
@@ -540,6 +581,7 @@
   "city": "Belgrade",
   "country": "SRB",
   "league": "euroleague",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_el_coaches_meeting"
@@ -553,6 +595,7 @@
   "city": "Belgrade",
   "country": "SRB",
   "league": "euroleague",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_el_coaches_meeting"
@@ -566,6 +609,7 @@
   "city": "Kaunas",
   "country": "LTU",
   "league": "euroleague",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_zalgiris_teams"
@@ -579,11 +623,12 @@
   "city": "Munich",
   "country": "DEU",
   "league": "euroleague",
+  "domestic": "bbl",
   "participation": "reported",
   "sources": [
    "s_eurohoops_bayern"
   ],
-  "notes": "Also competes domestically (bbl); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:vir",
@@ -592,11 +637,12 @@
   "city": "Bologna",
   "country": "ITA",
   "league": "euroleague",
+  "domestic": "lba",
   "participation": "reported",
   "sources": [
    "s_wiki_el_tx"
   ],
-  "notes": "Also competes domestically (lba); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:mil",
@@ -605,11 +651,12 @@
   "city": "Milan",
   "country": "ITA",
   "league": "euroleague",
+  "domestic": "lba",
   "participation": "reported",
   "sources": [
    "s_el_messina_poeta"
   ],
-  "notes": "Also competes domestically (lba); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:asv",
@@ -618,11 +665,12 @@
   "city": "Villeurbanne",
   "country": "FRA",
   "league": "euroleague",
+  "domestic": "lnb",
   "participation": "reported",
   "sources": [
    "s_twowayhoops_el"
   ],
-  "notes": "Also competes domestically (lnb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:prs",
@@ -631,12 +679,13 @@
   "city": "Paris",
   "country": "FRA",
   "league": "euroleague",
+  "domestic": "lnb",
   "participation": "reported",
   "sources": [
    "s_eurohoops_field",
    "s_eurohoops_paris"
   ],
-  "notes": "Also competes domestically (lnb); domestic schedule not simulated yet."
+  "notes": ""
  },
  {
   "ref": "el:dub",
@@ -645,6 +694,7 @@
   "city": "Dubai",
   "country": "ARE",
   "league": "euroleague",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_dubai_staff"
@@ -658,12 +708,13 @@
   "city": "Badalona",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:girona",
@@ -672,12 +723,13 @@
   "city": "Girona",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:lleida",
@@ -686,12 +738,13 @@
   "city": "Lleida",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:tenerife",
@@ -700,12 +753,13 @@
   "city": "La Laguna",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:bilbao",
@@ -714,12 +768,13 @@
   "city": "Bilbao",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:unicaja",
@@ -728,12 +783,13 @@
   "city": "Málaga",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:murcia",
@@ -742,12 +798,13 @@
   "city": "Murcia",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:burgos",
@@ -756,12 +813,13 @@
   "city": "Burgos",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:zaragoza",
@@ -770,12 +828,13 @@
   "city": "Zaragoza",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:coruna",
@@ -784,12 +843,13 @@
   "city": "A Coruña",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:andorra",
@@ -798,12 +858,13 @@
   "city": "Andorra la Vella",
   "country": "AND",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:grancanaria",
@@ -812,12 +873,13 @@
   "city": "Las Palmas",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:manresa",
@@ -826,12 +888,13 @@
   "city": "Manresa",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "acb:granada",
@@ -840,12 +903,13 @@
   "city": "Granada",
   "country": "ESP",
   "league": "acb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_acb_banquillos",
    "s_wiki_acb"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:korfez",
@@ -854,11 +918,12 @@
   "city": "Kocaeli",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:bandirma",
@@ -867,11 +932,12 @@
   "city": "Bandırma",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:tofas",
@@ -880,11 +946,12 @@
   "city": "Bursa",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:bahcesehir",
@@ -893,11 +960,12 @@
   "city": "Istanbul",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:karsiyaka",
@@ -906,11 +974,12 @@
   "city": "Izmir",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bsl:galatasaray",
@@ -919,11 +988,12 @@
   "city": "Istanbul",
   "country": "TUR",
   "league": "bsl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_bsl"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "gbl:mykonos",
@@ -932,11 +1002,12 @@
   "city": "Mykonos",
   "country": "GRC",
   "league": "gbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_gbl_bios"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "gbl:promitheas",
@@ -945,11 +1016,12 @@
   "city": "Patras",
   "country": "GRC",
   "league": "gbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_gbl_bios"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "gbl:iraklis",
@@ -958,11 +1030,12 @@
   "city": "Thessaloniki",
   "country": "GRC",
   "league": "gbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_gbl_bios"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "gbl:paok",
@@ -971,11 +1044,12 @@
   "city": "Thessaloniki",
   "country": "GRC",
   "league": "gbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_gbl_bios"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "gbl:aris",
@@ -984,11 +1058,12 @@
   "city": "Thessaloniki",
   "country": "GRC",
   "league": "gbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_gbl_bios"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "isr:herzliya",
@@ -997,11 +1072,12 @@
   "city": "Herzliya",
   "country": "ISR",
   "league": "isr",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_isr"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "isr:ramatgan",
@@ -1010,11 +1086,12 @@
   "city": "Ramat Gan",
   "country": "ISR",
   "league": "isr",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_isr"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "isr:beersheva",
@@ -1023,11 +1100,12 @@
   "city": "Be'er Sheva",
   "country": "ISR",
   "league": "isr",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_isr"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "isr:eilat",
@@ -1036,11 +1114,12 @@
   "city": "Eilat",
   "country": "ISR",
   "league": "isr",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_isr"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "isr:ashdod",
@@ -1049,11 +1128,12 @@
   "city": "Ashdod",
   "country": "ISR",
   "league": "isr",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_wiki_isr"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:cantu",
@@ -1062,11 +1142,12 @@
   "city": "Cantù",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:romaspqr",
@@ -1075,11 +1156,12 @@
   "city": "Rome",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:trento",
@@ -1088,11 +1170,12 @@
   "city": "Trento",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:scafati",
@@ -1101,11 +1184,12 @@
   "city": "Scafati",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:maximaroma",
@@ -1114,11 +1198,12 @@
   "city": "Rome",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:trieste",
@@ -1127,11 +1212,12 @@
   "city": "Trieste",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lba:reggiana",
@@ -1140,11 +1226,12 @@
   "city": "Reggio Emilia",
   "country": "ITA",
   "league": "lba",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_sky_lba"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:saintquentin",
@@ -1153,12 +1240,13 @@
   "city": "Saint-Quentin",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:bourg",
@@ -1167,12 +1255,13 @@
   "city": "Bourg-en-Bresse",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:monaco",
@@ -1181,12 +1270,13 @@
   "city": "Monaco",
   "country": "MCO",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:cholet",
@@ -1195,12 +1285,13 @@
   "city": "Cholet",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:chalon",
@@ -1209,12 +1300,13 @@
   "city": "Chalon-sur-Saône",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:nancy",
@@ -1223,12 +1315,13 @@
   "city": "Nancy",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "lnb:lemans",
@@ -1237,12 +1330,13 @@
   "city": "Le Mans",
   "country": "FRA",
   "league": "lnb",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bebasket_transfers",
    "s_basketeurope_launch"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:trier",
@@ -1251,11 +1345,12 @@
   "city": "Trier",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:bamberg",
@@ -1264,11 +1359,12 @@
   "city": "Bamberg",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:frankfurt",
@@ -1277,11 +1373,12 @@
   "city": "Frankfurt",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:wurzburg",
@@ -1290,11 +1387,12 @@
   "city": "Würzburg",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:braunschweig",
@@ -1303,11 +1401,12 @@
   "city": "Braunschweig",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:ludwigsburg",
@@ -1316,11 +1415,12 @@
   "city": "Ludwigsburg",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  },
  {
   "ref": "bbl:jena",
@@ -1329,10 +1429,11 @@
   "city": "Jena",
   "country": "DEU",
   "league": "bbl",
+  "domestic": null,
   "participation": "reported",
   "sources": [
    "s_bbl_preview_2025"
   ],
-  "notes": "Database-only club: domestic league not yet playable; participates in the coaching market."
+  "notes": ""
  }
 ]

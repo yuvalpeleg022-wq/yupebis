@@ -40,7 +40,7 @@ export function regularSeasonMatches(world: World, leagueId: string, season: num
  */
 export function computeStandings(world: World, leagueId: string, season: number): StandingRow[] {
   const rows = new Map<string, StandingRow>();
-  for (const c of Object.values(world.clubs)) if (c.leagueId === leagueId) rows.set(c.id, emptyRow(c.id));
+  for (const c of Object.values(world.clubs)) if (c.competitionIds.includes(leagueId)) rows.set(c.id, emptyRow(c.id));
   const matches = regularSeasonMatches(world, leagueId, season);
   const results = new Map<string, boolean[]>();
   for (const m of matches) {

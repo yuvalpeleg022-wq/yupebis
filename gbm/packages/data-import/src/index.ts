@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { DataIssue, Player, Staff, StaffRole, VerificationStatus, World } from '@gbm/shared-types';
-import { ALL_ATTRIBUTES, POSITIONS, clamp, nextId } from '@gbm/shared-types';
+import { ALL_ATTRIBUTES, POSITIONS, clamp, invalidateIndexes, nextId } from '@gbm/shared-types';
 import { generateAttributes } from '@gbm/player-system';
 import { Rng, hashString } from '@gbm/shared-types';
 import sourcesJson from '../data/real-2026-27/sources.json';
@@ -30,6 +30,8 @@ export const RealClubSchema = z.object({
   city: z.string(),
   country: z.string().length(3),
   league: z.string(),
+  /** Domestic league also played by a EuroLeague club. */
+  domestic: z.string().nullable().optional(),
   participation: STATUS,
   sources: z.array(z.string()),
   notes: z.string().default(''),
@@ -262,6 +264,7 @@ export function importCoaches(world: World, raw: unknown, make: (role: StaffRole
       } else {
         if (occupant) occupant.clubId = null;
         coach.clubId = clubId;
+        invalidateIndexes(world);
         coach.role = r.role;
         for (const d of Object.values(world.dataIssues)) {
           if (d.entityId === clubId && d.field === `staff:${r.role}` && d.status === 'open') d.status = 'resolved';

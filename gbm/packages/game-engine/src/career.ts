@@ -10,7 +10,7 @@ import type {
   StaffRole,
   World,
 } from '@gbm/shared-types';
-import { COACH_ATTRIBUTE_KEYS, Rng, clamp, combineSeeds, hashString, nextId } from '@gbm/shared-types';
+import { COACH_ATTRIBUTE_KEYS, Rng, clamp, combineSeeds, hashString, invalidateIndexes, nextId } from '@gbm/shared-types';
 import { askingSalary, generatePlayer, playerOverall, preferredYears, randomNationality } from '@gbm/player-system';
 import { RULESETS, generateLeagueSchedule } from '@gbm/competition-system';
 import { DEFAULT_TACTICS } from '@gbm/simulation';
@@ -31,12 +31,14 @@ import {
 import { ASSIGNABLE, SIMULATED_APPOINTMENT, type RealCoach, type RealDataset, loadRealDataset2026, openDataIssue } from '@gbm/data-import';
 import { DOMESTIC_LEAGUE_DEFS, LEAGUE_DEFS } from './leagues';
 import { addNews, emptyWorld } from './world';
+import { EXPERIENCE_PROFILES, type ManagerExperience, assignUserToClub, managerAttributesFor } from './manager';
 
 export interface NewCareerOptions {
   careerName: string;
   managerName: string;
-  /** Dataset club ref (e.g. 'nba:bos') or world club id. */
-  userClubRef: string;
+  /** Dataset club ref (e.g. 'nba:bos') or world club id. Omit to pick a club later (club selection screen). */
+  userClubRef?: string;
+  managerExperience?: ManagerExperience;
   seed?: number;
   fictionalCoachPolicy?: 'when_needed' | 'never';
   dataset?: RealDataset;
@@ -44,7 +46,7 @@ export interface NewCareerOptions {
 
 const ALL_LEAGUES = { ...LEAGUE_DEFS, ...DOMESTIC_LEAGUE_DEFS };
 
-/** Clubs a user may pick (playable competitions only). */
+/** Clubs a user may pick (every club in a playable competition). */
 export function selectableClubs(dataset: RealDataset = loadRealDataset2026()) {
   return dataset.clubs.filter((c) => ALL_LEAGUES[c.league]?.active);
 }
@@ -93,6 +95,8 @@ export function createCareer(opts: NewCareerOptions): World {
     careerName: opts.careerName,
     managerName: opts.managerName,
     userClubId: '',
+    managerReputation: EXPERIENCE_PROFILES[opts.managerExperience ?? 'professional'].reputation,
+    managerAttributes: managerAttributesFor(opts.managerExperience ?? 'professional'),
     season,
     currentDate: startDate,
     phase: 'preseason',
@@ -119,7 +123,7 @@ export function createCareer(opts: NewCareerOptions): World {
     const league = world.leagues[leagueId];
     const crng = new Rng(combineSeeds(seed, rc.ref));
     const na = league.region === 'north_america';
-    const reputation = clamp(Math.round((rc.league === 'nba' ? 70 : rc.league === 'euroleague' ? 66 : 50) + crng.normal(0, 8)), 25, 95);
+    const reputation = clamp(Math.round((rc.league === 'nba' ? 70 : rc.league === 'euroleague' ? 66 : 48) + crng.normal(0, 8)), 20, 95);
     const club: Club = {
       id: nextId(world, 'c'),
       name: rc.name,
@@ -127,6 +131,7 @@ export function createCareer(opts: NewCareerOptions): World {
       city: rc.city,
       country: rc.country,
       leagueId,
+      competitionIds: [leagueId, ...(rc.domestic && leagueIdByKey[rc.domestic] ? [leagueIdByKey[rc.domestic]] : [])],
       reputation,
       arenaCapacity: na ? crng.int(17500, 20500) : rc.league === 'euroleague' ? crng.int(7000, 16000) : crng.int(2500, 8000),
       ticketPrice: na ? crng.int(80, 120) : crng.int(20, 40),
@@ -176,6 +181,7 @@ export function createCareer(opts: NewCareerOptions): World {
   for (const club of Object.values(world.clubs)) {
     if (!world.leagues[club.leagueId].active) continue;
     generateRoster(world, club, rng);
+    invalidateIndexes(world);
   }
   generateFreeAgents(world, rng);
 
@@ -227,14 +233,12 @@ export function createCareer(opts: NewCareerOptions): World {
   }
   for (const league of Object.values(world.leagues)) if (league.active) generateLeagueSchedule(world, league, season);
 
-  // ---- User club --------------------------------------------------------
-  const userClubId = clubIdByRef[opts.userClubRef] ?? (world.clubs[opts.userClubRef] ? opts.userClubRef : null);
-  if (!userClubId) throw new Error(`Unknown club ${opts.userClubRef}`);
-  if (!world.leagues[world.clubs[userClubId].leagueId].active) throw new Error('That club does not play in a playable competition yet.');
-  world.meta.userClubId = userClubId;
-  world.managerHistory.push({ id: nextId(world, 'mh'), clubId: userClubId, startSeason: season, endSeason: null, wins: 0, losses: 0, titles: 0, endReason: 'active' });
-  const uc = world.clubs[userClubId];
-  addNews(world, 'board', `Welcome to ${uc.name}`, `${opts.managerName} has been appointed general manager of ${uc.name}. Player rosters are FICTIONAL generated players until an authorized player dataset is imported; clubs and coaches come from the real-world 2026-27 dataset.`, { clubId: userClubId, important: true });
+  // ---- User club (optional: may be chosen later from the club directory) ----
+  if (opts.userClubRef) {
+    const userClubId = clubIdByRef[opts.userClubRef] ?? (world.clubs[opts.userClubRef] ? opts.userClubRef : null);
+    if (!userClubId) throw new Error(`Unknown club ${opts.userClubRef}`);
+    assignUserToClub(world, userClubId, 'start');
+  }
   return world;
 }
 
@@ -310,7 +314,8 @@ function generateRoster(world: World, club: Club, rng: Rng) {
   const na = league.region === 'north_america';
   const size = na ? 15 : 14;
   const tier = (club.reputation - 65) * 0.25 + rng.normal(0, 2.5);
-  const base = (na ? 69 : 64) + tier;
+  const base = (na ? 69 : club.leagueId === 'lg_euroleague' ? 64 : 58) + tier;
+  let foreign = 0;
   const curve = [11, 7, 5, 3, 2, 0, -1, -2, -3, -5, -6, -8, -9, -10, -11];
   for (let i = 0; i < size; i++) {
     const position = ROSTER_POSITIONS[i];
@@ -318,8 +323,13 @@ function generateRoster(world: World, club: Club, rng: Rng) {
     const overall = clamp(Math.round(base + curve[i] + rng.normal(0, 1.5)), 40, 92);
     const p = generatePlayer(world, {
       rng, position, age, overall, onDate: world.meta.currentDate, clubId: club.id,
-      nationality: na ? randomNationality(rng, 'north_america') : rng.chance(0.45) ? club.country : randomNationality(rng, 'europe'),
+      nationality: na
+        ? randomNationality(rng, 'north_america')
+        : rules.foreignPlayerLimit !== null && foreign >= rules.foreignPlayerLimit
+          ? club.country
+          : rng.chance(0.45) ? club.country : randomNationality(rng, 'europe'),
     });
+    if (p.nationality !== club.country) foreign++;
     p.jersey = i < 10 ? [0, 1, 3, 4, 5, 7, 8, 9, 10, 11][i] : 20 + i;
     world.players[p.id] = p;
     addContract(world, p.id, club.id, rng, rules.salaryCap.minSalary);

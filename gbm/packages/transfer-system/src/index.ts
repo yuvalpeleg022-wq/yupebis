@@ -1,5 +1,5 @@
 import type { Club, Contract, Player, TransferNegotiation, TransferRecord, World } from '@gbm/shared-types';
-import { addDays, ageOn, clamp, nextId } from '@gbm/shared-types';
+import { addDays, ageOn, cachedIndex, clamp, invalidateIndexes, nextId } from '@gbm/shared-types';
 import { askingSalary, playerOverall, preferredYears } from '@gbm/player-system';
 import { activeContracts, contractForPlayer, payroll, recordTransaction } from '@gbm/finance-system';
 
@@ -15,8 +15,17 @@ export function clubRules(world: World, clubId: string) {
   return { club, league, rules: world.rules[league.rulesId] };
 }
 
+/** Players under contract with a club (indexed; see invalidateIndexes). */
 export function rosterOf(world: World, clubId: string): Player[] {
-  return Object.values(world.players).filter((p) => p.clubId === clubId && !p.retired);
+  const idx = cachedIndex(world, 'rosters', () => {
+    const m = new Map<string, Player[]>();
+    for (const p of Object.values(world.players)) {
+      if (!p.clubId || p.retired) continue;
+      (m.get(p.clubId) ?? m.set(p.clubId, []).get(p.clubId)!).push(p);
+    }
+    return m;
+  });
+  return [...(idx.get(clubId) ?? [])];
 }
 
 export function freeAgents(world: World): Player[] {
@@ -180,8 +189,10 @@ export function signContract(world: World, clubId: string, playerId: string, off
     active: true,
   };
   world.contracts[contract.id] = contract;
+  invalidateIndexes(world);
   if (kind === 'free_agent') {
     player.clubId = clubId;
+    invalidateIndexes(world);
     player.jersey = freeJersey(world, clubId);
     player.morale = clamp(player.morale + 5, 0, 100);
     addToRotation(world, clubId, playerId);
@@ -253,8 +264,10 @@ export function releasePlayer(world: World, clubId: string, playerId: string): n
   const player = world.players[playerId];
   const c = contractForPlayer(world, playerId);
   if (c) c.active = false;
+  invalidateIndexes(world);
   if (cost > 0) recordTransaction(world, clubId, 'release', -cost, `Released ${player.firstName} ${player.lastName}`);
   player.clubId = null;
+  invalidateIndexes(world);
   player.jersey = null;
   player.morale = clamp(player.morale - 10, 0, 100);
   removeFromRotation(world, clubId, playerId);

@@ -34,17 +34,17 @@ export function seasonStartDate(league: League, season: number): string {
 
 /** Generates the regular-season fixtures for a league and adds them to the world. */
 export function generateLeagueSchedule(world: World, league: League, season: number): Fixture[] {
-  const clubIds = Object.values(world.clubs)
-    .filter((c) => c.leagueId === league.id)
-    .map((c) => c.id)
-    .sort();
+  const clubIds = competitionClubIds(world, league.id);
   const base = roundRobinRounds(clubIds);
   const fixtures: Fixture[] = [];
   let roundNo = 0;
   const start = seasonStartDate(league, season);
+  const gaps = league.roundGaps?.length ? league.roundGaps : [league.daysBetweenRounds];
+  let offset = 0;
   for (let cycle = 0; cycle < league.roundRobins; cycle++) {
     for (const round of base) {
-      const date = addDays(start, roundNo * league.daysBetweenRounds);
+      const date = addDays(start, offset);
+      offset += gaps[roundNo % gaps.length];
       for (const [h, a] of round) {
         const [homeId, awayId] = cycle % 2 === 0 ? [h, a] : [a, h];
         const f: Fixture = {
@@ -68,6 +68,26 @@ export function generateLeagueSchedule(world: World, league: League, season: num
     }
   }
   return fixtures;
+}
+
+/** Clubs taking part in a competition (any club listing it in competitionIds). */
+export function competitionClubIds(world: World, leagueId: string): string[] {
+  return Object.values(world.clubs)
+    .filter((c) => c.competitionIds.includes(leagueId))
+    .map((c) => c.id)
+    .sort();
+}
+
+/** First date on/after `from` when none of the clubs already has a fixture. */
+export function nextFreeDate(world: World, clubIds: string[], from: string): string {
+  const busy = new Set<string>();
+  for (const f of Object.values(world.fixtures)) {
+    if (f.date < from) continue;
+    if (clubIds.includes(f.homeId) || clubIds.includes(f.awayId)) busy.add(f.date);
+  }
+  let d = from;
+  while (busy.has(d)) d = addDays(d, 1);
+  return d;
 }
 
 export function lastRegularSeasonDate(world: World, leagueId: string, season: number): string | null {

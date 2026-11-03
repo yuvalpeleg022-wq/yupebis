@@ -63,8 +63,8 @@ src("s_wiki_gbl_bios","Greek coach biographies (Ziagkos, Vovoras, Kantzouris, De
 src("s_bbl_preview_2025","easyCredit BBL season preview 2025/26","https://easycredit-bbl.de/de/n/news/2025/september/season-preview-60th-season-with-the-league-of-champions-18-teams-6-german-coaches-germans-big-names-return","easyCredit BBL (official)")
 
 clubs = []
-def club(ref, name, short, city, cty, league, part, sources, notes=""):
-    clubs.append(dict(ref=ref, name=name, shortName=short, city=city, country=cty, league=league, participation=part, sources=sources, notes=notes))
+def club(ref, name, short, city, cty, league, part, sources, notes="", domestic=None):
+    clubs.append(dict(ref=ref, name=name, shortName=short, city=city, country=cty, league=league, domestic=domestic, participation=part, sources=sources, notes=notes))
 nba = [("ATL","Atlanta Hawks","Atlanta"),("BOS","Boston Celtics","Boston"),("BKN","Brooklyn Nets","Brooklyn"),("CHA","Charlotte Hornets","Charlotte"),("CHI","Chicago Bulls","Chicago"),("CLE","Cleveland Cavaliers","Cleveland"),("DAL","Dallas Mavericks","Dallas"),("DEN","Denver Nuggets","Denver"),("DET","Detroit Pistons","Detroit"),("GSW","Golden State Warriors","San Francisco"),("HOU","Houston Rockets","Houston"),("IND","Indiana Pacers","Indianapolis"),("LAC","Los Angeles Clippers","Los Angeles"),("LAL","Los Angeles Lakers","Los Angeles"),("MEM","Memphis Grizzlies","Memphis"),("MIA","Miami Heat","Miami"),("MIL","Milwaukee Bucks","Milwaukee"),("MIN","Minnesota Timberwolves","Minneapolis"),("NOP","New Orleans Pelicans","New Orleans"),("NYK","New York Knicks","New York"),("OKC","Oklahoma City Thunder","Oklahoma City"),("ORL","Orlando Magic","Orlando"),("PHI","Philadelphia 76ers","Philadelphia"),("PHX","Phoenix Suns","Phoenix"),("POR","Portland Trail Blazers","Portland"),("SAC","Sacramento Kings","Sacramento"),("SAS","San Antonio Spurs","San Antonio"),("TOR","Toronto Raptors","Toronto"),("UTA","Utah Jazz","Salt Lake City"),("WAS","Washington Wizards","Washington")]
 for c,n,city in nba: club("nba:"+c.lower(), n, c, city, "CAN" if c=="TOR" else "USA", "nba", "reported", ["s_realgm_hc"])
 EL = [("rma","Real Madrid","RMB","Madrid","ESP","reported",["s_wiki_el_tx"],"acb"),("fcb","FC Barcelona","BAR","Barcelona","ESP","reported",["s_wiki_el_tx"],"acb"),
@@ -78,7 +78,7 @@ EL = [("rma","Real Madrid","RMB","Madrid","ESP","reported",["s_wiki_el_tx"],"acb
  ("mil","Olimpia Milano","MIL","Milan","ITA","reported",["s_el_messina_poeta"],"lba"),("asv","ASVEL","ASV","Villeurbanne","FRA","reported",["s_twowayhoops_el"],"lnb"),
  ("prs","Paris Basketball","PRS","Paris","FRA","reported",["s_eurohoops_field","s_eurohoops_paris"],"lnb"),("dub","Dubai Basketball","DUB","Dubai","ARE","reported",["s_dubai_staff"],None)]
 for r,n,s,city,cty,p,srcs,dom in EL:
-    club("el:"+r, n, s, city, cty, "euroleague", p, srcs, f"Also competes domestically ({dom}); domestic schedule not simulated yet." if dom else "")
+    club("el:"+r, n, s, city, cty, "euroleague", p, srcs, "", dom)
 dom = {
  "acb":[("joventut","Joventut Badalona","JOV","Badalona"),("girona","Bàsquet Girona","GIR","Girona"),("lleida","Força Lleida","LLE","Lleida"),("tenerife","CB Canarias (Tenerife)","TEN","La Laguna"),("bilbao","Bilbao Basket","BIL","Bilbao"),("unicaja","Unicaja","UNI","Málaga"),("murcia","UCAM Murcia","MUR","Murcia"),("burgos","Burgos","BUR","Burgos"),("zaragoza","Basket Zaragoza","ZAR","Zaragoza"),("coruna","Leyma Coruña","COR","A Coruña"),("andorra","MoraBanc Andorra","AND","Andorra la Vella"),("grancanaria","Gran Canaria","GCA","Las Palmas"),("manresa","Manresa","MAN","Manresa"),("granada","Covirán Granada","GRA","Granada")],
  "bsl":[("korfez","Biotekno Körfez Basket","KOR","Kocaeli"),("bandirma","Bandırma Bordo","BAN","Bandırma"),("tofas","Tofaş","TOF","Bursa"),("bahcesehir","Bahçeşehir Koleji","BAH","Istanbul"),("karsiyaka","Karşıyaka Basket","KSK","Izmir"),("galatasaray","Galatasaray","GSY","Istanbul")],
@@ -93,7 +93,7 @@ ctry = {"acb":"ESP","bsl":"TUR","gbl":"GRC","isr":"ISR","lba":"ITA","lnb":"FRA",
 for lg, lst in dom.items():
     for r,n,s,city in lst:
         cty = "MCO" if r=="monaco" else ("AND" if r=="andorra" else ctry[lg])
-        club(f"{lg}:{r}", n, s, city, cty, lg, "reported", domsrc[lg], "Database-only club: domestic league not yet playable; participates in the coaching market.")
+        club(f"{lg}:{r}", n, s, city, cty, lg, "reported", domsrc[lg], "")
 
 coaches = []
 def slug(s): return re.sub(r"[^a-z0-9]+","-",unicodedata.normalize("NFD",s).encode("ascii","ignore").decode().lower()).strip("-")

@@ -26,8 +26,7 @@ export function isAvailable(world: World, p: Player): boolean {
 /** Ranking value used for rotations; youth-focused clubs bias towards young players. */
 function rotationValue(world: World, club: Club, p: Player): number {
   let v = bestOverall(p);
-  const age = ageOn(p.birthDate, world.meta.currentDate);
-  if ((club.aiPersonality === 'youth_development' || club.aiPersonality === 'rebuilding') && age <= 23) v += 3;
+  if ((club.aiPersonality === 'youth_development' || club.aiPersonality === 'rebuilding') && ageOn(p.birthDate, world.meta.currentDate) <= 23) v += 3;
   if (club.aiPersonality === 'defensive_specialist') {
     const c = composites(p.attributes);
     v += ((c.perimeterD + c.interiorD) / 2 - 60) * 0.08;

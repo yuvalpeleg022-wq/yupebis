@@ -209,7 +209,10 @@ export interface Club {
   shortName: string;
   city: string;
   country: string;
+  /** Primary competition: its rules (rosters, salary rules) apply to the club. */
   leagueId: string;
+  /** Every competition the club plays in this season (primary first). */
+  competitionIds: string[];
   reputation: number; // 1..100
   arenaCapacity: number;
   ticketPrice: number;
@@ -314,7 +317,7 @@ export interface StaffCareerEntry {
   wins: number;
   losses: number;
   titles: number;
-  endReason: 'active' | 'fired' | 'resigned' | 'contract_expired' | 'poached' | 'retired' | 'promoted' | 'demoted' | 'role_change';
+  endReason: 'active' | 'fired' | 'resigned' | 'contract_expired' | 'poached' | 'retired' | 'promoted' | 'demoted' | 'role_change' | 'replaced';
 }
 
 export type StaffNegotiationKind = 'hire' | 'renewal' | 'promotion';
@@ -407,6 +410,10 @@ export interface League {
   roundRobins: number;
   /** Days between rounds of the regular season. */
   daysBetweenRounds: number;
+  /** Optional repeating pattern of gaps (days) between rounds, e.g. [5, 2, 7] for Thu/Tue/Thu weeks. */
+  roundGaps?: number[];
+  /** Data completeness note shown in the UI (e.g. partial club list). */
+  dataNote?: string;
   seasonStartMonthDay: string; // 'MM-DD'
   playoff: PlayoffFormat;
   tvRevenuePerClub: number;
@@ -716,7 +723,12 @@ export interface CareerMeta {
   careerId: string;
   careerName: string;
   managerName: string;
+  /** The club the user manages; '' while the user is between jobs. */
   userClubId: string;
+  /** User's standing in the coaching world (1..100); drives job offers. */
+  managerReputation: number;
+  /** The user's coaching skills as head coach of their club. */
+  managerAttributes: CoachAttributes;
   season: number;
   currentDate: string;
   phase: SeasonPhase;
@@ -761,7 +773,19 @@ export interface World {
   staffNegotiations: Record<string, StaffNegotiation>;
   scoutingReports: Record<string, ScoutingReport>;
   dataIssues: Record<string, DataIssue>;
+  jobOffers: JobOffer[];
   dataSources: Record<string, DataSourceRecord>;
+}
+
+/** A head-coaching job offer to the user, or the user's application. */
+export interface JobOffer {
+  id: string;
+  clubId: string;
+  kind: 'offer' | 'application';
+  date: string;
+  expires: string;
+  status: 'open' | 'accepted' | 'declined' | 'rejected' | 'expired';
+  message: string;
 }
 
 export const SAVE_VERSION = 1;

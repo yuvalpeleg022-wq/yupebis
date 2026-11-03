@@ -1,6 +1,7 @@
 import type { Fixture, League, PlayoffSeries, World } from '@gbm/shared-types';
 import { addDays, nextId } from '@gbm/shared-types';
 import { computeStandings } from './standings';
+import { nextFreeDate } from './schedule';
 
 /** Bracket order for a field of n seeds so that 1 and 2 can only meet in the final. */
 export function bracketSeedOrder(n: number): number[] {
@@ -28,7 +29,9 @@ export function seriesHomeIsHighSeed(bestOf: number, gameNumber: number): boolea
   return true;
 }
 
-function scheduleSeriesGame(world: World, s: PlayoffSeries, date: string, neutral: boolean): Fixture {
+function scheduleSeriesGame(world: World, s: PlayoffSeries, wanted: string, neutral: boolean): Fixture {
+  // Avoid clashing with the clubs' other competitions.
+  const date = nextFreeDate(world, [s.highSeedId, s.lowSeedId], wanted);
   const gameNumber = s.highWins + s.lowWins + 1;
   const highHome = seriesHomeIsHighSeed(s.bestOf, gameNumber);
   const f: Fixture = {

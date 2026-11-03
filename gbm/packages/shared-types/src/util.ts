@@ -80,3 +80,24 @@ export function groupBy<T, K extends string>(items: T[], key: (t: T) => K): Reco
   }
   return out;
 }
+
+// ---- Derived indexes (not persisted) ----
+// Frequently used lookups (players by club, staff by club) are cached per
+// world. Any code that changes a player's or coach's club must call
+// invalidateIndexes(world); the calendar also rebuilds them every game day.
+
+const indexCache = new WeakMap<object, Map<string, unknown>>();
+
+export function cachedIndex<T>(world: object, key: string, build: () => T): T {
+  let m = indexCache.get(world);
+  if (!m) {
+    m = new Map();
+    indexCache.set(world, m);
+  }
+  if (!m.has(key)) m.set(key, build());
+  return m.get(key) as T;
+}
+
+export function invalidateIndexes(world: object) {
+  indexCache.delete(world);
+}

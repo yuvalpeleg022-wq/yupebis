@@ -72,6 +72,9 @@ importers:
         specifier: ^1.15.2
         version: 1.15.2
     devDependencies:
+      '@gbm/game-engine':
+        specifier: workspace:*
+        version: link:../game-engine
       '@types/sql.js':
         specifier: ^1.4.11
         version: 1.4.11

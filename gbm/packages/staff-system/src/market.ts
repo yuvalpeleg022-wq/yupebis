@@ -1,5 +1,5 @@
 import type { Club, Rng, Staff, StaffCareerEntry, StaffNegotiation, StaffRole, World } from '@gbm/shared-types';
-import { STAFF_ROLES, addDays, ageOn, clamp, nextId } from '@gbm/shared-types';
+import { STAFF_ROLES, addDays, ageOn, cachedIndex, clamp, invalidateIndexes, nextId } from '@gbm/shared-types';
 import { playerOverall } from '@gbm/player-system';
 import { recordTransaction, staffPayroll } from '@gbm/finance-system';
 import { ROLE_LABEL, ROLE_RANK, ROLE_SLOTS, coachAgeForLogic, coachName, coachRoleRating, expectedSalary } from './coaches';
@@ -8,15 +8,38 @@ import { ROLE_LABEL, ROLE_RANK, ROLE_SLOTS, coachAgeForLogic, coachName, coachRo
 // Queries
 // ---------------------------------------------------------------------------
 
+/** Staff employed by a club (indexed; see invalidateIndexes). */
 export function clubStaff(world: World, clubId: string): Staff[] {
-  return Object.values(world.staff).filter((s) => s.clubId === clubId && !s.retired);
+  const idx = cachedIndex(world, 'staff', () => {
+    const m = new Map<string, Staff[]>();
+    for (const s of Object.values(world.staff)) {
+      if (!s.clubId || s.retired) continue;
+      (m.get(s.clubId) ?? m.set(s.clubId, []).get(s.clubId)!).push(s);
+    }
+    return m;
+  });
+  return [...(idx.get(clubId) ?? [])];
 }
 
 export function staffInRole(world: World, clubId: string, role: StaffRole): Staff[] {
   return clubStaff(world, clubId).filter((s) => s.role === role);
 }
 
+/** The user, represented as the head coach of their club (not stored in world.staff). */
+export function userAsCoach(world: World): Staff {
+  const m = world.meta;
+  return {
+    id: '__user__', clubId: m.userClubId || null, firstName: m.managerName, lastName: '', nationality: '', birthDate: null,
+    role: 'head_coach', attributes: m.managerAttributes, personality: 'ambitious', philosophy: 'balanced', ambition: 'win_titles',
+    preferredRoles: ['head_coach'], reputation: m.managerReputation, experienceYears: 0, salary: 0, contractStartSeason: m.season,
+    contractEndSeason: m.season, morale: 100, retired: false, source: 'imported', sourceRef: null,
+    verification: { status: 'reported', sources: [], verifiedOn: null, missingFields: [], notes: 'You' }, marketExcluded: true,
+  };
+}
+
+/** Head coach of a club; for the user's club this is the user. */
 export function headCoach(world: World, clubId: string): Staff | null {
+  if (clubId && clubId === world.meta.userClubId) return userAsCoach(world);
   return staffInRole(world, clubId, 'head_coach')[0] ?? null;
 }
 
@@ -32,6 +55,7 @@ export function isDataGapPost(world: World, clubId: string, role: StaffRole): bo
 export function openSlots(world: World, clubId: string): StaffRole[] {
   const out: StaffRole[] = [];
   for (const role of STAFF_ROLES) {
+    if (role === 'head_coach' && clubId === world.meta.userClubId) continue;
     const free = ROLE_SLOTS[role] - staffInRole(world, clubId, role).length;
     for (let i = 0; i < free; i++) out.push(role);
   }
@@ -57,14 +81,25 @@ export function clubRecord(world: World, clubId: string, season: number): { wins
   return { wins, losses };
 }
 
-/** Average overall of a club's top eight players (roster strength). */
+const strengthCache = new WeakMap<World, { date: string; map: Map<string, number> }>();
+
+/** Average overall of a club's top eight players (cached per game day). */
 export function rosterStrength(world: World, clubId: string): number {
-  const ovr = Object.values(world.players)
-    .filter((p) => p.clubId === clubId && !p.retired)
-    .map(playerOverall)
-    .sort((a, b) => b - a)
-    .slice(0, 8);
-  return ovr.length ? ovr.reduce((a, b) => a + b, 0) / ovr.length : 0;
+  let c = strengthCache.get(world);
+  if (!c || c.date !== world.meta.currentDate) {
+    c = { date: world.meta.currentDate, map: new Map() };
+    const by = new Map<string, number[]>();
+    for (const p of Object.values(world.players)) {
+      if (!p.clubId || p.retired) continue;
+      (by.get(p.clubId) ?? by.set(p.clubId, []).get(p.clubId)!).push(playerOverall(p));
+    }
+    for (const [id, list] of by) {
+      const top = list.sort((a, b) => b - a).slice(0, 8);
+      c.map.set(id, top.reduce((a, b) => a + b, 0) / top.length);
+    }
+    strengthCache.set(world, c);
+  }
+  return c.map.get(clubId) ?? 0;
 }
 
 function leagueStrengthRank(world: World, clubId: string): { rank: number; size: number } {
@@ -291,6 +326,7 @@ export function validateStaffHire(world: World, clubId: string, staffId: string,
   if (!s || s.retired) return { ok: false, errors: ['Coach not available.'], warnings };
   if (!Number.isInteger(offer.years) || offer.years < 1 || offer.years > 5) errors.push('Contract length must be 1–5 years.');
   if (!Number.isFinite(offer.salary) || offer.salary <= 0) errors.push('Salary must be positive.');
+  if (clubId === world.meta.userClubId && offer.role === 'head_coach') errors.push('You are the head coach of this club.');
   if (kind === 'hire') {
     if (s.clubId === clubId) errors.push('Coach already works for this club.');
     if (staffInRole(world, clubId, offer.role).length >= ROLE_SLOTS[offer.role]) {
@@ -357,6 +393,7 @@ export function hireStaff(world: World, clubId: string, staffId: string, offer: 
     closeStint(world, staffId, s.clubId, 'poached');
   }
   s.clubId = clubId;
+  invalidateIndexes(world);
   s.role = offer.role;
   s.salary = Math.round(offer.salary);
   s.contractStartSeason = world.meta.season;
@@ -402,6 +439,7 @@ export function terminateStaff(world: World, clubId: string, staffId: string): n
   if (cost > 0) recordTransaction(world, clubId, 'staff', -cost, `Contract termination: ${coachName(s)}`);
   closeStint(world, staffId, clubId, 'fired');
   s.clubId = null;
+  invalidateIndexes(world);
   s.reputation = clamp(s.reputation - (s.role === 'head_coach' ? 4 : 2), 1, 99);
   s.morale = 40;
   return cost;
@@ -585,16 +623,23 @@ export interface StaffNews {
 }
 
 /** AI clubs make offers for vacancies. Run every few days. */
-export function aiStaffMarketTick(world: World, rng: Rng, userClubId: string): StaffNews[] {
+export function aiStaffMarketTick(world: World, rng: Rng, userClubId: string, generate?: (role: StaffRole, leagueId: string) => Staff): StaffNews[] {
   const news: StaffNews[] = [];
   const today = world.meta.currentDate;
+  const openOffers = new Set<string>();
+  for (const n of Object.values(world.staffNegotiations)) if (n.status === 'open') openOffers.add(`${n.clubId}:${n.role}`);
   for (const club of Object.values(world.clubs)) {
     if (club.id === userClubId) continue;
     for (const role of new Set(openSlots(world, club.id))) {
-      const hasOffer = Object.values(world.staffNegotiations).some((n) => n.clubId === club.id && n.role === role && n.status === 'open');
-      if (hasOffer) continue;
+      if (openOffers.has(`${club.id}:${role}`)) continue;
       if (!rng.chance(role === 'head_coach' ? 0.9 : 0.35)) continue;
-      const candidate = aiPickCandidate(world, club, role, rng);
+      let candidate = aiPickCandidate(world, club, role, rng);
+      if (!candidate && role === 'head_coach' && generate && world.meta.fictionalCoachPolicy === 'when_needed' && world.leagues[club.leagueId]?.active) {
+        // Absolutely necessary: a playable club has no head coach and no real coach is available.
+        const coach = generate(role, club.leagueId);
+        world.staff[coach.id] = coach;
+        candidate = coach;
+      }
       if (!candidate) continue;
       const expected = expectedSalary(candidate, role, leagueSalaryMax(world, club.id));
       const generosity = club.aiPersonality === 'financial_conservative' ? 0.92 : club.aiPersonality === 'win_now' || club.aiPersonality === 'superstar_collector' ? 1.12 : 1.02;
@@ -689,6 +734,7 @@ export function aiMonthlyStaffReview(world: World, rng: Rng, userClubId: string)
       if (s.morale < 20 && rng.chance(0.35)) {
         closeStint(world, s.id, club.id, 'resigned');
         s.clubId = null;
+        invalidateIndexes(world);
         news.push({ title: `${coachName(s)} resigns`, body: `${coachName(s)} has resigned as ${ROLE_LABEL[s.role]} of ${club.name}.`, clubId: club.id, important: club.id === userClubId });
       }
     }
@@ -763,6 +809,7 @@ export function staffSeasonRollover(
       const club = s.clubId ? world.clubs[s.clubId] : null;
       s.retired = true;
       s.clubId = null;
+      invalidateIndexes(world);
       if (s.reputation >= 60 || club?.id === userClubId) {
         news.push({ title: `${coachName(s)} retires`, body: `${coachName(s)} retires after ${s.experienceYears} years in coaching.`, clubId: club?.id ?? null, important: club?.id === userClubId });
       }
@@ -775,6 +822,7 @@ export function staffSeasonRollover(
         closeStint(world, s.id, club.id, 'contract_expired');
         news.push({ title: `${coachName(s)} leaves`, body: `${coachName(s)}'s contract as ${ROLE_LABEL[s.role]} has expired.`, clubId: club.id, important: true });
         s.clubId = null;
+        invalidateIndexes(world);
         continue;
       }
       const offer = { role: s.role, salary: expectedSalary(s, s.role, leagueSalaryMax(world, club.id)), years: rng.int(1, 3) };
@@ -785,6 +833,7 @@ export function staffSeasonRollover(
       } else {
         closeStint(world, s.id, club.id, 'contract_expired');
         s.clubId = null;
+        invalidateIndexes(world);
       }
     }
   }

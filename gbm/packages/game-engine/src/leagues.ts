@@ -37,6 +37,8 @@ export const LEAGUE_DEFS: Record<string, League> = {
     // 20 clubs, double round robin = 38 rounds (matches the real regular-season length).
     roundRobins: 2,
     daysBetweenRounds: 5,
+    // Thursday / Tuesday rhythm (double-round weeks); domestic leagues play on Sundays.
+    roundGaps: [5, 2, 7],
     seasonStartMonthDay: '09-24',
     // Simplified: top 8 play best-of-5, then a neutral-site Final Four (no play-in).
     playoff: { teams: 8, seriesLengths: [5, 1, 1], neutralRounds: [1, 2] },
@@ -48,25 +50,28 @@ export const LEAGUE_DEFS: Record<string, League> = {
   },
 };
 
-function domestic(id: string, name: string, shortName: string, country: string, max: number, tv: number): League {
+function domestic(id: string, name: string, shortName: string, country: string, max: number, tv: number, dataNote: string): League {
   return {
     id: `lg_${id}`, name, shortName, country, region: 'europe', rulesId: 'fiba_domestic', tier: 1, roundRobins: 2,
-    daysBetweenRounds: 7, seasonStartMonthDay: '10-01', playoff: { teams: 8, seriesLengths: [3, 5, 5], neutralRounds: [] },
+    // Weekly Sunday rounds (2026-10-04 is a Sunday) so they never clash with EuroLeague Tuesdays/Thursdays.
+    daysBetweenRounds: 7, seasonStartMonthDay: '10-04', playoff: { teams: 8, seriesLengths: [3, 5, 5], neutralRounds: [] },
     tvRevenuePerClub: tv, salaryScale: { min: 40_000, max }, currency: 'EUR', source: 'generated',
-    // Database-only: clubs and coaches exist (coaching market), schedule not simulated yet.
-    active: false,
+    active: true,
+    dataNote,
   };
 }
 
-/** Domestic leagues: clubs and real coaches are in the database; matches are not simulated yet. */
+const PARTIAL = (found: string) => `Partial league: only the clubs named in this session's sources are included (${found}). Missing clubs can be added via data import.`;
+
+/** Domestic leagues (playable; EuroLeague clubs also take part). */
 export const DOMESTIC_LEAGUE_DEFS: Record<string, League> = {
-  acb: domestic('acb', 'Liga ACB', 'ACB', 'ESP', 3_000_000, 2_000_000),
-  bsl: domestic('bsl', 'Basketbol Süper Ligi', 'BSL', 'TUR', 2_500_000, 1_500_000),
-  gbl: domestic('gbl', 'Greek Basket League', 'GBL', 'GRC', 2_000_000, 800_000),
-  isr: domestic('isr', 'Israeli Basketball Premier League', 'IBPL', 'ISR', 1_500_000, 700_000),
-  lba: domestic('lba', 'Lega Basket Serie A', 'LBA', 'ITA', 2_000_000, 1_000_000),
-  lnb: domestic('lnb', 'Betclic Élite', 'LNB', 'FRA', 1_500_000, 900_000),
-  bbl: domestic('bbl', 'easyCredit BBL', 'BBL', 'DEU', 1_500_000, 900_000),
+  acb: domestic('acb', 'Liga ACB', 'ACB', 'ESP', 3_000_000, 2_000_000, 'All 18 clubs named in sources.'),
+  bsl: domestic('bsl', 'Basketbol Süper Ligi', 'BSL', 'TUR', 2_500_000, 1_500_000, PARTIAL('9 of 16')),
+  gbl: domestic('gbl', 'Greek Basket League', 'GBL', 'GRC', 2_000_000, 800_000, PARTIAL('7; full size not confirmed')),
+  isr: domestic('isr', 'Israeli Basketball Premier League', 'IBPL', 'ISR', 1_500_000, 700_000, PARTIAL('7 of 14')),
+  lba: domestic('lba', 'Lega Basket Serie A', 'LBA', 'ITA', 2_000_000, 1_000_000, PARTIAL('9 of 16')),
+  lnb: domestic('lnb', 'Betclic Élite', 'LNB', 'FRA', 1_500_000, 900_000, PARTIAL('9 of 16')),
+  bbl: domestic('bbl', 'easyCredit BBL', 'BBL', 'DEU', 1_500_000, 900_000, PARTIAL('8 of 18')),
 };
 
 /** Leagues the system is designed for but whose data is not available yet. */
