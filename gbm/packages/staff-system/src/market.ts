@@ -1,5 +1,5 @@
 import type { Club, Rng, Staff, StaffCareerEntry, StaffNegotiation, StaffRole, World } from '@gbm/shared-types';
-import { STAFF_ROLES, addDays, ageOn, cachedIndex, clamp, invalidateIndexes, nextId } from '@gbm/shared-types';
+import { STAFF_ROLES, addDays, cachedIndex, clamp, invalidateIndexes, nextId, logicAge } from '@gbm/shared-types';
 import { playerOverall } from '@gbm/player-system';
 import { recordTransaction, staffPayroll } from '@gbm/finance-system';
 import { ROLE_LABEL, ROLE_RANK, ROLE_SLOTS, coachAgeForLogic, coachName, coachRoleRating, expectedSalary } from './coaches';
@@ -236,7 +236,7 @@ export function willingness(world: World, staffId: string, clubId: string, offer
   if (s.ambition === 'win_titles') add('ambition', contender > 0.6 ? 'Club can contend for titles' : 'Club is not a contender', (contender - 0.5) * 28);
   else add('ambition', 'Team competitiveness', (contender - 0.5) * 8);
   if (s.ambition === 'develop_players') {
-    const young = Object.values(world.players).filter((p) => p.clubId === clubId && ageOn(p.birthDate, world.meta.currentDate) <= 23).length;
+    const young = Object.values(world.players).filter((p) => p.clubId === clubId && logicAge(p, world.meta.currentDate) <= 23).length;
     add('ambition', 'Young roster to develop', clamp((young - 3) * 3, -6, 12));
   }
 

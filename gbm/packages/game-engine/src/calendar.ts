@@ -1,5 +1,5 @@
 import type { NewsEvent, World } from '@gbm/shared-types';
-import { Rng, addDays, ageOn, combineSeeds, dayOfMonth, dayOfWeek, invalidateIndexes } from '@gbm/shared-types';
+import { Rng, addDays, combineSeeds, dayOfMonth, dayOfWeek, invalidateIndexes, logicAge } from '@gbm/shared-types';
 import { developPlayer } from '@gbm/player-system';
 import { processMonthlyFinances } from '@gbm/finance-system';
 import { aiFillRoster, aiTactics, autoRotation } from '@gbm/ai-manager';
@@ -148,7 +148,7 @@ function monthly(world: World, rng: Rng) {
     }
     const g = club ? games.get(club.id) ?? 0 : 0;
     const share = g > 0 ? (seconds.get(p.id) ?? 0) / (g * 48 * 60) : 0.2;
-    const age = ageOn(p.birthDate, world.meta.currentDate);
+    const age = logicAge(p, world.meta.currentDate);
     const delta = developPlayer(p, {
       rng, age, minutesShare: share, coachRating: fx?.development ?? 40, shootingCoach: fx?.shooting ?? 40,
       trainingQuality: fx?.training ?? 40, focus: club?.trainingFocus ?? 'balanced', yearFraction: 1 / 12,

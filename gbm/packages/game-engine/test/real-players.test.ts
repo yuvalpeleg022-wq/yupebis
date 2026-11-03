@@ -20,7 +20,7 @@ function fixtureDataset(): RealDataset {
         birthDate: `${1994 + (i % 10)}-03-0${1 + (i % 9)}`, heightCm: [188, 196, 201, 206, 211][i % 5], weightKg: 95 + (i % 5) * 6,
         position: pos, secondaryPosition: null, club: club.ref, jersey: i, status: 'reported', sources: ['s_test'],
         stats: { season: 2025, league: 'nba', gp: 70 - i, mpg: 34 - i * 2, ppg: 24 - i * 1.5, rpg: pos === 'C' ? 10 : 5, apg: pos === 'PG' ? 7 : 2.5, spg: 1.1, bpg: pos === 'C' ? 1.6 : 0.4, fgPct: 0.47, tpPct: pos === 'C' ? 0.25 : 0.37, ftPct: 0.8, tpaPg: pos === 'C' ? 0.5 : 5 },
-        contract: null, notes: '',
+        contract: null, notes: '', role: null, confidence: 'cross_checked', season: 2026, positionBasis: 'reported',
       });
     }
   }
@@ -34,10 +34,11 @@ describe('real players in the simulation', () => {
     expect(Object.values(w.players).filter((p) => p.source === 'generated')).toHaveLength(0);
     const r = playerDataReport(w);
     expect(r.realPlayers).toBe(loadRealDataset2026().players.length);
-    expect(r.clubsMissingRoster).toBe(r.clubs.length - r.clubsWithRealRoster);
+    expect(r.clubsMissingRoster).toBe(r.clubs.filter((c) => c.real < c.required).length);
+    expect(r.clubsWithRealRoster).toBe(r.clubs.filter((c) => c.real >= c.required).length);
     // Competitions with missing rosters are not simulated.
     for (const l of Object.values(w.leagues)) {
-      const missing = Object.values(w.clubs).some((c) => c.leagueId === l.id && c.rosterSource === 'missing');
+      const missing = Object.values(w.clubs).some((c) => c.leagueId === l.id && c.rosterSource !== 'real');
       if (missing) expect(l.active).toBe(false);
     }
   });
@@ -62,5 +63,33 @@ describe('real players in the simulation', () => {
     for (const g of games) expect(w.players[g.playerId].source).toBe('verified');
     // No fictional player entered the world at the start of the career.
     expect(Object.values(w.players).filter((p) => p.source === 'generated')).toHaveLength(0);
+  });
+});
+
+describe('real player dataset (2026-27) in the game', () => {
+  it('Real + Generated: real players play, generated ones only top up and are marked', () => {
+    const w = createCareer({ careerName: 'RG', managerName: 'R', seed: 9, rosterPolicy: 'placeholders', userClubRef: 'nba:bos' });
+    const ds = loadRealDataset2026();
+    const bos = w.meta.userClubId;
+    const real = Object.values(w.players).filter((p) => p.clubId === bos && p.source === 'verified');
+    expect(real.map((p) => p.sourceRef).sort()).toEqual(ds.players.filter((p) => p.club === 'nba:bos').map((p) => p.ref).sort());
+    expect(w.clubs[bos].rosterSource).toBe('real');
+    // Every dataset player exists exactly once, at its club, with unknown facts left empty.
+    const refs = Object.values(w.players).filter((p) => p.source === 'verified').map((p) => p.sourceRef);
+    expect(new Set(refs).size).toBe(refs.length);
+    expect(refs.length).toBe(ds.players.length);
+    for (const p of Object.values(w.players).filter((x) => x.source === 'verified')) {
+      expect(p.birthDate).toBeNull();
+      expect(p.ratingBasis).toBe('league_baseline');
+      expect(p.unverifiedFields).toContain('statistics');
+    }
+    // Atlanta has 5 real players: topped up with generated players to the league minimum.
+    const atl = Object.values(w.clubs).find((c) => c.sourceRef === 'nba:atl')!;
+    expect(atl.rosterSource).toBe('mixed');
+    advance(w, 'month');
+    advance(w, 'month');
+    const bosGames = w.playerGameStats.filter((g) => g.clubId === bos);
+    expect(bosGames.length).toBeGreaterThan(0);
+    for (const g of bosGames) expect(w.players[g.playerId].source).toBe('verified');
   });
 });

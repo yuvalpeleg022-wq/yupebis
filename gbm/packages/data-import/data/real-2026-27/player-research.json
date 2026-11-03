@@ -1,0 +1,354 @@
+{
+ "note": "Named by a single non-official source in the 2026-11-03 research; not imported until confirmed.",
+ "candidates": {
+  "nba:atl": [
+   "Luguentz Dort"
+  ],
+  "nba:bkn": [
+   "Nolan Traore",
+   "Joshua Jefferson",
+   "Tyler Bilodeau"
+  ],
+  "nba:cha": [
+   "Hannes Steinbach",
+   "Rob Dillingham"
+  ],
+  "nba:chi": [
+   "Dailyn Swain",
+   "Buddy Hield"
+  ],
+  "nba:cle": [
+   "Sam Merrill",
+   "Mario Hezonja",
+   "Thomas Bryant"
+  ],
+  "nba:dal": [
+   "P.J. Washington",
+   "Morez Johnson",
+   "Dereck Lively II",
+   "Marcus Sasser",
+   "Sergio De Larrea",
+   "Max Christie"
+  ],
+  "nba:den": [
+   "Tyus Jones",
+   "Julian Strawther",
+   "Spencer Jones",
+   "Trevon Brazile"
+  ],
+  "nba:det": [
+   "Gary Harris",
+   "Taurean Prince"
+  ],
+  "nba:gsw": [
+   "De'Anthony Melton"
+  ],
+  "nba:hou": [
+   "Jabari Smith Jr.",
+   "Jae'Sean Tate",
+   "Steven Adams",
+   "Clint Capela"
+  ],
+  "nba:ind": [
+   "Tyrese Haliburton",
+   "T.J. McConnell",
+   "Kam Jones",
+   "Andrew Nembhard",
+   "Ben Sheppard",
+   "Quenton Jackson",
+   "Aaron Nesmith",
+   "Jarace Walker",
+   "Johnny Furphy",
+   "Pascal Siakam",
+   "Obi Toppin",
+   "Micah Potter",
+   "Kelly Oubre Jr.",
+   "Braden Smith"
+  ],
+  "nba:lac": [
+   "Darius Garland",
+   "Bradley Beal",
+   "Cam Christie",
+   "Kris Dunn",
+   "Keaton Wagler",
+   "Baba Miller",
+   "Henri Veesaar"
+  ],
+  "nba:lal": [
+   "Sandro Mamukelashvili",
+   "Collin Sexton",
+   "Kevon Looney",
+   "Matisse Thybulle",
+   "Ziaire Williams",
+   "Bronny James"
+  ],
+  "nba:mem": [
+   "Zach Edey",
+   "Cedric Coward",
+   "Ty Jerome",
+   "Kris Murray",
+   "Scotty Pippen Jr.",
+   "Jaylen Wells",
+   "GG Jackson",
+   "Taylor Hendricks"
+  ],
+  "nba:mia": [
+   "Pelle Larsson",
+   "Nikola Jović",
+   "Tim Hardaway Jr.",
+   "Simone Fontecchio",
+   "Bobby Portis",
+   "Dru Smith",
+   "Keshad Johnson"
+  ],
+  "nba:mil": [
+   "Tyler Herro",
+   "Kasparas Jakučionis",
+   "Gary Trent Jr.",
+   "Ousmane Dieng",
+   "Brayden Burries",
+   "Nate Ament"
+  ],
+  "nba:min": [
+   "Jaden McDaniels",
+   "Rudy Gobert",
+   "Ayo Dosunmu",
+   "Naz Reid (conflict: Charlotte)",
+   "Bones Hyland",
+   "Jaylen Clark",
+   "Terrence Shannon Jr.",
+   "LaMelo Ball"
+  ],
+  "nba:nop": [
+   "Jordan Poole",
+   "Trey Murphy III",
+   "Bennedict Mathurin"
+  ],
+  "nba:nyk": [
+   "Karl-Anthony Towns",
+   "OG Anunoby",
+   "Andre Drummond",
+   "James Wiseman"
+  ],
+  "nba:okc": [
+   "Cason Wallace",
+   "Ajay Mitchell",
+   "Alex Caruso",
+   "Aday Mara",
+   "Ebuka Okorie"
+  ],
+  "nba:orl": [
+   "Desmond Bane",
+   "Jevon Carter"
+  ],
+  "nba:phi": [
+   "Joel Embiid",
+   "Tyrese Maxey",
+   "Anfernee Simons",
+   "VJ Edgecombe"
+  ],
+  "nba:phx": [
+   "Jalen Green",
+   "Dillon Brooks",
+   "Khaman Maluach",
+   "Collin Gillespie",
+   "Luke Kennard"
+  ],
+  "nba:por": [
+   "Shaedon Sharpe",
+   "Toumani Camara",
+   "Deni Avdija",
+   "Damian Lillard",
+   "Ja Morant"
+  ],
+  "nba:sac": [
+   "Malik Monk",
+   "Darius Acuff Jr.",
+   "Precious Achiuwa",
+   "Nique Clifford"
+  ],
+  "nba:sas": [
+   "Stephon Castle",
+   "Dylan Harper",
+   "De'Aaron Fox",
+   "Devin Vassell",
+   "Jordan McLaughlin"
+  ],
+  "nba:tor": [
+   "Scottie Barnes",
+   "Allen Graves"
+  ],
+  "nba:uta": [
+   "Jaren Jackson Jr.",
+   "Keyonte George",
+   "Jusuf Nurkić"
+  ],
+  "nba:was": [
+   "Alex Sarr",
+   "Deandre Ayton",
+   "Anthony Davis",
+   "Trae Young"
+  ],
+  "el:rma": [
+   "Jaime Pradilla",
+   "Timothé Luwawu-Cabarrot (pending buyout)"
+  ],
+  "el:bkn": [
+   "Damion Baugh",
+   "Chris Duarte",
+   "Kenneth Faried",
+   "Rodions Kurucs",
+   "Tadas Sedekerskis",
+   "Matteo Spagnolo"
+  ],
+  "el:fen": [
+   "Shane Larkin",
+   "Ignas Sargiunas",
+   "Nicolò Melli",
+   "Chris Silva"
+  ],
+  "el:efs": [
+   "Dario Šarić",
+   "Kai Jones"
+  ],
+  "el:oly": [
+   "Donta Hall",
+   "Tyrique Jones",
+   "Tyson Ward",
+   "Tyler Dorsey"
+  ],
+  "el:par": [
+   "Carlik Jones",
+   "Joffrey Lauvergne",
+   "Vanja Marinković",
+   "Antonio Reeves"
+  ],
+  "el:vir": [
+   "Daniel Hackett",
+   "Mouhamet Diouf",
+   "Kevin Kokila"
+  ],
+  "el:mil": [
+   "R.J. Cole"
+  ],
+  "el:dub": [
+   "Mfiondu Kabengele",
+   "Klemen Prepelič"
+  ],
+  "el:zal": [
+   "Ąžuolas Tubelis",
+   "Dominykas Daubaris"
+  ],
+  "el:czv": [
+   "Chris Jones"
+  ],
+  "el:prs": [
+   "Daulton Hommes",
+   "Frank Ntilikina"
+  ]
+ },
+ "conflicts": [
+  {
+   "player": "Walker Kessler",
+   "clubs": [
+    "nba:lal",
+    "nba:uta"
+   ],
+   "sources": [
+    "pl_lal2",
+    "pl_uta"
+   ],
+   "resolution": "Excluded: Lakers coverage reports him signed, Utah coverage describes him as Utah's defensive anchor."
+  },
+  {
+   "player": "Jerami Grant",
+   "clubs": [
+    "nba:mem",
+    "nba:por"
+   ],
+   "sources": [
+    "pl_mem2",
+    "pl_por"
+   ],
+   "resolution": "Excluded: reported traded to Memphis for Ja Morant; Portland contract list still shows him."
+  },
+  {
+   "player": "Jaime Jaquez Jr.",
+   "clubs": [
+    "nba:mia",
+    "nba:mil"
+   ],
+   "sources": [
+    "pl_mia2"
+   ],
+   "resolution": "Excluded: Miami lists him, Milwaukee coverage reports him in the Giannis trade (single source)."
+  },
+  {
+   "player": "Kel'el Ware",
+   "clubs": [
+    "nba:mia",
+    "nba:mil"
+   ],
+   "sources": [
+    "pl_mia2"
+   ],
+   "resolution": "Excluded: same conflict as Jaquez."
+  },
+  {
+   "player": "Ryan Conwell",
+   "clubs": [
+    "nba:mia",
+    "nba:okc"
+   ],
+   "sources": [
+    "pl_mia2",
+    "pl_okc"
+   ],
+   "resolution": "Excluded: Miami depth chart vs Oklahoma City 2026 draft pick (37th)."
+  },
+  {
+   "player": "Felix Okpara",
+   "clubs": [
+    "nba:orl",
+    "nba:was"
+   ],
+   "sources": [
+    "pl_orl",
+    "pl_was"
+   ],
+   "resolution": "Excluded: Orlando 46th pick vs Washington depth chart."
+  },
+  {
+   "player": "Klay Thompson",
+   "clubs": [
+    "nba:dal",
+    "nba:mia"
+   ],
+   "sources": [
+    "pl_dal",
+    "pl_mia2"
+   ],
+   "resolution": "Excluded: waived by Dallas; Miami only rumoured."
+  },
+  {
+   "player": "Thomas Walkup",
+   "clubs": [
+    "el:oly"
+   ],
+   "sources": [
+    "pl_oly"
+   ],
+   "resolution": "Excluded: listed on a roster but the coach said he will not be with the team."
+  },
+  {
+   "player": "Markus Howard",
+   "clubs": [
+    "el:bkn"
+   ],
+   "sources": [
+    "pl_bkn_santos"
+   ],
+   "resolution": "Excluded: later reported leaving Baskonia for Zenit."
+  }
+ ]
+}

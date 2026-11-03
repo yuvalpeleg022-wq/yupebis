@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Player, Staff, World } from '@gbm/shared-types';
-import { ageOn, formatMoney } from '@gbm/shared-types';
+import { formatMoney, logicAge, playerAge } from '@gbm/shared-types';
 import { useGame } from '../store';
 import { Badge } from '../components/ui';
 
@@ -9,7 +9,10 @@ export const money = (world: World, amount: number, clubId?: string) => {
   return formatMoney(amount, cur === 'EUR' ? '€' : '$');
 };
 
-export const age = (world: World, p: { birthDate: string }) => ageOn(p.birthDate, world.meta.currentDate);
+/** Displayed age: '—' when a real player's birth date is not verified. */
+export const age = (world: World, p: { birthDate: string | null }) => playerAge(p, world.meta.currentDate) ?? '—';
+/** Age for sorting/filtering (unknown ages use the neutral logic value). */
+export const sortAge = (world: World, p: { birthDate: string | null }) => logicAge(p, world.meta.currentDate);
 export const pname = (p: Pick<Player, 'firstName' | 'lastName'>) => `${p.firstName} ${p.lastName}`;
 export const cname = (s: Pick<Staff, 'firstName' | 'lastName'>) => `${s.firstName} ${s.lastName}`.trim();
 
@@ -51,7 +54,12 @@ export function Provenance({ s }: { s: Staff }) {
 export function PlayerSourceBadge({ p }: { p: Player }) {
   if (p.source === 'generated') return <Badge tone="fictional" title="Generated player — not a real person">Fictional</Badge>;
   if (p.source === 'imported') return <Badge tone="accent" title="User-imported data">Imported</Badge>;
-  return <Badge tone="real">Verified</Badge>;
+  return (
+    <span className="inline-flex gap-1">
+      <Badge tone="real" title="Real player from the cross-checked dataset">Real</Badge>
+      {p.ratingBasis !== 'statistics' && <Badge tone="warn" title="No verified statistics: provisional rating from league level and reported role">Provisional rating</Badge>}
+    </span>
+  );
 }
 
 export function NoClub() {

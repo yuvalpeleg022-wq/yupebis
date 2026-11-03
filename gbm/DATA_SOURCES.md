@@ -9,10 +9,10 @@ Three kinds of data, always distinguished in the game and the save file:
 - `sources.json` — 52 sources, accessed 2026-11-03.
 - `clubs.json` — 101 real clubs (NBA 30, EuroLeague 20, ACB 14 + EL clubs, BSL, GBL, IBPL, LBA, LNB, BBL partial lists).
 - `coaches.json` — 112 real coaches: 75 head coaches at their real club, 18 assistants, 9 unattached, 10 pending verification. See COACH_DATA_REPORT.md.
-- `players.json` — **empty**. No verified 2026-27 player rosters could be compiled in this session (see below).
+- `players.json` — **192 real players** (74 `official`, 118 `cross_checked`) for NBA (108) and EuroLeague (83) clubs plus one ACB loan; 163 single-source candidates and 9 conflicts recorded in `player-research.json`. Birth dates, heights, nationalities and statistics were not available from any reachable source and are left empty. See REAL_PLAYER_DATA_REPORT.md.
 
 ## Method and limits
-Direct page fetches (Wikipedia, NBA.com, EuroLeague.net, league sites) were **blocked by the development session's network policy**; research used web-search result summaries citing the listed sources, so records are `reported`, never `verified`. Roster searches returned conflicting or incomplete lists (and in one case a football squad), with no birth dates or statistics — not usable without inventing data, so none were added. Nationality, birth dates and career histories of coaches are left empty for the same reason. Coach game ratings are provisional estimates; player ratings for real players are derived only from real statistics.
+Direct page fetches (Wikipedia, NBA.com, EuroLeague.net, league sites) were **blocked by the development session's network policy**; research used web-search result summaries citing the listed sources, so records are `reported`, never `verified`. Roster searches returned partial lists; only players whose club assignment is official or agreed by ≥2 sources were imported, with every unknown fact left empty and ratings marked provisional. A GitHub-hosted dataset scraped from Basketball-Reference was reachable but unlicensed, so it was not used. Nationality, birth dates and career histories of coaches are left empty for the same reason. Coach game ratings are provisional estimates; player ratings for real players are derived only from real statistics.
 
 ## Real player dataset format (import at career creation)
 ```json

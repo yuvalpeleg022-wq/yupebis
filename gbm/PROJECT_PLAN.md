@@ -9,7 +9,7 @@ Legend: [x] done and tested · [~] partial · [ ] not started
 
 ## Phase 2 — Data
 - [x] Normalized schema + migrations · [x] coach/club real dataset with provenance · [x] player CSV/JSON import, duplicate detection, validation, logs
-- [~] Real player rosters: pipeline, stats→ratings, real-only policy and reports done; **dataset empty** (needs authorized source access)
+- [~] Real player rosters: 192 players imported (NBA 108, EuroLeague 83, ACB 1); 2 of 101 clubs complete; no birth dates/stats (sources blocked) → provisional ratings. Domestic, EuroCup, BCL rosters not yet researched
 - [x] Search & filters (clubs, free agents, coaches, prospects)
 
 ## Phase 3 — Game engine

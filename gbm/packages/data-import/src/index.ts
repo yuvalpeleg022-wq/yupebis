@@ -64,10 +64,18 @@ export const RealPlayerSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   nationality: z.string().length(3).nullable(),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  heightCm: z.number().min(150).max(240),
-  weightKg: z.number().min(50).max(180),
+  /** Null when no source gave a verifiable date (reported as missing). */
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+  heightCm: z.number().min(150).max(240).nullable(),
+  weightKg: z.number().min(50).max(180).nullable(),
   position: POSITION,
+  /** Role stated by a source (starter / rotation / reserve); used only for provisional ratings. */
+  role: z.enum(['starter', 'rotation', 'reserve']).nullable().default(null),
+  /** How the position is known: exact slot, group only (G/F/C), or unknown (game placeholder). */
+  positionBasis: z.enum(['reported', 'group', 'unknown']).default('reported'),
+  /** cross_checked = club assignment agreed by ≥2 independent sources. */
+  confidence: z.enum(['official', 'cross_checked', 'single_source']).default('single_source'),
+  season: z.number().int(),
   secondaryPosition: POSITION.nullable(),
   club: z.string().nullable(),
   jersey: z.number().int().min(0).max(99).nullable(),
@@ -426,6 +434,7 @@ export function importPlayers(world: World, rows: Record<string, unknown>[]): Im
       source: 'imported',
       sourceRef: r.sourceRef ?? r.sourceUrl ?? null,
       ratingBasis: hasAttrColumns ? 'imported_attributes' : 'league_baseline',
+      unverifiedFields: [],
       draftYear: null,
       createdAt: now,
       updatedAt: now,

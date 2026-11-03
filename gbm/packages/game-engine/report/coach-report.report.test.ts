@@ -31,7 +31,8 @@ it('writes COACH_DATA_REPORT.md', () => {
   L.push(`| Clubs with no sourced head coach | ${ds.clubs.length - hcSourced.length} |`);
   L.push(`| Fictional coaches in a new career (policy \`when_needed\`) | ${r.fictionalCoaches} |`);
   L.push(`| In-game appointments of real free agents to clubs with unknown coach | ${r.simulatedRealAppointments} |`);
-  L.push(`| Sources used | ${ds.sources.length} (accessed ${ds.sources[0].accessedOn}) |`, '');
+  const coachSources = new Set([...ds.coaches.flatMap((c) => c.sources), ...ds.clubs.flatMap((c) => c.sources)]);
+  L.push(`| Sources used | ${coachSources.size} (accessed ${ds.sources[0].accessedOn}) |`, '');
   for (const [lg, title] of [['nba', 'NBA'], ['euroleague', 'EuroLeague'], ['acb', 'Liga ACB'], ['bsl', 'Turkish BSL'], ['gbl', 'Greek Basket League'], ['isr', 'Israeli Premier League'], ['lba', 'Italian LBA'], ['lnb', 'French Betclic Élite'], ['bbl', 'German BBL']] as const) {
     const clubs = ds.clubs.filter((c) => c.league === lg);
     L.push(`## ${title} — head coaches (${clubs.filter((c) => hcSourced.some((h) => h.assignment!.club === c.ref)).length}/${clubs.length} clubs in dataset)`, '', '| Club | Head coach | Status | Sources | Notes |', '|---|---|---|---|---|');
@@ -51,7 +52,7 @@ it('writes COACH_DATA_REPORT.md', () => {
   for (const p of pending) L.push(`| ${p.firstName} ${p.lastName} | ${p.status} | ${src(p.sources)} | ${p.notes} |`);
   L.push('', '## In a new career', '', `- Clubs whose real coach is unknown first receive a **real** unattached coach as a simulated in-game appointment (${r.simulatedRealAppointments} in a fresh career). These are flagged in the UI and in each coach's record; the data issue stays open.`, `- Fictional coaches are created only when no real coach can fill a playable club's head-coach post (${r.fictionalCoaches} needed with the current dataset). AI clubs fill assistant/specialist posts with real coaches only.`, '- Coach game ratings, traits, salaries and contract lengths are provisional gameplay estimates, never real-world claims.', '');
   L.push('## Sources', '', '| Id | Source | Publisher | Accessed |', '|---|---|---|---|');
-  for (const s of ds.sources) L.push(`| ${s.id} | [${s.title}](${s.url}) | ${s.publisher} | ${s.accessedOn} |`);
+  for (const s of ds.sources.filter((x) => coachSources.has(x.id))) L.push(`| ${s.id} | [${s.title}](${s.url}) | ${s.publisher} | ${s.accessedOn} |`);
   writeFileSync(new URL('../../../COACH_DATA_REPORT.md', import.meta.url), L.join('\n') + '\n');
   console.log(L.slice(0, 22).join('\n'));
 });

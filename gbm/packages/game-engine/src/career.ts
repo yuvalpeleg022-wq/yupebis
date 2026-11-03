@@ -201,7 +201,7 @@ export function createCareer(opts: NewCareerOptions): World {
       generateRoster(world, club, rng, target - real);
       club.rosterSource = real > 0 ? 'mixed' : 'placeholder';
     } else {
-      club.rosterSource = real >= MIN_PLAYABLE_ROSTER ? 'real' : 'missing';
+      club.rosterSource = real >= MIN_PLAYABLE_ROSTER ? 'short' : 'missing';
     }
     openDataIssue(world, {
       entity: 'club', entityId: club.id, field: 'roster', severity: 'missing',
@@ -216,10 +216,12 @@ export function createCareer(opts: NewCareerOptions): World {
   // Competitions can only be simulated when every participant can field a team.
   for (const league of Object.values(world.leagues)) {
     if (!league.active) continue;
-    const blocked = Object.values(world.clubs).filter((c) => c.competitionIds.includes(league.id) && c.rosterSource === 'missing');
+    // Ready to simulate only when every participant has a complete roster
+    // (real players, or labelled placeholders the user explicitly allowed).
+    const blocked = Object.values(world.clubs).filter((c) => c.competitionIds.includes(league.id) && (c.rosterSource === 'missing' || c.rosterSource === 'short'));
     if (blocked.length) {
       league.active = false;
-      league.dataNote = `Not simulated: real rosters missing for ${blocked.length} club(s) (${blocked.slice(0, 4).map((c) => c.shortName).join(', ')}${blocked.length > 4 ? ', …' : ''}). Import verified rosters or allow labelled placeholders.`;
+      league.dataNote = `Not simulated: real rosters incomplete for ${blocked.length} club(s) (${blocked.slice(0, 4).map((c) => c.shortName).join(', ')}${blocked.length > 4 ? ', …' : ''}). Import verified rosters or allow labelled placeholders.`;
     }
   }
   for (const club of Object.values(world.clubs)) club.competitionIds = club.competitionIds.filter((id) => world.leagues[id].active || id === club.leagueId);
@@ -381,7 +383,7 @@ function generateRoster(world: World, club: Club, rng: Rng, size: number) {
 function addContract(world: World, playerId: string, clubId: string, rng: Rng, minSalary: number): Contract {
   const p = world.players[playerId];
   const league = world.leagues[world.clubs[clubId].leagueId];
-  const age = world.meta.season - Number(p.birthDate.slice(0, 4));
+  const age = world.meta.season - (p.birthDate ? Number(p.birthDate.slice(0, 4)) : world.meta.season - 27);
   const ovr = playerOverall(p);
   const salary = Math.max(minSalary, Math.round((askingSalary(ovr, age, p.potential, league.salaryScale) * rng.range(0.85, 1.1)) / 10_000) * 10_000);
   const years = Math.max(1, Math.min(5, preferredYears(age, ovr) + rng.int(-1, 1)));
@@ -437,9 +439,15 @@ function addRealPlayers(world: World, dataset: RealDataset, clubIdByRef: Record<
   for (const rp of dataset.players) {
     const clubId = rp.club ? clubIdByRef[rp.club] ?? null : null;
     const leagueKey = clubId ? leagueKeyByClubId[clubId] : rp.stats?.league ?? 'euroleague';
+    // Ratings: real statistics when available; otherwise PROVISIONAL league
+    // baseline adjusted only by a source-stated role (starter/rotation/reserve).
     const attributes = rp.stats ? attributesFromStats(rp.position, rp.heightCm, rp.stats) : baselineAttributes(rp.position, leagueKey);
+    if (!rp.stats && rp.role) {
+      const shift = rp.role === 'starter' ? 7 : rp.role === 'rotation' ? 2 : -4;
+      for (const k of Object.keys(attributes) as (keyof typeof attributes)[]) attributes[k] = clamp(attributes[k] + shift, 20, 99);
+    }
     const ovr = overallForPosition(attributes, rp.position);
-    const age = world.meta.season - Number(rp.birthDate.slice(0, 4));
+    const age = rp.birthDate ? world.meta.season - Number(rp.birthDate.slice(0, 4)) : 27;
     const p: Player = {
       id: nextId(world, 'p'),
       firstName: rp.firstName,
@@ -463,6 +471,15 @@ function addRealPlayers(world: World, dataset: RealDataset, clubIdByRef: Record<
       source: 'verified',
       sourceRef: rp.ref,
       ratingBasis: rp.stats ? 'statistics' : 'league_baseline',
+      unverifiedFields: [
+        ...(rp.positionBasis !== 'reported' ? ['position_slot'] : []),
+        ...(rp.birthDate ? [] : ['birthDate']),
+        ...(rp.heightCm ? [] : ['height']),
+        ...(rp.nationality ? [] : ['nationality']),
+        ...(rp.stats ? [] : ['statistics']),
+        // No verified contract: the game assigns an estimated contract, flagged as such.
+        ...(rp.contract ? [] : ['contract']),
+      ],
       draftYear: null,
       createdAt: now,
       updatedAt: now,

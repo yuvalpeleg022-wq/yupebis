@@ -114,10 +114,12 @@ export interface Player {
   id: string;
   firstName: string;
   lastName: string;
+  /** Empty string when unknown (real player, not verified). */
   nationality: string;
-  birthDate: string; // ISO yyyy-mm-dd
-  heightCm: number;
-  weightKg: number;
+  /** ISO yyyy-mm-dd; null when a real player's birth date is not verified. */
+  birthDate: string | null;
+  heightCm: number | null;
+  weightKg: number | null;
   position: Position;
   secondaryPosition: Position | null;
   clubId: string | null;
@@ -138,6 +140,8 @@ export interface Player {
    * baseline (real player without usable stats), or generation (fictional).
    */
   ratingBasis: 'statistics' | 'league_baseline' | 'generated' | 'imported_attributes';
+  /** Fields filled with a game default because no source verified them (e.g. 'position_slot'). */
+  unverifiedFields: string[];
   draftYear: number | null;
   createdAt: string;
   updatedAt: string;
@@ -232,8 +236,13 @@ export interface Club {
   /** Board-approved budget for coaching staff salaries per season. */
   staffBudget: number;
   primaryColor: string; // neutral UI accent (no branding)
-  /** Where the starting roster came from. */
-  rosterSource: 'real' | 'mixed' | 'placeholder' | 'missing';
+  /**
+   * Starting roster status. real = at least the league roster minimum of real
+   * players (complete for simulation); short = real players only, fewer than the
+   * minimum; mixed/placeholder = labelled fictional players added by user choice;
+   * missing = fewer than 8 real players.
+   */
+  rosterSource: 'real' | 'short' | 'mixed' | 'placeholder' | 'missing';
   source: DataSource;
   sourceRef: string | null;
   verification: Verification;

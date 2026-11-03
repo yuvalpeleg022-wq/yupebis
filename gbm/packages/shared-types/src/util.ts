@@ -101,3 +101,15 @@ export function cachedIndex<T>(world: object, key: string, build: () => T): T {
 export function invalidateIndexes(world: object) {
   indexCache.delete(world);
 }
+
+/** Neutral age used by game formulas when a real player's birth date is unknown (never displayed). */
+export const UNKNOWN_AGE_FOR_LOGIC = 27;
+
+export function playerAge(p: { birthDate: string | null }, onDate: string): number | null {
+  return p.birthDate ? ageOn(p.birthDate, onDate) : null;
+}
+
+/** Age for game logic (development, valuation, retirement); unknown ages use a neutral value. */
+export function logicAge(p: { birthDate: string | null }, onDate: string): number {
+  return p.birthDate ? ageOn(p.birthDate, onDate) : UNKNOWN_AGE_FOR_LOGIC;
+}

@@ -5,7 +5,7 @@ import { payroll } from '@gbm/finance-system';
 import { clubRules, freeAgents, playerAsk } from '@gbm/transfer-system';
 import { useWorld } from '../store';
 import { Card, Field, InDevelopment, OvrPill, Stat, TableWrap, inputCls, td, th } from '../components/ui';
-import { NoClub, PageTitle, PlayerLink, age, money } from './common';
+import { NoClub, PageTitle, PlayerLink, age, money, sortAge } from './common';
 import { Negotiation } from './Squad';
 
 export function Transfers() {
@@ -21,7 +21,7 @@ export function Transfers() {
   const { rules } = clubRules(world, clubId);
   const pay = payroll(world, clubId, world.meta.phase === 'offseason' ? world.meta.season + 1 : world.meta.season);
   const list = freeAgents(world)
-    .filter((p) => (!pos || p.position === pos) && playerOverall(p) >= minOvr && age(world, p) <= maxAge && `${p.firstName} ${p.lastName}`.toLowerCase().includes(text.toLowerCase()))
+    .filter((p) => (!pos || p.position === pos) && playerOverall(p) >= minOvr && sortAge(world, p) <= maxAge && `${p.firstName} ${p.lastName}`.toLowerCase().includes(text.toLowerCase()))
     .sort((a, b) => playerOverall(b) - playerOverall(a))
     .slice(0, 150);
   return (

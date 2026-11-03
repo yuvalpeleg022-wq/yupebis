@@ -83,3 +83,24 @@ test('real-only mode reports missing rosters instead of inventing players', asyn
   await expect(page.getByText('Choose your club')).toBeVisible({ timeout: 60_000 });
   await expect(page.getByText(/cannot be simulated because real player rosters are missing/)).toBeVisible();
 });
+
+test('real players appear with provenance markers; unknown facts are not invented', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  await page.getByTestId('manager-name').fill('Real Players');
+  await page.getByTestId('roster-policy').selectOption('placeholders');
+  await page.getByTestId('create-career').click();
+  await expect(page.getByText('Choose your club')).toBeVisible({ timeout: 60_000 });
+  await page.getByTestId('club-search').fill('Celtics');
+  await page.getByTestId('club-row').first().click();
+  await page.getByTestId('take-job').click();
+  await page.locator('aside').getByRole('button', { name: 'Squad' }).click();
+  await page.getByRole('button', { name: 'Jayson Tatum' }).click();
+  await expect(page.getByRole('heading', { name: 'Jayson Tatum' })).toBeVisible();
+  await expect(page.getByText('Real', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Provisional rating')).toBeVisible();
+  await expect(page.getByText('height unknown')).toBeVisible();
+  await expect(page.getByText('game estimate · not verified')).toBeVisible();
+  await expect(page.getByText('(slot unverified)')).toBeVisible();
+  await page.screenshot({ path: 'test-results/screens/real-player-profile.png' });
+});

@@ -1,5 +1,5 @@
 import type { Club, Contract, Player, TransferNegotiation, TransferRecord, World } from '@gbm/shared-types';
-import { addDays, ageOn, cachedIndex, clamp, invalidateIndexes, nextId } from '@gbm/shared-types';
+import { addDays, cachedIndex, clamp, invalidateIndexes, nextId, logicAge } from '@gbm/shared-types';
 import { askingSalary, playerOverall, preferredYears } from '@gbm/player-system';
 import { activeContracts, contractForPlayer, payroll, recordTransaction } from '@gbm/finance-system';
 
@@ -35,7 +35,7 @@ export function freeAgents(world: World): Player[] {
 /** The salary a player asks from a specific club. */
 export function playerAsk(world: World, player: Player, club: Club, kind: 'free_agent' | 'renewal'): number {
   const { league, rules } = clubRules(world, club.id);
-  const age = ageOn(player.birthDate, world.meta.currentDate);
+  const age = logicAge(player, world.meta.currentDate);
   const ovr = playerOverall(player);
   let ask = askingSalary(ovr, age, player.potential, league.salaryScale);
   // Stars expect more from weak clubs; loyal players give discounts on renewals.
@@ -141,7 +141,7 @@ export function negotiate(world: World, clubId: string, playerId: string, offer:
   neg.rounds++;
   neg.lastOfferSalary = offer.salary;
   neg.lastOfferYears = offer.years;
-  const age = ageOn(player.birthDate, today);
+  const age = logicAge(player, today);
   const wantYears = preferredYears(age, playerOverall(player));
   const yearsPenalty = Math.abs(offer.years - wantYears) * 0.04;
   const required = ask * (1 + yearsPenalty) * (1 - clamp((club.reputation - 50) * 0.002, -0.05, 0.08));

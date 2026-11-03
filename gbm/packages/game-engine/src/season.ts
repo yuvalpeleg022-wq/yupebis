@@ -1,5 +1,5 @@
 import type { Award, Fixture, FixtureStage, PlayerSeasonStats, Staff, StaffRole, World } from '@gbm/shared-types';
-import { Rng, addDays, ageOn, cachedIndex, combineSeeds, invalidateIndexes, nextId } from '@gbm/shared-types';
+import { Rng, addDays, cachedIndex, combineSeeds, invalidateIndexes, nextId, logicAge } from '@gbm/shared-types';
 import { generatePlayer, playerOverall, randomNationality, retirementChance, seasonPotentialShift } from '@gbm/player-system';
 import { computeStandings, lastRegularSeasonDate, seasonStartDate, seriesForLeague, startPlayoffs } from '@gbm/competition-system';
 import { chargeLuxuryTax, projectedSeasonIncome } from '@gbm/finance-system';
@@ -136,7 +136,7 @@ export function rolloverSeason(world: World) {
   // Players: potential shifts, retirements, expiries.
   for (const p of Object.values(world.players)) {
     if (p.retired) continue;
-    const age = ageOn(p.birthDate, world.meta.currentDate);
+    const age = logicAge(p, world.meta.currentDate);
     const shift = seasonPotentialShift(p, age, rng);
     if (shift === 'breakout' && p.clubId === user) addNews(world, 'development', `${p.firstName} ${p.lastName} breaks out`, `Coaches report a big jump in ${p.lastName}'s ceiling.`, { clubId: user, playerId: p.id });
     if (rng.chance(retirementChance(age, playerOverall(p)))) {
@@ -226,7 +226,7 @@ function youthIntake(world: World, rng: Rng) {
         };
         p.clubId = club.id;
         invalidateIndexes(world);
-        if (club.id === world.meta.userClubId) addNews(world, 'development', `Academy graduate: ${p.firstName} ${p.lastName}`, `${p.firstName} ${p.lastName} (${p.position}, ${ageOn(p.birthDate, world.meta.currentDate)}) joins the senior squad from the youth academy.`, { clubId: club.id, playerId: p.id });
+        if (club.id === world.meta.userClubId) addNews(world, 'development', `Academy graduate: ${p.firstName} ${p.lastName}`, `${p.firstName} ${p.lastName} (${p.position}, ${logicAge(p, world.meta.currentDate)}) joins the senior squad from the youth academy.`, { clubId: club.id, playerId: p.id });
       }
     }
   }

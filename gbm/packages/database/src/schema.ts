@@ -230,6 +230,11 @@ CREATE TABLE competition_entries (
 CREATE INDEX idx_entries_club ON competition_entries(club_id, season);
 `,
   },
+  {
+    version: 4,
+    description: 'Real-player unverified fields',
+    sql: `ALTER TABLE players ADD COLUMN unverified_fields TEXT NOT NULL DEFAULT '[]';`,
+  },
 ];
 
 export const SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1].version;

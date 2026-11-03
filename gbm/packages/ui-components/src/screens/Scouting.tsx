@@ -3,7 +3,7 @@ import { playerOverall, scoutPotential } from '@gbm/player-system';
 import { staffEffects } from '@gbm/staff-system';
 import { useWorld } from '../store';
 import { Card, InDevelopment, OvrPill, Stat, TableWrap, td, th } from '../components/ui';
-import { NoClub, PageTitle, PlayerLink, age } from './common';
+import { NoClub, PageTitle, PlayerLink, age, sortAge } from './common';
 
 export function Scouting() {
   const world = useWorld();
@@ -12,7 +12,7 @@ export function Scouting() {
   if (!world.clubs[clubId]) return <NoClub />;
   const scout = staffEffects(world, clubId).scouting;
   const prospects = Object.values(world.players)
-    .filter((p) => !p.retired && p.clubId !== clubId && age(world, p) <= maxAge)
+    .filter((p) => !p.retired && p.clubId !== clubId && sortAge(world, p) <= maxAge)
     .map((p) => ({ p, est: scoutPotential(p, clubId, scout, false) }))
     .sort((a, b) => b.est.estimate - a.est.estimate)
     .slice(0, 60);

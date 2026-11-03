@@ -6,7 +6,7 @@ import { clubRules, negotiate, playerAsk, releaseCost, releasePlayer, rosterOf, 
 import { staffEffects } from '@gbm/staff-system';
 import { useGame, useWorld } from '../store';
 import { Badge, Button, Card, Empty, Field, OvrPill, RatingBar, Stat, TableWrap, inputCls, td, th } from '../components/ui';
-import { NoClub, PageTitle, PlayerLink, PlayerSourceBadge, age, money, pname } from './common';
+import { NoClub, PageTitle, PlayerLink, PlayerSourceBadge, age, money, sortAge, pname } from './common';
 
 const LABELS: Record<AttributeKey, string> = {
   insideScoring: 'Inside Scoring', layups: 'Layups', dunking: 'Dunking', midRange: 'Mid-Range', threePoint: 'Three-Point', freeThrow: 'Free Throws',
@@ -24,7 +24,7 @@ export function Squad() {
   if (!world.clubs[clubId]) return <NoClub />;
   const { rules } = clubRules(world, clubId);
   const roster = rosterOf(world, clubId).sort((a, b) =>
-    sort === 'ovr' ? playerOverall(b) - playerOverall(a) : sort === 'age' ? age(world, a) - age(world, b) : sort === 'salary' ? (contractForPlayer(world, b.id)?.salary ?? 0) - (contractForPlayer(world, a.id)?.salary ?? 0) : a.position.localeCompare(b.position),
+    sort === 'ovr' ? playerOverall(b) - playerOverall(a) : sort === 'age' ? sortAge(world, a) - sortAge(world, b) : sort === 'salary' ? (contractForPlayer(world, b.id)?.salary ?? 0) - (contractForPlayer(world, a.id)?.salary ?? 0) : a.position.localeCompare(b.position),
   );
   const scout = staffEffects(world, clubId).scouting;
   return (
@@ -53,7 +53,7 @@ export function Squad() {
                     <td className={td}>{age(world, p)}</td>
                     <td className={td}><OvrPill value={playerOverall(p)} /></td>
                     <td className={td}>{pot.low}–{pot.high}</td>
-                    <td className={td}>{p.heightCm}cm</td>
+                    <td className={td}>{p.heightCm ? `${p.heightCm}cm` : '—'}</td>
                     <td className={td}>{Math.round(p.morale)}</td>
                     <td className={td}>{Math.round(p.fatigue)}</td>
                     <td className={td}>{c ? money(world, c.salary, clubId) : '—'}</td>
@@ -107,14 +107,14 @@ export function PlayerProfile({ id }: { id: string }) {
   const canRenew = own && c && c.endSeason <= world.meta.season + 1;
   return (
     <div>
-      <PageTitle title={pname(p)} sub={<span className="inline-flex flex-wrap items-center gap-2">{p.position}{p.secondaryPosition ? `/${p.secondaryPosition}` : ''} · {age(world, p)} years · {p.heightCm} cm · {p.weightKg} kg · {p.nationality} <PlayerSourceBadge p={p} /></span>}
+      <PageTitle title={pname(p)} sub={<span className="inline-flex flex-wrap items-center gap-2">{p.position}{p.secondaryPosition ? `/${p.secondaryPosition}` : ''}{p.unverifiedFields?.includes('position_slot') ? ' (slot unverified)' : ''} · {age(world, p)} years · {p.heightCm ? `${p.heightCm} cm` : 'height unknown'} · {p.weightKg ? `${p.weightKg} kg` : 'weight unknown'} · {p.nationality || 'nationality unknown'} <PlayerSourceBadge p={p} /></span>}
         actions={<Button variant="ghost" onClick={() => back()}>← Back</Button>} />
       <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-5">
         <Stat label="Overall" value={playerOverall(p)} />
         <Stat label="Potential" value={`${pot.low}–${pot.high}`} sub={own ? 'staff estimate' : 'scout estimate'} />
         <Stat label="Club" value={p.clubId ? world.clubs[p.clubId].shortName : p.retired ? 'Retired' : 'Free agent'} />
-        <Stat label="Contract" value={c ? money(world, c.salary, c.clubId) : '—'} sub={c ? `until ${c.endSeason}` : ''} />
-        <Stat label="Market value" value={money(world, marketValue(playerOverall(p), age(world, p), p.potential, league.salaryScale), p.clubId ?? undefined)} />
+        <Stat label="Contract" value={c ? money(world, c.salary, c.clubId) : '—'} sub={c ? (p.unverifiedFields?.includes('contract') ? `game estimate · not verified` : `until ${c.endSeason}`) : ''} />
+        <Stat label="Market value" value={money(world, marketValue(playerOverall(p), sortAge(world, p), p.potential, league.salaryScale), p.clubId ?? undefined)} />
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title="Attributes">

@@ -131,8 +131,8 @@ function StartScreen() {
           </Field>
           <Field label="Player rosters">
             <select className={inputCls} value={rosterPolicy} onChange={(e) => setRosterPolicy(e.target.value as 'real_only' | 'placeholders')} data-testid="roster-policy">
-              <option value="real_only">Real players only (clubs without real rosters are not simulated)</option>
-              <option value="placeholders">Allow labelled fictional placeholders where real rosters are missing</option>
+              <option value="real_only">Real Players Only (incomplete competitions are not simulated)</option>
+              <option value="placeholders">Real + Generated (gaps filled with players marked FICTIONAL)</option>
             </select>
           </Field>
           <Field label="Real player dataset (JSON, optional)">

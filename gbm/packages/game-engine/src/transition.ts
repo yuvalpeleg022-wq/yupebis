@@ -59,7 +59,7 @@ export function applySeasonEntries(world: World) {
   }
   for (const league of Object.values(world.leagues)) {
     const count = entries.filter((e) => e.leagueId === league.id).length;
-    const missingRosters = entries.filter((e) => e.leagueId === league.id && world.clubs[e.clubId].rosterSource === 'missing').length;
+    const missingRosters = entries.filter((e) => e.leagueId === league.id && (world.clubs[e.clubId].rosterSource === 'missing' || world.clubs[e.clubId].rosterSource === 'short')).length;
     league.active = count >= MIN_COMPETITION_CLUBS && missingRosters === 0;
     if (count > 0 && missingRosters > 0) league.dataNote = `Not simulated: real rosters missing for ${missingRosters} club(s).`;
   }

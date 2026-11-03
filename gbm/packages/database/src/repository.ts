@@ -76,8 +76,9 @@ export function saveWorld(db: Database, world: World) {
       return [...ids].filter((id) => world.players[id]).map((id) => [c.id, id, c.rotation.starters.includes(id) ? c.rotation.starters.indexOf(id) : null, Math.round(c.rotation.minutes[id] ?? 0)]);
     }));
     const players = Object.values(world.players);
-    insertAll(db, 'players', ['id', 'first_name', 'last_name', 'nationality', 'birth_date', 'height_cm', 'weight_kg', 'position', 'secondary_position', 'club_id', 'jersey', 'potential', 'morale', 'fatigue', 'loyalty', 'injury_id', 'retired', 'source', 'source_ref', 'rating_basis', 'draft_year', 'created_at', 'updated_at'],
-      players.map((p) => [p.id, p.firstName, p.lastName, p.nationality, p.birthDate, p.heightCm, p.weightKg, p.position, p.secondaryPosition, p.clubId, p.jersey, p.potential, p.morale, p.fatigue, p.loyalty, p.injuryId, b(p.retired), p.source, p.sourceRef, p.ratingBasis, p.draftYear, p.createdAt, p.updatedAt]));
+    insertAll(db, 'players', ['id', 'first_name', 'last_name', 'nationality', 'birth_date', 'height_cm', 'weight_kg', 'position', 'secondary_position', 'club_id', 'jersey', 'potential', 'morale', 'fatigue', 'loyalty', 'injury_id', 'retired', 'source', 'source_ref', 'rating_basis', 'unverified_fields', 'draft_year', 'created_at', 'updated_at'],
+      // Unknown real-player facts are stored as '' / 0 (columns are NOT NULL in schema v1) and restored as null.
+      players.map((p) => [p.id, p.firstName, p.lastName, p.nationality, p.birthDate ?? '', p.heightCm ?? 0, p.weightKg ?? 0, p.position, p.secondaryPosition, p.clubId, p.jersey, p.potential, p.morale, p.fatigue, p.loyalty, p.injuryId, b(p.retired), p.source, p.sourceRef, p.ratingBasis, j(p.unverifiedFields ?? []), p.draftYear, p.createdAt, p.updatedAt]));
     insertAll(db, 'player_attributes', ['player_id', 'attribute', 'value'], players.flatMap((p) => ALL_ATTRIBUTES.map((k) => [p.id, k, p.attributes[k]])));
     insertAll(db, 'draft_classes', ['player_id', 'season'], players.filter((p) => p.draftYear !== null).map((p) => [p.id, p.draftYear]));
     insertAll(db, 'player_contracts', ['id', 'player_id', 'club_id', 'salary', 'start_season', 'end_season', 'option_type', 'buyout', 'nba_exit_clause', 'signed_date', 'active'],
@@ -200,12 +201,12 @@ export function loadWorld(db: Database): World {
   }
   for (const r of select<Row>(db, 'SELECT * FROM players')) {
     const p: Player = {
-      id: s(r.id), firstName: s(r.first_name), lastName: s(r.last_name), nationality: s(r.nationality), birthDate: s(r.birth_date),
-      heightCm: n(r.height_cm), weightKg: n(r.weight_kg), position: s(r.position) as Player['position'],
+      id: s(r.id), firstName: s(r.first_name), lastName: s(r.last_name), nationality: s(r.nationality), birthDate: s(r.birth_date) || null,
+      heightCm: n(r.height_cm) || null, weightKg: n(r.weight_kg) || null, position: s(r.position) as Player['position'],
       secondaryPosition: ns(r.secondary_position) as Player['secondaryPosition'], clubId: ns(r.club_id), jersey: nn(r.jersey),
       attributes: attrs.get(s(r.id))!, potential: n(r.potential), morale: n(r.morale), fatigue: n(r.fatigue), loyalty: n(r.loyalty),
       injuryId: ns(r.injury_id), retired: bool(r.retired), source: s(r.source) as Player['source'], sourceRef: ns(r.source_ref),
-      ratingBasis: s(r.rating_basis) as Player['ratingBasis'], draftYear: nn(r.draft_year), createdAt: s(r.created_at), updatedAt: s(r.updated_at),
+      ratingBasis: s(r.rating_basis) as Player['ratingBasis'], unverifiedFields: pj(r.unverified_fields), draftYear: nn(r.draft_year), createdAt: s(r.created_at), updatedAt: s(r.updated_at),
     };
     w.players[p.id] = p;
   }

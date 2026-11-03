@@ -1,5 +1,5 @@
 import type { AiPersonality, Club, Player, Rng, Rotation, Tactics, World } from '@gbm/shared-types';
-import { ageOn, clamp } from '@gbm/shared-types';
+import { clamp, logicAge } from '@gbm/shared-types';
 import { bestOverall, composites, playerOverall } from '@gbm/player-system';
 import { teamMinutes } from '@gbm/competition-system';
 import { contractForPlayer, payroll } from '@gbm/finance-system';
@@ -26,7 +26,7 @@ export function isAvailable(world: World, p: Player): boolean {
 /** Ranking value used for rotations; youth-focused clubs bias towards young players. */
 function rotationValue(world: World, club: Club, p: Player): number {
   let v = bestOverall(p);
-  if ((club.aiPersonality === 'youth_development' || club.aiPersonality === 'rebuilding') && ageOn(p.birthDate, world.meta.currentDate) <= 23) v += 3;
+  if ((club.aiPersonality === 'youth_development' || club.aiPersonality === 'rebuilding') && logicAge(p, world.meta.currentDate) <= 23) v += 3;
   if (club.aiPersonality === 'defensive_specialist') {
     const c = composites(p.attributes);
     v += ((c.perimeterD + c.interiorD) / 2 - 60) * 0.08;
@@ -164,7 +164,7 @@ export interface AiSigning {
 
 /** Scores a free agent for an AI club given its personality and needs. */
 function targetScore(world: World, club: Club, p: Player, needGuard: boolean, needBig: boolean): number {
-  const age = ageOn(p.birthDate, world.meta.currentDate);
+  const age = logicAge(p, world.meta.currentDate);
   const ovr = playerOverall(p);
   let v = ovr;
   switch (club.aiPersonality) {
@@ -214,7 +214,7 @@ export function aiFillRoster(world: World, clubId: string, rng: Rng, maxSignings
       // Over a soft cap, clubs can only offer minimum deals.
       const v0 = validateSigning(world, clubId, p.id, { salary, years: 1 }, 'free_agent');
       if (!v0.ok && rules.salaryCap.type === 'soft') salary = rules.salaryCap.minSalary;
-      const age = ageOn(p.birthDate, world.meta.currentDate);
+      const age = logicAge(p, world.meta.currentDate);
       const years = age >= 32 ? 1 : rng.int(1, 3);
       const v = validateSigning(world, clubId, p.id, { salary, years }, 'free_agent');
       if (!v.ok) continue;
@@ -253,7 +253,7 @@ export function aiRenewals(world: World, clubId: string, rng: Rng): string[] {
   });
   const ranked = expiring.sort((a, b) => playerOverall(b) - playerOverall(a));
   for (const p of ranked) {
-    const age = ageOn(p.birthDate, world.meta.currentDate);
+    const age = logicAge(p, world.meta.currentDate);
     const ovr = playerOverall(p);
     const teamAvg = rosterOf(world, clubId).map(playerOverall).sort((a, b) => b - a).slice(0, 10);
     const median = teamAvg[Math.floor(teamAvg.length / 2)] ?? 60;

@@ -4,7 +4,7 @@ import { useGame, useWorld } from '../store';
 import { Badge, Button, Card, Field, TableWrap, inputCls, td, th } from '../components/ui';
 import { PageTitle, money } from './common';
 
-const ROSTER_TONE = { real: 'real', mixed: 'warn', placeholder: 'fictional', missing: 'bad' } as const;
+const ROSTER_TONE = { real: 'real', short: 'warn', mixed: 'warn', placeholder: 'fictional', missing: 'bad' } as const;
 const STATUS_TONE: Record<FinancialStatus, 'good' | 'accent' | 'neutral' | 'warn' | 'bad'> = { wealthy: 'good', healthy: 'accent', stable: 'neutral', tight: 'warn', in_debt: 'bad' };
 
 /** Global, searchable club selection (career start). */
