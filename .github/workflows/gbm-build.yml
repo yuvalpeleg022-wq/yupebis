@@ -59,7 +59,7 @@ jobs:
         with: { node-version: 22, cache: pnpm, cache-dependency-path: gbm/pnpm-lock.yaml }
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 21 }
-      - uses: android-actions/setup-android@v3
+      # The Ubuntu runner image ships the Android SDK (ANDROID_HOME is preset).
       - run: pnpm install --frozen-lockfile
       - name: Build web bundle and sync Capacitor
         working-directory: gbm/apps/mobile
