@@ -1,0 +1,33 @@
+{
+  "name": "@gbm/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --port 4174",
+    "cap": "cap"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/filesystem": "^8.1.5",
+    "@gbm/database": "workspace:*",
+    "@gbm/shared-types": "workspace:*",
+    "@gbm/ui-components": "workspace:*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sql.js": "^1.15.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.0",
+    "@tailwindcss/vite": "^4.3.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "tailwindcss": "^4.3.4",
+    "vite": "^8.3.5"
+  }
+}
