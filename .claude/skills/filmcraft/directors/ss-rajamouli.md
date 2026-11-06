@@ -1,0 +1,19 @@
+# Director Sub-Skill: S.S. Rajamouli
+*Load with the base `filmcraft` SKILL.md.*
+*Baahubali 1 & 2 · RRR · Eega · Magadheera*
+
+**Core obsession / worldview.** Emotion at maximum amplitude. He calls himself "a magnifying glass that enhances the various emotions of the characters on screen." Not chasing realism or subtlety — chasing the *strongest, most basic* emotion (revenge, filial love, loyalty, awe) blown up to mythic scale. Stories drawn from the *Ramayana* and *Mahabharata* as emotional engineering: "the more basic the emotions, the more people tend to like a movie." Recurring: orphaned heroes seeking origin, separated families, hidden backstories, revenge as "the strongest emotion," loyalty proven through sacrifice.
+
+**Working method.** Total pre-visualization plus emotional architecture. Runs actor **workshops** and writes complete character backstories (traits/events that never appear on screen) before shooting. Designs the film around **"clap-worthy moments every 10–15 minutes"** and treats the pre-interval sequence as the emotional crescendo. Storyboards from **sculptural "poses"** derived from temple carvings and dance: "All the poses convey some kind of emotion… I drive the scene towards achieving that pose." Prioritizes image over dialogue. Shot in Telugu, dubbed pan-Indian. Principle: **"action enhances emotion. The further you take the action, the further the emotion enhances."**
+
+**Signature (spottable).** The **elevation moment** — a hero introduced or transformed via a physics-defying set-piece scored to a swelling Keeravani theme (Baahubali lifting the lingam; the Naatu Naatu shoulder-carry; the Bheem-and-Ram bridge rescue in *RRR*). Pre-interval crescendo; sculptural staging (heroic tableaux, freeze-frame poses, low-angle god-shots); practical-first CGI maximalism; slow-motion at the emotional apex; flashback-reveal structure ("Why did Kattappa kill Baahubali").
+
+**Defining films.** *Baahubali: The Beginning* (2015) — launched the pan-Indian era · *Baahubali 2: The Conclusion* (2017) — the payoff; mythic emotion at full volume · *RRR* (2022) — his global breakout; "Naatu Naatu" won the Oscar · *Eega* (2012) — a man reincarnated as a housefly seeking revenge; proof that emotion + absurd premise + total commitment works · *Magadheera* (2009) — reincarnation epic that established the elevation-moment grammar · *Chatrapathi* (2005) — early wronged-hero-rises template.
+
+**Collaborators.** Composer (and cousin) M.M. Keeravani — every film; the scores *are* the elevation moments. DP K.K. Senthil Kumar. Editor Kotagiri Venkateswara Rao. Writer-father K.V. Vijayendra Prasad (stories). Production designer Sabu Cyril. Costume designer-wife Rama Rajamouli. Stars Prabhas, Jr. NTR, Ram Charan, Anushka Shetty, Ramya Krishnan. Cites Mel Gibson as "guru."
+
+**The one lesson to steal.** Engineer the elevation moment: identify your film's single most basic emotion, build the whole structure toward a crescendo that lands right before the audience can catch its breath, and let score + slow-motion + a mythic pose do the talking, not dialogue.
+
+**Weakness / criticism.** Subtlety and women. The maximalist grammar has no low gear — everything is loud, quieter human registers get flattened. Female characters, the odd warrior queen aside, orbit male glory. Detractors find the mytho-nationalist spectacle politically uncomfortable, and the leave-your-brain-at-the-door plotting collapses if you resist the emotional steamroll. Early films leaned on filler comedy and songs.
+
+Sources: [Wikipedia — Cinematic style of S.S. Rajamouli](https://en.wikipedia.org/wiki/Cinematic_style_of_S._S._Rajamouli) · [The Federal — "big-scale movies driven by emotions"](https://thefederal.com/cii-dakshin-event/i-make-big-scale-movies-driven-by-emotions-rajamouli) · [Britannica](https://www.britannica.com/biography/S-S-Rajamouli)
