@@ -51,7 +51,8 @@
 - אחיו הצעיר של נאגי, **אורוקו סאקי**, אומץ בידי הקלאן, אומן כנינג'ה, ולימים **רצח את יושי בניו יורק** כנקמה על מות אחיו.
 - **ספלינטר**, חולדת המחמד של יושי, שרד. הוא מצא מקלט בביוב, שם נפלו ארבעה צבים תינוקות שהפיל ילד צעיר. החשיפה למוטגן שינתה את חמשתם.
 - ב־Mirage, **ספלינטר ויושי הם יצורים נפרדים**: החולדה אינה האיש.
-- [לא מאומת] ספלינטר למד נינג'יטסו כשצפה ביושי מהכלוב וחיקה אותו, וטאנג שן מתה בידי סאקי. שתי הטענות נפוצות מאוד; יש לאמת מול #1.
+- **[אומת – סבב השלמה]** ב־Mirage #1, ספלינטר היה חולדת המחמד של יושי ולמד את הלחימה כשחיקה את תנועות האימון שלו. **טאנג שן נרצחה בידי סאקי** – הוא פרץ לדירה בזמן שיושי היה בעבודה, הרג אותה, וחיכה ליושי. [A/C] ([Mirage Group: כרך 1 #1](https://www.miragelicensing.com/comics/mirage/volume01/01/01.html); [Turtlepedia: Hamato Yoshi (Mirage)](https://turtlepedia.fandom.com/wiki/Hamato_Yoshi_(Mirage)); [Turtlepedia: Origin](https://turtlepedia.fandom.com/wiki/Origin)) פרט הכלוב מופיע רק בוויקי של מעריצים.
+- **הבדל מכוון בסרט שלנו:** ב־Mirage שן נרצחת בדירה בידי סאקי. **אצלנו – היא בוחרת להישאר במעבדה הבוערת ולשרוף את הנוסחה.** זו החלטה **מקורית** ומודעת: היא הופכת את שן מקורבן לדמות שבוחרת, ונותנת לסרט את הסוד שבלב הסיפור.
 
 **המוות הראשון של השרדר (#1).** הצבים מזמינים את השרדר לקרב עד מוות על גג. **דונטלו מפיל אותו מהגג והוא מתפוצץ באוויר.** פרשנים מתארים את המוות כפתאומי וחסר טקס, כי הנבל מת בגיליון הבכורה שלו. [C/B] ([TV Tropes: TMNT Mirage](https://tvtropes.org/pmwiki/pmwiki.php/ComicBook/TeenageMutantNinjaTurtlesMirage); [Scifi Continuums](https://scificontinnum.substack.com/p/tmnt-re-read-mirage-issue-3-the-great))
 
@@ -60,7 +61,8 @@
 **גיליונות הסולו (1985–86).** כל צב קיבל גיליון סולו משלו. אלה מחקרי הדמות הנקיים ביותר בתקופת Mirage:
 - *Raphael #1, "Me, Myself and I"* (1985). רפאל מאבד שליטה באימון ומסתער על מיכאלנג'לו עם מפתח ברגים. כשהוא יוצא לבד הוא פוגש את **קייסי ג'ונס**, שמופיע תחילה כיריב. זו הופעתו הראשונה של קייסי. [A/B/C] ([Mirage Group: Raphael](https://miragelicensing.com/comics/mirage/volume01/raph/raphael.html); [Major Spoilers](https://majorspoilers.com/2023/02/12/retro-review-raphael-teenage-mutant-ninja-turtle-1-may-1985); [ויקיפדיה: קייסי ג'ונס](https://en.wikipedia.org/wiki/Casey_Jones_(Teenage_Mutant_Ninja_Turtles)))
 - *Michaelangelo #1* (1985). סיפור חג המולד: מייקי אוסף חתול רחוב, **קלאנק**, ועוצר בריונים שחטפו משאית צעצועים שיועדה לבית יתומים. אחד המבקרים רואה בו את הגיליון היחיד מהסדרה שמצליח בבירור לבנות את דמותו. [A/B] ([Mirage Group: Michaelangelo](https://miragelicensing.com/comics/mirage/volume01/mike/michaelangelo.html); [ComicsAlliance](https://www.comicsalliance.com/bizarro-back-issues-tmnt-michelangelo-saves-christmas-1985/); [Reviews From My Couch](https://reviewsfrommycouch.com/?p=3549))
-- *Donatello #1* (בערך אוגוסט 1986) ו־*Leonardo #1, "What Goes Around… Comes Around!"* (דצמבר 1986). בגיליון של לאונרדו הוא נלחם לבדו בפוט על גגות ניו יורק בערב חג המולד, בזמן שאפריל וספלינטר מכינים ארוחת חג, והסיפור מוביל אל חזרת הפוט. [C] ([Turtlepedia](https://turtlepedia.fandom.com/wiki/What_Goes_Around..._Comes_Around!); [mycomicscollection](https://mycomicscollection.com/en/blog/leonardo-comics-story/))
+- *Donatello #1, "Kirby and the Warp Crystal"* (1986; התאריך משתנה בין המקורות – פברואר, מאי או אוגוסט). דונטלו פוגש בבניין של אפריל אמן בשם קירבי – מחווה לג'ק קירבי – שמצא קריסטל שמחיה את הציורים שלו. [A/B] ([Mirage Group: Donatello](https://miragelicensing.com/comics/mirage/volume01/don/donatello.html); [BW Spotlight](https://bwspotlight.com/2023/09/04/yesterdays-comic-donatello-teenage-mutant-ninja-turtle))
+- *Leonardo #1* , "What Goes Around… Comes Around!"* (דצמבר 1986). בגיליון של לאונרדו הוא נלחם לבדו בפוט על גגות ניו יורק בערב חג המולד, בזמן שאפריל וספלינטר מכינים ארוחת חג, והסיפור מוביל אל חזרת הפוט. [C] ([Turtlepedia](https://turtlepedia.fandom.com/wiki/What_Goes_Around..._Comes_Around!); [mycomicscollection](https://mycomicscollection.com/en/blog/leonardo-comics-story/))
 
 **תחיית השרדר.** הפוט השתמשו במושבת תולעים שאוכלות שרידים ומקבלות את צורת מה שאכלו. שלושה ניסויים מוקדמים יצרו **שרדר עלית / שיבוטים** מעוותים; בניסיון מאוחר יותר התולעים ניזונו משרידיו של סאקי עצמו ושרדר חדש קם. [C] ([Turtlepedia: Shredder clones](https://turtlepedia.fandom.com/wiki/Shredder_clones_(Mirage)); [TV Tropes: Mirage Foot Clan](https://tvtropes.org/pmwiki/pmwiki.php/Characters/TeenageMutantNinjaTurtlesMirageTheFootClan))
 
@@ -75,7 +77,8 @@
 - **קונפליקט פנימי:** הקשת נושאת את המתח בין **לאונרדו לרפאל**. [B] ([Reviews From My Couch](https://reviewsfrommycouch.com/?p=3543))
 - **שיא:** ב־#21 הצבים מתפצלים בתוך מבצר הפוט. דונטלו ומיכאלנג'לו מחזיקים מול שניים משרדר העלית, רפאל נדחק עמוק יותר ונופל למארב של ארבעה נינג'ות מנוסים, ו**לאונרדו מתעמת עם השרדר האמיתי בלב המבצר**. [A/C] ([Mirage Group #21](https://www.miragelicensing.com/comics/mirage/volume01/21/21.html); [Turtlepedia: RTNY Book Three](https://turtlepedia.fandom.com/wiki/Return_to_New_York,_book_three))
 - **תוצאה:** **לאונרדו הורג את אורוקו סאקי**, בפעם השנייה בסדרה ולפי רוב הקריאות לצמיתות. [B] ([Doom Rocket](https://doomrocket.substack.com/p/mutant-turtles-kick-ninja-asses-in))
-- [לא מאומת] לאונרדו עורף את ראש השרדר והגופה נשרפת כדי שלא יוכל לחזור. הטענה חוזרת על עצמה הרבה ולא אומתה בסבב הזה. המיקום המאומת הוא **בתוך המבצר, לא על גג**.
+- **[אומת – סבב השלמה]** **לאונרדו עורף את ראש השרדר בזמן שהבניין קורס,** והצבים שורפים את הגופה – לפי גרסה אחת על מדורה בנמל של מנהטן, ולפי אחרת על דוברה שצפה בנמל ניו יורק. [C] ([Turtlepedia: RTNY Book Three](https://turtlepedia.fandom.com/wiki/Return_to_New_York,_book_three); [Comic Vine: TMNT #21](https://comicvine.gamespot.com/teenage-mutant-ninja-turtles-21-return-to-new-york/4000-127091/); [Comic Vine: Return to New York](https://comicvine.gamespot.com/return-to-new-york/4045-49544/)) הגיליון יצא במאי 1989. המיקום – **בתוך המבצר, לא על גג**.
+- **השלכה על הסרט שלנו:** בסוף שלנו, דאיגו מוציא את סאקי להורג בטאצ'י, מחוץ לפריים, אחרי שהגיבורים בחרו לא להרוג. **זה הד מכוון ל־RTNY – אבל ההבדל הוא העיקר:** ב־Mirage הצב הורג; אצלנו הצבים בוחרים לא להרוג, והקלאן מעניש את עצמו. **ההד מאושר כמחווה, לא כהעתקה.**
 
 **למה זה חשוב לנו:** "חזרה לניו יורק" היא התבנית לשדרה של הסרט. תבוסה, שבירה פיזית ונפשית, גלות, החלמה כמשפחה וחזרה לעיר כדי להחזיר את מה שאבד. השיא המפוצל לארבעה, שבו כל אח עומד מול הקיר שלו, הוא מודל מבני לקשתות דמות שמתכנסות. **הסיפור שלנו לא יעבד את הקשת הזו.** אנחנו לוקחים את ה*צורה*: שבירה ← גלות ← חזרה. העלילה תהיה שונה.
 
@@ -84,7 +87,7 @@
 - אחרי מות סאקי, הפוט בניו יורק **התפרק לפלגים לוחמים**. [B/C] ([bamsmackpow](https://bamsmackpow.com/2019/05/06/city-at-war-teenage-mutant-ninja-turtles-no-93); [The Nostalgia Spot: Ultimate Collection Vol. 5](https://thenostalgiaspot.com/2020/02/26/teenage-mutant-ninja-turtles-the-ultimate-collection-vol-5/))
 - **קאראי**, מנהיגה של הפוט ביפן שנשלחה בידי מועצת הקלאן, מגיעה לניו יורק להשליט סדר. היא שובה את לאונרדו ומציעה הפוגה: השמידו את שרדר העלית, שעדיין מחויבים בשבועה לנקום את מות אדונם, והפוט יחדלו. [C] ([ויקיפדיה: קאראי](https://en.wikipedia.org/wiki/Karai_(Teenage_Mutant_Ninja_Turtles)); [Mirage Group #59](https://miragelicensing.com/comics/mirage/volume01/59/59.html), [#61](https://miragelicensing.com/comics/mirage/volume01/61/61.html))
 - לפי מקורות מעריצים, הנאמנים הרגו את בתה של קאראי במהלך הסכסוך, ולאונרדו הרג את אחרון העלית וחתם את ההפוגה. [C] ([ויקיפדיה: Foot Clan](https://en.wikipedia.org/wiki/Foot_Clan))
-- **סתירה:** המקורות חלוקים אם הקשת מתחילה ב־#50 או ב־#56, ועל הגיליון הראשון של קאראי (#53?). יש לבדוק ברשימת הגיליונות של Ultimate Collection לפני ציטוט מספר.
+- **סתירה – עודכנה בסבב השלמה:** המקורות חלוקים אם הקשת מתחילה ב־#50 או ב־#56. **קאראי:** לפי תקציר ויקיפדיה – הופעת אורח ב־#53 (נובמבר 1992) והופעה מלאה ב־#55 (ינואר 1993); לפי Key Collector – אורח ב־#52 ומלאה ב־#53. [B/C] ([ויקיפדיה: קאראי](https://en.wikipedia.org/wiki/Karai_(Teenage_Mutant_Ninja_Turtles)); [Mirage Group #55](https://miragelicensing.com/comics/mirage/volume01/55/55.html); [Key Collector](https://www.keycollectorcomics.com/character/karai,10510/)) **בכל מקרה – בתוך "עיר במלחמה".** המספר המדויק לא משפיע על הסרט.
 
 **למה זה חשוב לנו:** Mirage כבר מציגה את הפוט כ**מוסד היררכי ששורד את מנהיגו**: מועצה ביפן, סניף אמריקאי, משמר עלית מחויב בשבועה ופוליטיקה של ירושה. זה הזרע של קלאן פוט שמרגיש כמו ארגון אמיתי.
 
@@ -206,6 +209,7 @@
 ### 3.5 מבנה: עלילה שמונעת בידי הנבל וקווים מתכנסים
 - *מלחמת האינסוף* סופר ברובו **מנקודת המבט של תאנוס**. האחים רוסו תיארו את הסרט כ**שוד שתאנוס מוביל** בזמן שהגיבורים מתחרים להגיע ראשונים למטרות. [B] ([Motion Picture Association](https://www.motionpictures.org/2018/04/the-russo-brothers-say-avengers-infinity-war-is-a-thanos-movie/); [CBR](https://www.cbr.com/interview-russo-brothers-infinity-wars-thanos-spider-man-wolverine/); [GamesRadar](https://www.gamesradar.com/the-avengers-infinity-war-directors-reveal-which-two-characters-are-getting-the-most-screen-time))
 - הם אמרו שהסרט היה יכול להפוך לסיפור של ת'ור אילו הנחית את המכה הקטלנית; מכיוון שתאנוס ניצח, הסרט הפך לשלו. [B] (אותם מקורות)
+- **רצף הכביש ב*חייל החורף*:** האחים רוסו אמרו שרצו בו את התחושה של השוד ב*Heat*, וסגרו כביש מהיר בקליבלנד לצילומים (לפי אחד הדיווחים – לשבועיים). [B] ([Slashfilm](https://www.slashfilm.com/russo-brothers-interview-cap-2); [The Digital Fix](https://www.thedigitalfix.com/marvel-cinematic-universe/winter-soldier-shut-down-freeway-two-weeks)) **לקח:** מיקום אמיתי, סגור, עם גאוגרפיה קבועה – זה מה שמאפשר את הקריאות. **(→ הטרמינל ברד הוק – לבנות או לסגור מיקום אמיתי, לא מסך ירוק.)**
 - **לקח:** האנטגוניסט מניע את העלילה והגיבורים מניעים את התמה. לשרדר שלנו נדרשת **תוכנית בשלבים** שהקהל יכול לעקוב אחריה, כדי שאפשר יהיה לחתוך את קו העלילה של כל צב מול שעון שהנבל שולט בו.
 
 ### 3.6 מצלמה ופורמט (לידיעה, לא לחיקוי)
@@ -266,16 +270,16 @@
 
 ---
 
-## 7. פערי מחקר שיש לסגור (לפני נעילת התסריט)
+## 7. פערי מחקר – מצב אחרי סבב ההשלמה
 
 | פער | למה זה חשוב | איך לסגור |
 |---|---|---|
-| הטקסט המדויק של רקע Mirage #1 (מות שן, החיקוי של ספלינטר) | עוגן קאנון | לקרוא את *TMNT: The Ultimate Collection Vol. 1* |
-| אופן מותו של סאקי ב"חזרה לניו יורק" #21 | להימנע מהדהוד או סתירה מקריים | Ultimate Collection Vol. 3 |
-| מספרי הגיליונות של "עיר במלחמה" והגיליון הראשון של קאראי | דיוק הציטוט | רשימת הגיליונות ב־Ultimate Collection Vol. 5 |
-| תוכן גיליון הסולו של דונטלו | קאנון לקשת של דונטלו | לקרוא את הגיליון |
-| פרטי הרפובליקה הטריצרטונית ב־Mirage (פדרציה, זנרמון) | סבירות סצנת הפוסט-קרדיט | Mirage כרך 1 #5–7 וחומר טריצרטוני מאוחר יותר |
-| עיצוב רצף הכביש המהיר ב*חייל החורף* | רפרנס לגאוגרפיית אקשן | פרשנות הבלו-ריי / סרטוני מאחורי הקלעים |
+| ~~הטקסט של רקע Mirage #1~~ | עוגן קאנון | **[נסגר]** – §1.1. שן נרצחת בידי סאקי ב־Mirage; אצלנו – בחירה מקורית |
+| ~~אופן מותו של סאקי ב־RTNY #21~~ | הדהוד | **[נסגר]** – עריפה ושריפה. ההד בסרט – מכוון ומאושר (§1.2) |
+| ~~הגיליון הראשון של קאראי~~ | ציטוט | **[נסגר חלקית]** – #52–55; המקורות חלוקים, לא משפיע |
+| ~~גיליון הסולו של דונטלו~~ | קאנון | **[נסגר]** – "Kirby and the Warp Crystal" |
+| פרטי הרפובליקה הטריצרטונית ב־Mirage | פוסט-קרדיט | **[פתוח – לא משפיע]** הסצנה לא מתחייבת לשום מוצא (§1.6) |
+| ~~רצף הכביש ב*חייל החורף*~~ | רפרנס | **[נסגר]** – §3.5 |
 | ערכי ויקיפדיה מלאים (חסומים בסשן הזה) | הצלבה | לאפשר את `en.wikipedia.org` בהגדרות הרשת, או לבדוק בלי חיבור |
 
 ---
