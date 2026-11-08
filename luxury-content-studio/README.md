@@ -1,6 +1,11 @@
-# Luxury Content Studio — Hebrew Instagram Carousel 01
+# Luxury Content Studio — Hebrew Instagram Carousels
 
-A 5-slide Instagram carousel in Hebrew (RTL) for a luxury digital agency. It is built from HTML/CSS components and rendered to PNG with Playwright.
+Hebrew (RTL) Instagram carousels for a luxury digital agency. They are built from shared HTML/CSS components and rendered to PNG with Playwright.
+
+- **Carousel 01:** "העסק שלך ראוי ליותר." (5 slides)
+- **Carousel 02:** "5 דברים שכל אתר עסקי חייב לכלול." (7 slides)
+
+# Carousel 01
 
 ## Deliverables
 
@@ -8,7 +13,8 @@ A 5-slide Instagram carousel in Hebrew (RTL) for a luxury digital agency. It is 
 |---|---|
 | `carousel-01/slide-01.png` … `slide-05.png` | Instagram-ready slides, **1080 × 1350 px** (4:5) |
 | `carousel-01/carousel-preview.png` | All 5 slides in one strip, ordered right to left (slide 1 on the right) |
-| `exports/slide-0X@2x.png` | High-resolution masters at **2160 × 2700 px** |
+| `exports/carousel-01/slide-0X@2x.png` | High-resolution masters at **2160 × 2700 px** |
+| `exports/carousel-01.zip` | ZIP of the Instagram-ready PNGs and preview |
 | `templates/` | Source files: tokens, components, slide content, local fonts |
 
 ## Slides
@@ -26,7 +32,28 @@ A 5-slide Instagram carousel in Hebrew (RTL) for a luxury digital agency. It is 
 ## Components (`templates/components.js`)
 `frame` (background, grain, gold frame, brand, counter, progress, swipe hint) · `eyebrow` · `headline` · `body` · `separator` (gold diamond rule) · `numberedList` · `cta` · `desktopMockup` · `phoneMockup` · `skeletonBrowser`.
 
-All copy is in `templates/slides.js`. To change the brand label, edit the `BRAND` constant there or replace the mark in `components.js`. No brand name was supplied, so the slides show a neutral Hebrew label, "סטודיו לעיצוב דיגיטלי".
+All copy is in `templates/slides-01.js` and `templates/slides-02.js`. To change the brand label, edit the `BRAND` constant in each file or replace the mark in `components.js`. No brand name was supplied, so the slides show a neutral Hebrew label, "סטודיו לעיצוב דיגיטלי".
+
+# Carousel 02 — five essential elements of a business website
+
+| Path | What it is |
+|---|---|
+| `carousel-02/slide-01.png` … `slide-07.png` | Instagram-ready slides, **1080 × 1350 px** |
+| `carousel-02/carousel-preview.png` | All 7 slides in one strip, right to left |
+| `exports/carousel-02/slide-0X@2x.png` | 2160 × 2700 masters |
+| `exports/carousel-02.zip` | ZIP of the Instagram-ready PNGs and preview |
+
+It uses the same frame, colors, fonts and margins as Carousel 01. Each slide has its own composition:
+
+1. **Cover:** "5 דברים / שכל אתר עסקי / חייב לכלול." with a gold 5 and a large outlined gold 5 in the background.
+2. **01 — הרושם הראשוני.** The "אורה" homepage on a desktop monitor, on a desk in a dark studio lit by a warm lamp glow.
+3. **02 — התאמה לנייד.** A large smartphone showing a responsive page (navigation, hero, button, list of services) beside a column of copy.
+4. **03 — מסר ברור.** The three questions as a numbered gold list. Each number matches a callout on the hero-section mockup: the offer (1), who it is for (2), and how to make contact (3).
+5. **04 — מהירות ונוחות.** A thin gold speed gauge above the copy, with "מהירה / ברורה / נוחה" as icon tiles.
+6. **05 — הנעה לפעולה.** The three paths as chips, above a website contact section with a form and a gold button.
+7. **Final CTA:** a centered gold headline, five gold diamonds for the five conditions, a save (bookmark) prompt, and the "שלחו לנו הודעה." button.
+
+Components added (in `components.js`): `stepHeadline`, `monitorMockup`, `phoneSite`, `marker` / `markerList`, `clearHero`, `gauge`, `iconRow`, `chips`, `contactSection`. `siteDesktop` was split out of `desktopMockup` so the browser window and the monitor can share it.
 
 ## Typography notes
 - Hebrew text is live text in Hebrew fonts. It is never converted to images or reversed.
@@ -38,5 +65,7 @@ All copy is in `templates/slides.js`. To change the brand label, edit the `BRAND
 ## Render
 ```bash
 cd luxury-content-studio
-node render.js   # needs Playwright + Chromium
+node render.js 01   # Carousel 01
+node render.js 02   # Carousel 02
 ```
+For each carousel the script writes the 1080×1350 slides, the preview strip, the @2x masters and the ZIP. Before each screenshot it checks that the Hebrew fonts are loaded, and it reports any text that runs off the canvas.

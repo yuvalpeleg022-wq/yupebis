@@ -3,16 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=1080">
-<title>קרוסלה 01</title>
+<title>קרוסלה</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div id="root"></div>
 <script src="components.js"></script>
-<script src="slides.js"></script>
 <script>
-  const n = Number(new URLSearchParams(location.search).get("slide") || 1);
-  document.getElementById("root").innerHTML = window.SLIDES[n - 1]();
+  // ?carousel=02&slide=3  ->  loads slides-02.js and renders slide 3
+  const q = new URLSearchParams(location.search);
+  const carousel = q.get("carousel") || "01";
+  const n = Number(q.get("slide") || 1);
+  const s = document.createElement("script");
+  s.src = `slides-${carousel}.js`;
+  s.onload = () => {
+    document.getElementById("root").innerHTML = window.SLIDES[n - 1]();
+    document.body.dataset.ready = "1";
+  };
+  document.body.appendChild(s);
 </script>
 </body>
 </html>
