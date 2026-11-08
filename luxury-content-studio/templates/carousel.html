@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>קרוסלה 01</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="root"></div>
+<script src="components.js"></script>
+<script src="slides.js"></script>
+<script>
+  const n = Number(new URLSearchParams(location.search).get("slide") || 1);
+  document.getElementById("root").innerHTML = window.SLIDES[n - 1]();
+</script>
+</body>
+</html>
