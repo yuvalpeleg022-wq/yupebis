@@ -1,0 +1,18 @@
+# Keep secrets and generated / bring-your-own files out of git
+# (mirrors the upstream claude-video-skills .gitignore, scoped to this folder)
+.env
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+uv.lock
+*.cube
+presets/instagram/assets/fonts/*
+!presets/instagram/assets/fonts/.gitkeep
+shared/sfx/**
+!shared/sfx/README.md
+shared/music/**
+!shared/music/README.md
+!shared/music/music-cut.py
+presets/youtube/**
+!presets/youtube/README.md
