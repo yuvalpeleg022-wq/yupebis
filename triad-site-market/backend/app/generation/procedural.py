@@ -17,7 +17,7 @@ PAGE_TITLES = {
     "menu": "Menu", "about": "About", "practice-areas": "Practice Areas", "team": "Team",
     "projects": "Projects", "studio": "Studio", "classes": "Classes", "pricing": "Pricing",
     "listings": "Listings", "services": "Services", "work": "Work", "product": "Product",
-    "contact": "Contact",
+    "contact": "Contact", "voyages": "Voyages", "journal": "Journal",
 }
 
 # Sections that make sense on each extra page
@@ -34,13 +34,15 @@ PAGE_SECTIONS = {
     "services": ["services", "features", "faq"],
     "work": ["gallery", "testimonials", "stats"],
     "product": ["features", "services", "stats"],
+    "voyages": ["services", "gallery", "pricing"],
+    "journal": ["about", "gallery", "testimonials"],
 }
 
 SINGULAR = {
     "restaurant": "Restaurant", "law_firm": "Law Firm", "architecture": "Architecture Studio",
     "fitness": "Fitness Studio", "real_estate": "Real Estate", "clinic": "Clinic",
     "creative_agency": "Creative Agency", "technology": "Technology", "portfolio": "Portfolio",
-    "professional_services": "Professional Services",
+    "professional_services": "Professional Services", "travel": "Travel",
 }
 
 INDEX_POOL = ["features", "about", "services", "gallery", "stats", "testimonials", "team", "faq", "pricing"]
@@ -84,8 +86,12 @@ def plan(ctx: dict[str, Any]) -> dict[str, Any]:
     d = DIRECTIONS[ctx["direction"]]
     r = _rng(ctx, "plan")
     prev: dict[str, str] = {}
-    nav_v = r.choice(SECTION_VARIANTS["navbar"])
-    foot_v = r.choice(SECTION_VARIANTS["footer"])
+    pref = d.preferred_variants
+    nav_v = r.choice(pref.get("navbar") or SECTION_VARIANTS["navbar"][:3])
+    foot_v = r.choice(pref.get("footer") or SECTION_VARIANTS["footer"][:3])
+
+    def pv(t: str) -> str:
+        return _pick_variant(r, t, prev, pref.get(t, ()))
 
     def frame(middle: list[dict[str, str]]) -> list[dict[str, str]]:
         return [{"type": "navbar", "variant": nav_v}, *middle, {"type": "footer", "variant": foot_v}]
@@ -96,14 +102,14 @@ def plan(ctx: dict[str, Any]) -> dict[str, Any]:
     if c.special_section and c.special_section not in mid:
         mid.insert(r.randint(0, 2), c.special_section)
     index_sections = [{"type": "hero", "variant": _pick_variant(r, "hero", prev, d.hero_variants)}]
-    index_sections += [{"type": t, "variant": _pick_variant(r, t, prev)} for t in mid]
-    index_sections.append({"type": "cta", "variant": _pick_variant(r, "cta", prev)})
+    index_sections += [{"type": t, "variant": pv(t)} for t in mid]
+    index_sections.append({"type": "cta", "variant": pv("cta")})
 
     pages = [{"slug": "index", "title": "Home", "description": "", "sections": frame(index_sections)}]
     for slug in c.extra_pages:
         secs = [{"type": "hero", "variant": "stacked"}]
-        secs += [{"type": t, "variant": _pick_variant(r, t, prev)} for t in PAGE_SECTIONS[slug][: r.randint(2, 3)]]
-        secs.append({"type": "cta", "variant": _pick_variant(r, "cta", prev)})
+        secs += [{"type": t, "variant": pv(t)} for t in PAGE_SECTIONS[slug][: r.randint(2, 3)]]
+        secs.append({"type": "cta", "variant": pv("cta")})
         pages.append({"slug": slug, "title": PAGE_TITLES[slug], "description": "", "sections": frame(secs)})
     pages.append({
         "slug": "contact", "title": "Contact", "description": "",
@@ -136,13 +142,15 @@ def visual(ctx: dict[str, Any]) -> dict[str, Any]:
             "heading_weight": r.choice(d.heading_weights),
             "scale": round(r.uniform(1.2, 1.42), 3),
             "heading_case": "uppercase" if d.uppercase_headings else "none",
-            "letter_spacing": 0.06 if d.uppercase_headings else round(r.uniform(-0.02, 0.0), 3),
+            "letter_spacing": 0.06 if d.uppercase_headings else round(r.uniform(-0.035 if d.mono_fonts else -0.02, 0.0), 3),
+            **({"mono_font": r.choice(d.mono_fonts)} if d.mono_fonts else {}),
         },
         "radius_px": r.randint(*d.radius_range),
         "spacing": r.choice(d.spacing),
         "max_width_px": r.choice(d.max_width),
         "button_style": r.choice(d.button_styles),
         "image_treatment": r.choice(d.image_treatments),
+        **({"effects": list(d.effects)} if d.effects else {}),
     }
 
 
@@ -163,7 +171,7 @@ def page_copy(ctx: dict[str, Any]) -> dict[str, Any]:
                             for p in pages]
         elif t == "hero":
             if page["slug"] == "index":
-                vp = b["value_props"]
+                vp = [v if v[1:2].isupper() or not v else v[0].lower() + v[1:] for v in b["value_props"]]
                 sec.update(eyebrow=f"{b['location']} · {SINGULAR.get(c.key, c.label)}",
                            heading=b["tagline"],
                            body=f"{name} brings {b['tone']} expertise to every client: "

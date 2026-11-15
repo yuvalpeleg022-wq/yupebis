@@ -15,8 +15,8 @@ class RegisterIn(BaseModel):
 
 
 class LoginIn(BaseModel):
-    email: EmailStr
-    password: str
+    email: str = Field(min_length=3, max_length=320)  # not re-validated: accounts may be created via CLI
+    password: str = Field(max_length=200)
 
 
 class TokenOut(BaseModel):

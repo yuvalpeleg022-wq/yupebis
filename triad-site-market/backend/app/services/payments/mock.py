@@ -46,7 +46,7 @@ class MockPaymentProvider(PaymentProvider):
     def create_subscription(self, *, subscription_id, plan, amount_cents, currency, customer_email,
                             success_url, cancel_url) -> SubscriptionCheckout:
         ref = f"mock_sub_{secrets.token_hex(8)}"
-        return SubscriptionCheckout(provider_ref=ref, redirect_url=f"{self.base}/checkout/mock?sub={ref}")
+        return SubscriptionCheckout(provider_ref=ref, redirect_url=f"{self.base}/checkout/mock?subscription={subscription_id}")
 
     def cancel_subscription(self, provider_ref: str) -> None:
         self.canceled.append(provider_ref)

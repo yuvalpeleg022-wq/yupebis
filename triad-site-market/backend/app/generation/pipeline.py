@@ -71,7 +71,8 @@ def create_job(db: Session, category: str | None = None, direction: str | None =
     return job
 
 
-def _assign_assets(spec_dict: dict[str, Any], seed: int, business_name: str) -> list[dict[str, str]]:
+def _assign_assets(spec_dict: dict[str, Any], seed: int, business_name: str,
+                   art_styles: tuple[str, ...] = ()) -> list[dict[str, str]]:
     """Step 7: attach original generated artwork wherever a layout needs imagery."""
     assets: list[dict[str, str]] = []
     n = 0
@@ -79,14 +80,14 @@ def _assign_assets(spec_dict: dict[str, Any], seed: int, business_name: str) -> 
     def gen(alt: str) -> dict[str, str]:
         nonlocal n
         n += 1
-        src = f"gen:{seed}:{n}"
+        src = f"gen:{seed}:{n}" + (f":{art_styles[n % len(art_styles)]}" if art_styles else "")
         assets.append({"uri": src, "alt": alt})
         return {"src": src, "alt": alt, "license": GENERATED_LICENSE}
 
     for page in spec_dict["pages"]:
         for s in page["sections"]:
             t, v = s["type"], s["variant"]
-            if t == "hero" and v in ("split", "fullbleed", "editorial", "centered"):
+            if t == "hero" and v in ("split", "fullbleed", "editorial", "centered", "porthole", "immersive"):
                 s["image"] = gen(f"Abstract artwork representing {business_name}")
             elif t == "about" and v == "split":
                 s["image"] = gen(f"Abstract composition for the story of {business_name}")
@@ -132,7 +133,8 @@ def _assemble(category: str, direction: str, brief: steps.Brief, plan: steps.Sit
         "theme": theme.model_dump(),
         "pages": pages,
     }
-    assets = _assign_assets(spec_dict, seed, brief.business_name)
+    assets = _assign_assets(spec_dict, seed, brief.business_name, DIRECTIONS[direction].art_styles
+                            if direction in ("orbital", "abyssal") else ())
     return SiteSpec.model_validate(spec_dict), assets
 
 

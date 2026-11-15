@@ -33,21 +33,21 @@ SectionType = Literal[
 ]
 
 SECTION_VARIANTS: dict[str, tuple[str, ...]] = {
-    "navbar": ("inline", "centered", "split"),
-    "hero": ("split", "centered", "fullbleed", "editorial", "stacked"),
+    "navbar": ("inline", "centered", "split", "floating"),
+    "hero": ("split", "centered", "fullbleed", "editorial", "stacked", "porthole", "immersive"),
     "features": ("grid", "list", "alternating"),
     "about": ("split", "quote", "timeline"),
     "services": ("cards", "rows", "numbered"),
     "menu": ("columns", "list"),
     "gallery": ("masonry", "grid", "strip"),
-    "stats": ("row", "boxed"),
+    "stats": ("row", "boxed", "ticker"),
     "testimonials": ("cards", "single", "wall"),
     "pricing": ("cards", "table"),
     "team": ("grid", "list"),
     "faq": ("accordion", "two_column"),
-    "cta": ("banner", "split", "minimal"),
+    "cta": ("banner", "split", "minimal", "block"),
     "contact": ("form", "split", "simple"),
-    "footer": ("columns", "minimal", "big"),
+    "footer": ("columns", "minimal", "big", "telemetry"),
 }
 
 HEX = re.compile(r"^#[0-9a-fA-F]{6}$")
@@ -81,6 +81,10 @@ class Typography(Strict):
     scale: float = Field(ge=1.1, le=1.6)
     heading_case: Literal["none", "uppercase"] = "none"
     letter_spacing: float = Field(ge=-0.05, le=0.3, default=0.0)
+    mono_font: str | None = Field(default=None, max_length=60)
+
+
+Effect = Literal["rise_in", "pulse_dot", "grid_lines", "glow", "mono_labels", "glass_nav", "dot_matrix"]
 
 
 class Theme(Strict):
@@ -91,6 +95,7 @@ class Theme(Strict):
     max_width_px: int = Field(ge=960, le=1600)
     button_style: Literal["solid", "outline", "pill", "underline"]
     image_treatment: Literal["none", "grayscale", "duotone", "rounded", "framed"]
+    effects: list[Effect] = Field(default_factory=list, max_length=7)
 
 
 class Image(Strict):

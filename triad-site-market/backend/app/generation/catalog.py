@@ -363,6 +363,38 @@ CATEGORIES: dict[str, Category] = {
             extra_pages=("services", "about"),
             base_price_cents=139_000,
         ),
+        Category(
+            key="travel",
+            label="Travel & Experiences",
+            name_prefixes=("Halcyon", "Meridian", "Aurora", "Polaris", "Drift", "Solstice"),
+            name_suffixes=("Voyages", "Expeditions", "Journeys", "Retreats", "Travel"),
+            taglines=(
+                "Slow journeys to the edges of the map.",
+                "Small-group expeditions, designed around one unforgettable view.",
+                "Quiet luxury, far from everything.",
+            ),
+            services=(
+                ("Signature expeditions", "Ten to fourteen days, twelve guests, one carefully planned route."),
+                ("Private charters", "The whole itinerary, reshaped around your group."),
+                ("Weekend escapes", "Three nights, fully hosted, close enough to leave on Thursday."),
+            ),
+            features=(
+                ("Twelve guests, max", "Every departure is small enough to know everyone by name."),
+                ("Expert hosts", "Naturalists, photographers and local guides travel with you."),
+                ("Carbon accounted", "Every journey is measured and offset through verified projects."),
+            ),
+            stats=(("12", "guests per departure"), ("38", "destinations"), ("4.9", "guest rating")),
+            testimonials=(
+                ("The most restful two weeks of my life, and the most astonishing.", "Ruth A.", "Guest, 2026"),
+                ("Every detail was handled before we thought of it.", "Ilan & Maya", "Private charter"),
+            ),
+            faqs=(
+                ("How fit do I need to be?", "Most journeys suit anyone comfortable walking a few kilometers a day."),
+                ("What is included?", "Accommodation, meals, guides and all transfers during the journey."),
+            ),
+            extra_pages=("voyages", "journal"),
+            base_price_cents=179_000,
+        ),
     ]
 }
 
@@ -383,6 +415,10 @@ class DesignDirection:
     hero_variants: tuple[str, ...]
     max_width: tuple[int, ...]
     price_multiplier: float = 1.0
+    mono_fonts: tuple[str, ...] = ()
+    effects: tuple[str, ...] = ()
+    art_styles: tuple[str, ...] = ("circles", "bands", "blocks", "arcs")
+    preferred_variants: dict[str, tuple[str, ...]] = field(default_factory=dict)
 
 
 def _p(bg, surface, text, muted, primary, on_primary, accent) -> dict[str, str]:
@@ -511,6 +547,60 @@ DIRECTIONS: dict[str, DesignDirection] = {
             hero_variants=("fullbleed", "editorial"),
             max_width=(1280, 1440),
             price_multiplier=1.15,
+        ),
+        # Inspired by cinematic "space porthole" heroes: near-black, light display type with a
+        # dimmed second line, mono telemetry labels, panoramic framed imagery, pill buttons.
+        DesignDirection(
+            key="orbital",
+            label="Orbital",
+            heading_fonts=("Geist", "Inter Tight", "Manrope"),
+            body_fonts=("Geist", "Inter", "Manrope"),
+            palettes=(
+                _p("#050607", "#0d0f11", "#eef0f2", "#8f9398", "#eef0f2", "#050607", "#e0703a"),
+                _p("#04060a", "#0b0f16", "#edf1f7", "#8a93a3", "#edf1f7", "#04060a", "#7cc4ff"),
+                _p("#070605", "#100e0c", "#f2efe9", "#97918a", "#f2efe9", "#070605", "#e8b04a"),
+            ),
+            radius_range=(14, 28),
+            spacing=("airy",),
+            button_styles=("pill",),
+            image_treatments=("rounded", "none"),
+            heading_weights=(300, 400),
+            uppercase_headings=False,
+            hero_variants=("porthole",),
+            max_width=(1280, 1360),
+            price_multiplier=1.3,
+            mono_fonts=("Geist Mono", "JetBrains Mono", "IBM Plex Mono"),
+            effects=("rise_in", "pulse_dot", "glow", "mono_labels"),
+            art_styles=("planet",),
+            preferred_variants={"navbar": ("split", "inline"), "footer": ("telemetry",),
+                                "stats": ("ticker", "row"), "cta": ("minimal", "split")},
+        ),
+        # Inspired by deep-sea tech landing pages: abyss black with a luminous tide accent,
+        # floating glass navigation, hairline grids with mono micro-labels, dot-matrix art.
+        DesignDirection(
+            key="abyssal",
+            label="Abyssal",
+            heading_fonts=("Funnel Display", "Space Grotesk", "Sora"),
+            body_fonts=("Funnel Sans", "Inter", "DM Sans"),
+            palettes=(
+                _p("#06090c", "#0d1419", "#f2f4f3", "#8e969e", "#12c2d6", "#04161a", "#b8fff1"),
+                _p("#05080b", "#0c1317", "#eef5f3", "#8b979a", "#2dd4bf", "#03201c", "#a7f3d0"),
+                _p("#07070d", "#10101a", "#f1f1f6", "#9191a3", "#8b7cf6", "#0b0820", "#c4b5fd"),
+            ),
+            radius_range=(2, 12),
+            spacing=("comfortable", "airy"),
+            button_styles=("solid",),
+            image_treatments=("none", "rounded"),
+            heading_weights=(500, 600),
+            uppercase_headings=False,
+            hero_variants=("immersive", "porthole"),
+            max_width=(1200, 1320),
+            price_multiplier=1.3,
+            mono_fonts=("Martian Mono", "Space Mono", "JetBrains Mono"),
+            effects=("rise_in", "grid_lines", "glass_nav", "mono_labels", "dot_matrix"),
+            art_styles=("depth", "dotmatrix"),
+            preferred_variants={"navbar": ("floating",), "footer": ("telemetry", "columns"),
+                                "stats": ("ticker",), "cta": ("block",)},
         ),
     ]
 }

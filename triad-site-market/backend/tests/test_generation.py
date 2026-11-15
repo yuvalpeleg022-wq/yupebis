@@ -64,3 +64,14 @@ def test_html_escaping(db):
     assert "<script>alert" not in html and "&lt;script&gt;" in html
     fp = fingerprint(spec)
     assert similarity(fp, fp) == 1.0
+
+
+def test_inspired_directions_use_their_signature_layouts(db):
+    _, a = generate(db, category="travel", direction="orbital", seed=3)
+    _, b = generate(db, category="technology", direction="abyssal", seed=4)
+    for site, hero_opts, fx in ((a, {"porthole"}, "pulse_dot"), (b, {"immersive", "porthole"}, "grid_lines")):
+        assert site.status == WebsiteStatus.in_review, site.qc_report
+        spec = SiteSpec.model_validate(site.spec)
+        assert spec.pages[0].sections[1].variant in hero_opts
+        assert fx in spec.theme.effects and spec.theme.typography.mono_font
+        assert all(img.startswith("gen:") for img in [s.image.src for s in spec.pages[0].sections if s.image])
