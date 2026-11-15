@@ -57,4 +57,11 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    import os
+
+    s = Settings()
+    # Render exposes each service's own public URL; use it unless one was set explicitly.
+    ext = os.environ.get("RENDER_EXTERNAL_URL")
+    if ext and "TRIAD_PUBLIC_API_URL" not in os.environ:
+        s.public_api_url = ext
+    return s

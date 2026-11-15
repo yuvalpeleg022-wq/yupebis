@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth";
 import Header from "@/components/Header";
 
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-display" });
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const FONTS = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap";
 
 export const metadata: Metadata = {
   title: "TRIAD SITE MARKET - One-of-one websites",
@@ -14,7 +12,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en">
+      <head>
+        {/* Loaded at runtime so the build needs no network access to Google Fonts. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={FONTS} />
+      </head>
       <body>
         <AuthProvider>
           <Header />

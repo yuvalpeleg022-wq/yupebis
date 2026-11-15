@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
+:root { color-scheme: dark; --font-display: "Cormorant Garamond"; --font-sans: "Inter"; }
 body { @apply bg-ink text-bone antialiased font-sans; }
 
 @layer components {

@@ -1,0 +1,46 @@
+# Render Blueprint for TRIAD SITE MARKET (triad-site-market/).
+# In Render: New > Blueprint > pick this repository and branch. Render creates the database,
+# the API and the website, and asks for the values marked "sync: false".
+databases:
+  - name: triad-db
+    plan: free
+    databaseName: triad
+    user: triad
+
+services:
+  - type: web
+    name: triad-api
+    runtime: docker
+    plan: free
+    rootDir: triad-site-market/backend
+    healthCheckPath: /healthz
+    envVars:
+      - key: TRIAD_DATABASE_URL
+        fromDatabase: { name: triad-db, property: connectionString }
+      - key: TRIAD_JWT_SECRET
+        generateValue: true
+      - key: TRIAD_PAYMENT_WEBHOOK_SECRET
+        generateValue: true
+      # "staging" keeps the test payment provider usable. Switch to "production" only after
+      # PayPlus is configured: in production the test provider and test-payment endpoints are off.
+      - key: TRIAD_ENV
+        value: staging
+      - key: TRIAD_AI_MODE
+        value: mock
+      - key: TRIAD_SEED_COUNT
+        value: "12"
+      - key: TRIAD_PUBLIC_BASE_URL
+        fromService: { type: web, name: triad-web, envVarKey: RENDER_EXTERNAL_URL }
+      - key: TRIAD_ADMIN_EMAIL
+        sync: false
+      - key: TRIAD_ADMIN_PASSWORD
+        sync: false
+
+  - type: web
+    name: triad-web
+    runtime: docker
+    plan: free
+    rootDir: triad-site-market/frontend
+    envVars:
+      - key: TRIAD_API_URL
+        fromService: { type: web, name: triad-api, envVarKey: RENDER_EXTERNAL_URL }

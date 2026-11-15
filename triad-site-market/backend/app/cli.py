@@ -2,6 +2,7 @@
 
 python -m app.cli create-admin EMAIL PASSWORD
 python -m app.cli seed N [--approve]
+python -m app.cli bootstrap       # admin + first inventory from TRIAD_ADMIN_EMAIL/PASSWORD, TRIAD_SEED_COUNT
 python -m app.cli check-live      # verify the real AI, payment and hosting integrations
 """
 
@@ -13,6 +14,18 @@ from app.bootstrap import init_db
 from app.db import SessionLocal, engine
 from app.models import User, UserRole
 from app.security import hash_password
+
+
+def _seed(db, n: int, approve: bool) -> None:
+    from app.generation.pipeline import generate
+    from app.services.review import decide
+
+    admin = db.scalar(select(User).where(User.role == UserRole.admin))
+    for _ in range(n):
+        _, site = generate(db, requested_by_id=admin.id if admin else None)
+        if site and admin and approve and site.status.value == "in_review":
+            decide(db, admin, site.id, True, "seed approval")
+    print(f"generated {n} websites")
 
 
 def check_live() -> None:
@@ -77,16 +90,22 @@ def main(argv: list[str]) -> None:
             db.commit()
             print(f"admin ready: {email}")
         elif cmd == "seed":
-            from app.generation.pipeline import generate
-            from app.services.review import decide
-
-            admin = db.scalar(select(User).where(User.role == UserRole.admin))
             n = int(argv[1]) if len(argv) > 1 else 12
-            for _ in range(n):
-                _, site = generate(db, requested_by_id=admin.id if admin else None)
-                if site and admin and site.status.value == "in_review" and "--approve" in argv:
-                    decide(db, admin, site.id, True, "seed approval")
-            print(f"generated {n} websites")
+            _seed(db, n, "--approve" in argv)
+        elif cmd == "bootstrap":
+            # Used by the container entrypoint: create the admin and first inventory from env vars.
+            import os
+
+            from app.models import Website
+
+            email, pw = os.environ.get("TRIAD_ADMIN_EMAIL", "").lower(), os.environ.get("TRIAD_ADMIN_PASSWORD", "")
+            if email and pw and not db.scalar(select(User).where(User.email == email)):
+                db.add(User(email=email, password_hash=hash_password(pw), role=UserRole.admin))
+                db.commit()
+                print(f"admin created: {email}")
+            n = int(os.environ.get("TRIAD_SEED_COUNT", "0") or 0)
+            if n and db.scalar(select(Website.id).limit(1)) is None:
+                _seed(db, n, approve=True)
         elif cmd == "check-live":
             check_live()
         else:

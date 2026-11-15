@@ -1,0 +1,38 @@
+# Run the whole stack on any machine with Docker:  docker compose up --build
+# Then open http://localhost:3000  (admin login comes from the two TRIAD_ADMIN_* values below).
+services:
+  db:
+    image: postgres:16
+    environment: { POSTGRES_USER: triad, POSTGRES_PASSWORD: triad, POSTGRES_DB: triad }
+    volumes: [dbdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U triad"], interval: 5s, retries: 10 }
+  redis:
+    image: redis:7
+  api:
+    build: ./backend
+    depends_on: { db: { condition: service_healthy } }
+    env_file: [{ path: ./backend/.env, required: false }]
+    environment:
+      TRIAD_DATABASE_URL: postgresql://triad:triad@db/triad
+      TRIAD_REDIS_URL: redis://redis:6379/0
+      TRIAD_PUBLIC_BASE_URL: ${TRIAD_PUBLIC_BASE_URL:-http://localhost:3000}
+      TRIAD_PUBLIC_API_URL: ${TRIAD_PUBLIC_API_URL:-http://localhost:8000}
+      TRIAD_ADMIN_EMAIL: ${TRIAD_ADMIN_EMAIL:-admin@example.com}
+      TRIAD_ADMIN_PASSWORD: ${TRIAD_ADMIN_PASSWORD:?set TRIAD_ADMIN_PASSWORD}
+      TRIAD_SEED_COUNT: ${TRIAD_SEED_COUNT:-12}
+    ports: ["8000:8000"]
+    volumes: [hosted:/app/hosted_sites]
+  worker:
+    build: ./backend
+    command: celery -A app.worker worker -B --loglevel=info
+    depends_on: [api, redis]
+    env_file: [{ path: ./backend/.env, required: false }]
+    environment:
+      TRIAD_DATABASE_URL: postgresql://triad:triad@db/triad
+      TRIAD_REDIS_URL: redis://redis:6379/0
+  web:
+    build: ./frontend
+    depends_on: [api]
+    environment: { TRIAD_API_URL: http://api:8000 }
+    ports: ["3000:3000"]
+volumes: { dbdata: {}, hosted: {} }

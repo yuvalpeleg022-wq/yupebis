@@ -51,6 +51,31 @@ TRIAD_TEST_DATABASE_URL=postgresql+psycopg://user:pass@localhost/triad_test pyte
 node ../e2e/smoke.mjs                                       # end-to-end, needs both servers running
 ```
 
+## Deploy
+
+### Render (one file, connects to GitHub)
+
+`render.yaml` at the repository root describes the database, the API and the website.
+
+1. In Render choose **New > Blueprint**, select this repository and the branch to deploy.
+2. Enter `TRIAD_ADMIN_EMAIL` and `TRIAD_ADMIN_PASSWORD` when asked (your admin login).
+3. Apply. On first start the API creates the tables, the admin user and 12 approved websites.
+4. Open the `triad-web` URL.
+
+The blueprint starts in `staging` with the test payment provider and the offline generation
+engine, so the whole flow can be tried without real money. Anyone can complete a test
+"payment" in this mode, so do not treat it as a live shop. To go live, add the PayPlus,
+AI and Cloudflare variables to `triad-api`, then set `TRIAD_PAYMENT_PROVIDER=payplus`,
+`TRIAD_HOSTING_PROVIDER=cloudflare`, `TRIAD_AI_MODE=live` and finally `TRIAD_ENV=production`.
+
+### Any server with Docker
+
+```bash
+TRIAD_ADMIN_PASSWORD='choose-a-strong-password' docker compose up --build
+```
+
+Then open http://localhost:3000. Both images were built and run together during development.
+
 ## Going live
 
 Set the variables in `backend/.env` (see `.env.example`), then run:
