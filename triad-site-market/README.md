@@ -68,6 +68,14 @@ engine, so the whole flow can be tried without real money. Anyone can complete a
 AI and Cloudflare variables to `triad-api`, then set `TRIAD_PAYMENT_PROVIDER=payplus`,
 `TRIAD_HOSTING_PROVIDER=cloudflare`, `TRIAD_AI_MODE=live` and finally `TRIAD_ENV=production`.
 
+### GitHub Pages (static demo catalog only)
+
+GitHub Pages serves static files, so it cannot run the API, accounts, payments or editors.
+`python -m app.cli export-showcase ../../triad` writes a static catalog of generated websites
+(filters, search, every page of every site, desktop/mobile preview) to `/triad` at the
+repository root. Enable Pages for the branch (Settings > Pages > Deploy from a branch, root
+folder) and open `https://<user>.github.io/<repo>/triad/`.
+
 ### Any server with Docker
 
 ```bash

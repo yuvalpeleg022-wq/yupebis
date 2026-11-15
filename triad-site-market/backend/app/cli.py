@@ -3,6 +3,7 @@
 python -m app.cli create-admin EMAIL PASSWORD
 python -m app.cli seed N [--approve]
 python -m app.cli bootstrap       # admin + first inventory from TRIAD_ADMIN_EMAIL/PASSWORD, TRIAD_SEED_COUNT
+python -m app.cli export-showcase OUT_DIR   # static demo catalog for GitHub Pages or any static host
 python -m app.cli check-live      # verify the real AI, payment and hosting integrations
 """
 
@@ -77,8 +78,13 @@ def check_live() -> None:
 
 
 def main(argv: list[str]) -> None:
-    init_db(engine)
     cmd = argv[0] if argv else ""
+    if cmd == "export-showcase":  # self-contained: uses its own in-memory database
+        from app.showcase import export
+
+        print(f"exported {export(argv[1])} websites to {argv[1]}")
+        return
+    init_db(engine)
     with SessionLocal() as db:
         if cmd == "create-admin":
             email, pw = argv[1].lower(), argv[2]

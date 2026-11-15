@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRIAD SITE MARKET - One-of-one websites</title>
+<meta name="description" content="AI-crafted, professionally reviewed websites. Each one sold exactly once.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*{box-sizing:border-box}html{color-scheme:dark}
+body{margin:0;background:#0b0b0f;color:#f4f1ea;font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(11,11,15,.85);backdrop-filter:blur(10px)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;gap:16px}
+.logo{font:600 1.25rem 'Cormorant Garamond',Georgia,serif;letter-spacing:.2em}.logo b{color:#c8a96a;font-weight:600}
+.pill{font-size:.75rem;border:1px solid rgba(200,169,106,.5);color:#c8a96a;border-radius:999px;padding:4px 12px;white-space:nowrap}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;margin:0}
+.muted{color:rgba(255,255,255,.6)}.label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:4px}
+.card{border:1px solid rgba(255,255,255,.1);background:#14141b;border-radius:16px}
+.chip{font:inherit;font-size:.78rem;color:rgba(255,255,255,.7);background:none;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 13px;cursor:pointer}
+.chip:hover{border-color:rgba(255,255,255,.4)}.chip.on{border-color:#c8a96a;background:rgba(200,169,106,.1);color:#c8a96a}
+.input{font:inherit;font-size:.9rem;color:inherit;background:#14141b;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px}
+.btn{display:inline-block;font:600 .9rem Inter,sans-serif;border-radius:999px;padding:11px 22px;background:#c8a96a;color:#0b0b0f;border:0;cursor:pointer}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #c8a96a;outline-offset:2px}
+footer.bot{border-top:1px solid rgba(255,255,255,.1);margin-top:80px;padding:28px 0;font-size:.85rem;color:rgba(255,255,255,.5)}
+
+.hero{padding:72px 0 56px}.hero .eyebrow{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#c8a96a}
+.hero h1{font-size:clamp(2.6rem,6.5vw,4.6rem);line-height:1.05;max-width:16em;margin-top:16px}
+.hero p{font-size:1.1rem;max-width:40em;margin-top:22px}
+.filters{position:sticky;top:61px;z-index:20;background:rgba(11,11,15,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:14px 0;margin-bottom:32px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.row+.row{margin-top:12px}.count{margin-left:auto;font-size:.88rem;color:rgba(255,255,255,.5)}
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+.site{display:block;overflow:hidden;transition:border-color .2s}.site:hover{border-color:rgba(200,169,106,.6)}
+.thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#1e1e28}
+.thumb iframe{position:absolute;left:0;top:0;width:250%;height:250%;transform:scale(.4);transform-origin:0 0;border:0;pointer-events:none;background:#fff}
+.meta{display:flex;justify-content:space-between;gap:12px;padding:16px}.meta h3{font-size:1.2rem}.meta p{margin:2px 0 0;font-size:.88rem}
+.meta small{display:block;margin-top:8px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.price{flex:none;align-self:flex-start;background:rgba(200,169,106,.1);color:#c8a96a;font-weight:600;font-size:.9rem;border-radius:999px;padding:4px 12px}
+.empty{padding:40px;text-align:center}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="index.html">TRIAD<b> ·</b> SITE MARKET</a>
+<span class="pill">Demo catalog</span></div></header>
+<main class="wrap">
+<section class="hero"><span class="eyebrow">One website · One owner</span>
+<h1>Exceptional websites, crafted by AI, reviewed by people, sold exactly once.</h1>
+<p class="muted">Every site in the market is an original. When it is bought, it leaves the market forever.
+Browse the catalog and open any site to explore every page on desktop and mobile.</p></section>
+<section class="filters" aria-label="Filters"><div class="row" id="cats"><button class="chip on" data-cat="">All</button><button class="chip" data-cat="restaurant">Restaurants</button><button class="chip" data-cat="law_firm">Law Firms</button><button class="chip" data-cat="architecture">Architecture Studios</button><button class="chip" data-cat="fitness">Fitness</button><button class="chip" data-cat="real_estate">Real Estate</button><button class="chip" data-cat="clinic">Clinics</button><button class="chip" data-cat="creative_agency">Creative Agencies</button><button class="chip" data-cat="technology">Technology Companies</button><button class="chip" data-cat="portfolio">Portfolios</button><button class="chip" data-cat="professional_services">Professional Services</button><button class="chip" data-cat="travel">Travel &amp; Experiences</button></div>
+<div class="row"><input class="input" id="q" placeholder="Search websites" aria-label="Search">
+<select class="input" id="dir" aria-label="Design direction"><option value="">All styles</option><option value="minimalist">Minimalist</option><option value="luxury">Luxury</option><option value="editorial">Editorial</option><option value="futuristic">Futuristic</option><option value="corporate">Corporate</option><option value="cinematic">Cinematic</option><option value="orbital">Orbital</option><option value="abyssal">Abyssal</option></select>
+<select class="input" id="sort" aria-label="Sort"><option value="new">Newest</option>
+<option value="asc">Price: low to high</option><option value="desc">Price: high to low</option></select>
+<span class="count" id="count" aria-live="polite"></span></div></section>
+<div class="grid" id="grid"><a class="card site" href="s/halcyon-travel-7101.html" data-cat="travel" data-dir="orbital" data-price="244000" data-i="0" data-text="halcyon travel small-group expeditions, designed around one unforgettable view."><div class="thumb"><iframe title="Halcyon Travel thumbnail" src="sites/halcyon-travel-7101/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Halcyon Travel</h3><p class="muted">Small-group expeditions, designed around one unforgettable view.</p><small>Travel · Orbital · 4 pages</small></div><span class="price">₪2,440</span></div></a><a class="card site" href="s/orbit-cloud-7102.html" data-cat="technology" data-dir="abyssal" data-price="272000" data-i="1" data-text="orbit cloud infrastructure that scales with your ambition."><div class="thumb"><iframe title="Orbit Cloud thumbnail" src="sites/orbit-cloud-7102/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Orbit Cloud</h3><p class="muted">Infrastructure that scales with your ambition.</p><small>Technology · Abyssal · 4 pages</small></div><span class="price">₪2,720</span></div></a><a class="card site" href="s/fig-bistro-7103.html" data-cat="restaurant" data-dir="luxury" data-price="169000" data-i="2" data-text="fig bistro a neighborhood kitchen with a coastal soul."><div class="thumb"><iframe title="Fig Bistro thumbnail" src="sites/fig-bistro-7103/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Fig Bistro</h3><p class="muted">A neighborhood kitchen with a coastal soul.</p><small>Restaurant · Luxury · 4 pages</small></div><span class="price">₪1,690</span></div></a><a class="card site" href="s/plane-office-7104.html" data-cat="architecture" data-dir="editorial" data-price="177000" data-i="3" data-text="plane office we design the quiet backdrop for everyday life."><div class="thumb"><iframe title="Plane Office thumbnail" src="sites/plane-office-7104/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Plane Office</h3><p class="muted">We design the quiet backdrop for everyday life.</p><small>Architecture · Editorial · 4 pages</small></div><span class="price">₪1,770</span></div></a><a class="card site" href="s/signal-works-7105.html" data-cat="creative_agency" data-dir="abyssal" data-price="244000" data-i="4" data-text="signal works brands with a point of view."><div class="thumb"><iframe title="Signal Works thumbnail" src="sites/signal-works-7105/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Signal Works</h3><p class="muted">Brands with a point of view.</p><small>Creative Agency · Abyssal · 4 pages</small></div><span class="price">₪2,440</span></div></a><a class="card site" href="s/halevi-advocates-7106.html" data-cat="law_firm" data-dir="corporate" data-price="198000" data-i="5" data-text="halevi advocates precise. discreet. relentless when it matters."><div class="thumb"><iframe title="Halevi Advocates thumbnail" src="sites/halevi-advocates-7106/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Halevi Advocates</h3><p class="muted">Precise. Discreet. Relentless when it matters.</p><small>Law Firm · Corporate · 4 pages</small></div><span class="price">₪1,980</span></div></a><a class="card site" href="s/eli-mor-7107.html" data-cat="portfolio" data-dir="orbital" data-price="121000" data-i="6" data-text="eli mor photographer of people, places and quiet moments."><div class="thumb"><iframe title="Eli Mor thumbnail" src="sites/eli-mor-7107/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Eli Mor</h3><p class="muted">Photographer of people, places and quiet moments.</p><small>Portfolio · Orbital · 4 pages</small></div><span class="price">₪1,210</span></div></a><a class="card site" href="s/apex-collective-7108.html" data-cat="fitness" data-dir="cinematic" data-price="144000" data-i="7" data-text="apex collective strength training that fits real life."><div class="thumb"><iframe title="Apex Collective thumbnail" src="sites/apex-collective-7108/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Apex Collective</h3><p class="muted">Strength training that fits real life.</p><small>Fitness · Cinematic · 4 pages</small></div><span class="price">₪1,440</span></div></a><a class="card site" href="s/harmony-care-7109.html" data-cat="clinic" data-dir="minimalist" data-price="156000" data-i="8" data-text="harmony care gentle, evidence-based treatment."><div class="thumb"><iframe title="Harmony Care thumbnail" src="sites/harmony-care-7109/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Harmony Care</h3><p class="muted">Gentle, evidence-based treatment.</p><small>Clinic · Minimalist · 4 pages</small></div><span class="price">₪1,560</span></div></a><a class="card site" href="s/keystone-realty-7110.html" data-cat="real_estate" data-dir="luxury" data-price="209000" data-i="9" data-text="keystone realty buy, sell and invest with clarity."><div class="thumb"><iframe title="Keystone Realty thumbnail" src="sites/keystone-realty-7110/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Keystone Realty</h3><p class="muted">Buy, sell and invest with clarity.</p><small>Real Estate · Luxury · 4 pages</small></div><span class="price">₪2,090</span></div></a><a class="card site" href="s/stack-labs-7111.html" data-cat="technology" data-dir="futuristic" data-price="230000" data-i="10" data-text="stack labs turn operational data into decisions in real time."><div class="thumb"><iframe title="Stack Labs thumbnail" src="sites/stack-labs-7111/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Stack Labs</h3><p class="muted">Turn operational data into decisions in real time.</p><small>Technology · Futuristic · 4 pages</small></div><span class="price">₪2,300</span></div></a><a class="card site" href="s/ledger-advisory-7112.html" data-cat="professional_services" data-dir="minimalist" data-price="146000" data-i="11" data-text="ledger advisory trusted advisors for founders and family businesses."><div class="thumb"><iframe title="Ledger Advisory thumbnail" src="sites/ledger-advisory-7112/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Ledger Advisory</h3><p class="muted">Trusted advisors for founders and family businesses.</p><small>Professional Services · Minimalist · 4 pages</small></div><span class="price">₪1,460</span></div></a><a class="card site" href="s/contour-studio-7113.html" data-cat="architecture" data-dir="orbital" data-price="231000" data-i="12" data-text="contour studio buildings shaped by light, climate and use."><div class="thumb"><iframe title="Contour Studio thumbnail" src="sites/contour-studio-7113/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Contour Studio</h3><p class="muted">Buildings shaped by light, climate and use.</p><small>Architecture · Orbital · 4 pages</small></div><span class="price">₪2,310</span></div></a><a class="card site" href="s/saffron-bistro-7114.html" data-cat="restaurant" data-dir="editorial" data-price="135000" data-i="13" data-text="saffron bistro market-driven plates and natural wines."><div class="thumb"><iframe title="Saffron Bistro thumbnail" src="sites/saffron-bistro-7114/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Saffron Bistro</h3><p class="muted">Market-driven plates and natural wines.</p><small>Restaurant · Editorial · 4 pages</small></div><span class="price">₪1,350</span></div></a><a class="card site" href="s/solstice-travel-7115.html" data-cat="travel" data-dir="abyssal" data-price="244000" data-i="14" data-text="solstice travel quiet luxury, far from everything."><div class="thumb"><iframe title="Solstice Travel thumbnail" src="sites/solstice-travel-7115/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Solstice Travel</h3><p class="muted">Quiet luxury, far from everything.</p><small>Travel · Abyssal · 4 pages</small></div><span class="price">₪2,440</span></div></a><a class="card site" href="s/wild-co-7116.html" data-cat="creative_agency" data-dir="cinematic" data-price="216000" data-i="15" data-text="wild co. brands with a point of view."><div class="thumb"><iframe title="Wild Co. thumbnail" src="sites/wild-co-7116/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Wild Co.</h3><p class="muted">Brands with a point of view.</p><small>Creative Agency · Cinematic · 4 pages</small></div><span class="price">₪2,160</span></div></a><a class="card site" href="s/iron-studio-7117.html" data-cat="fitness" data-dir="futuristic" data-price="137000" data-i="16" data-text="iron studio strength training that fits real life."><div class="thumb"><iframe title="Iron Studio thumbnail" src="sites/iron-studio-7117/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Iron Studio</h3><p class="muted">Strength training that fits real life.</p><small>Fitness · Futuristic · 4 pages</small></div><span class="price">₪1,370</span></div></a><a class="card site" href="s/aldridge-partners-7118.html" data-cat="law_firm" data-dir="luxury" data-price="248000" data-i="17" data-text="aldridge &amp; partners precise. discreet. relentless when it matters."><div class="thumb"><iframe title="Aldridge &amp; Partners thumbnail" src="sites/aldridge-partners-7118/index.html" loading="lazy" tabindex="-1" aria-hidden="true" sandbox=""></iframe></div><div class="meta"><div style="min-width:0"><h3>Aldridge &amp; Partners</h3><p class="muted">Precise. Discreet. Relentless when it matters.</p><small>Law Firm · Luxury · 4 pages</small></div><span class="price">₪2,480</span></div></a></div>
+<p class="card empty muted" id="empty" hidden>No websites match these filters.</p>
+</main>
+<script>
+(function () {
+  var grid = document.getElementById('grid'), cards = [].slice.call(grid.children), cat = '';
+  var q = document.getElementById('q'), dir = document.getElementById('dir'), sort = document.getElementById('sort');
+  function apply() {
+    var text = q.value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) {
+      var ok = (!cat || c.dataset.cat === cat) && (!dir.value || c.dataset.dir === dir.value) &&
+               (!text || c.dataset.text.indexOf(text) !== -1);
+      c.hidden = !ok; if (ok) shown++;
+    });
+    var key = sort.value;
+    cards.slice().sort(function (a, b) {
+      return key === 'asc' ? a.dataset.price - b.dataset.price : key === 'desc' ? b.dataset.price - a.dataset.price
+           : a.dataset.i - b.dataset.i;
+    }).forEach(function (c) { grid.appendChild(c); });
+    document.getElementById('count').textContent = shown + ' available';
+    document.getElementById('empty').hidden = shown !== 0;
+  }
+  document.getElementById('cats').addEventListener('click', function (e) {
+    if (!e.target.dataset || e.target.dataset.cat === undefined) return;
+    cat = e.target.dataset.cat;
+    [].forEach.call(this.children, function (b) { b.classList.toggle('on', b === e.target); });
+    apply();
+  });
+  q.addEventListener('input', apply); dir.addEventListener('change', apply); sort.addEventListener('change', apply);
+  apply();
+})();
+</script>
+<footer class="bot"><div class="wrap">TRIAD SITE MARKET · demo catalog. Every website shown is an original generated
+by the TRIAD engine. Purchasing, accounts and the editors run on the full platform.</div></footer>
+</body>
+</html>
