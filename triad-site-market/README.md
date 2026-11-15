@@ -17,7 +17,9 @@ Status: **Milestone 1 - working vertical slice** (see `docs/MILESTONES.md`).
 | 11 categories x 8 design directions, original generated artwork | Done |
 | Visual editor (dnd-kit) and AI chat editor sharing one validated operation format, revisions, restore | Done |
 | Static export (zip) of an owned site | Done |
-| Payment provider abstraction + mock provider with signed webhooks, idempotency, auto-refund on conflict | Done; no real provider connected |
+| Payment provider abstraction + mock provider with signed webhooks, idempotency, auto-refund on conflict | Done |
+| PayPlus adapter: hosted payment page, monthly recurring, refunds, invoice links, verified callbacks | Written from the official API reference and tested against a faked PayPlus; not yet run against a real PayPlus account |
+| Publishing an owned site to its own Cloudflare Pages project (or local hosting in dev) | Project creation and upload token verified against the real Cloudflare API; asset upload tested with fakes only |
 | Admin control center (generate, review queue, approve/reject, stats) | Done |
 | Next.js frontend (marketplace, detail + desktop/mobile preview, checkout, dashboard, editor, admin) | Done |
 
@@ -48,6 +50,21 @@ pytest -q                                                   # SQLite
 TRIAD_TEST_DATABASE_URL=postgresql+psycopg://user:pass@localhost/triad_test pytest -q   # + concurrency tests
 node ../e2e/smoke.mjs                                       # end-to-end, needs both servers running
 ```
+
+## Going live
+
+Set the variables in `backend/.env` (see `.env.example`), then run:
+
+```bash
+cd backend
+python -m app.cli check-live
+```
+
+It makes one real call to each configured service (Claude, Gemini, LM Studio, PayPlus,
+Cloudflare Pages) and prints what works. Switch on each piece with
+`TRIAD_AI_MODE=live`, `TRIAD_PAYMENT_PROVIDER=payplus`, `TRIAD_HOSTING_PROVIDER=cloudflare`.
+PayPlus needs `TRIAD_PUBLIC_API_URL` to be reachable from the internet for callbacks; keep
+`TRIAD_PAYPLUS_SANDBOX=true` until a full sandbox purchase, refund and renewal have passed.
 
 ## Secrets
 

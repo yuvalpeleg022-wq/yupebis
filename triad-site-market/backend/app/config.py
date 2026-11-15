@@ -36,6 +36,21 @@ class Settings(BaseSettings):
     payment_webhook_secret: str = "dev-webhook-secret"
     public_base_url: str = "http://localhost:3000"
 
+    # Hosting: local (dev) | cloudflare (Pages, one project per customer site)
+    hosting_provider: str = "local"
+    local_hosting_dir: str = "./hosted_sites"
+    public_api_url: str = "http://localhost:8000"
+    cloudflare_api_token: str | None = None
+    cloudflare_account_id: str | None = None
+
+    # PayPlus (Israeli payment processor). Keys come from the environment only.
+    payplus_api_key: str | None = None
+    payplus_secret_key: str | None = None
+    payplus_payment_page_uid: str | None = None
+    payplus_terminal_uid: str | None = None
+    payplus_issue_invoice: bool = True
+    payplus_sandbox: bool = True
+
     # Subscription
     ai_plan_monthly_edits: int = 200
 

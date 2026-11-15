@@ -35,8 +35,24 @@ BEGIN SELECT RAISE(ABORT, 'website is sold: status, owner and original spec are 
 """
 
 
+# Columns added after the first release. Interim until Alembic migrations (Milestone 2).
+ADDED_COLUMNS = [("orders", "provider_txn_ref", "VARCHAR(200)"), ("orders", "invoice_url", "VARCHAR(1000)"),
+                 ("orders", "checkout_url", "VARCHAR(1000)")]
+
+
+def _ensure_columns(engine: Engine) -> None:
+    from sqlalchemy import inspect
+
+    insp = inspect(engine)
+    with engine.begin() as conn:
+        for table, col, ddl in ADDED_COLUMNS:
+            if insp.has_table(table) and col not in {c["name"] for c in insp.get_columns(table)}:
+                conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {ddl}"))
+
+
 def init_db(engine: Engine) -> None:
     Base.metadata.create_all(engine)
+    _ensure_columns(engine)
     with engine.begin() as conn:
         if engine.dialect.name == "postgresql":
             conn.execute(text(PG_SOLD_GUARD))

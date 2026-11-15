@@ -81,8 +81,7 @@ def start_checkout(db: Session, provider: PaymentProvider, buyer: User, website_
         if existing.buyer_id != buyer.id or existing.website_id != website_id:
             raise PurchaseError("idempotency key reused for a different request")
         site = db.get(Website, website_id)
-        return CheckoutResult(existing, f"{settings.public_base_url}/checkout/mock?ref={existing.provider_ref}"
-                              f"&order={existing.id}", _aware(site.reserved_until) if site else now())
+        return CheckoutResult(existing, existing.checkout_url or "", _aware(site.reserved_until) if site else now())
 
     site = _lock_website(db, website_id)
     if site is None:
@@ -121,6 +120,7 @@ def start_checkout(db: Session, provider: PaymentProvider, buyer: User, website_
         cancel_url=f"{settings.public_base_url}/sites/{site.slug}",
     )
     order.provider_ref = session.provider_ref
+    order.checkout_url = session.redirect_url
     db.add(AuditLog(actor_id=buyer.id, action="website.reserved", entity="website", entity_id=site.id,
                     data={"order_id": order.id, "until": until.isoformat()}))
     db.commit()
@@ -139,7 +139,7 @@ def complete_purchase(db: Session, provider: PaymentProvider, order_id: str,
         order.status = OrderStatus.failed
         db.add(AuditLog(action="order.amount_mismatch", entity="order", entity_id=order.id,
                         data={"expected": order.amount_cents, "got": paid_amount_cents}))
-        provider.refund(order.provider_ref or "", paid_amount_cents, "amount mismatch")
+        provider.refund(order.provider_txn_ref or order.provider_ref or "", paid_amount_cents, "amount mismatch")
         db.commit()
         return order
 
@@ -187,7 +187,8 @@ def complete_purchase(db: Session, provider: PaymentProvider, order_id: str,
 
 
 def _refund_conflict(db: Session, provider: PaymentProvider, order: Order) -> Order:
-    refund_ref = provider.refund(order.provider_ref or "", order.amount_cents, "website no longer available")
+    refund_ref = provider.refund(order.provider_txn_ref or order.provider_ref or "", order.amount_cents,
+                                 "website no longer available")
     order.status = OrderStatus.conflict_refunded
     db.add(AuditLog(actor_id=order.buyer_id, action="order.conflict_refunded", entity="order", entity_id=order.id,
                     data={"website_id": order.website_id, "refund_ref": refund_ref}))

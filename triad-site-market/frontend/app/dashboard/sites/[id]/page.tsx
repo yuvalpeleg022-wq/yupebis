@@ -44,6 +44,19 @@ export default function Editor() {
     } catch (e) { setError((e as Error).message); setStatus(""); }
   }, [id, site]);
 
+  const [published, setPublished] = useState("");
+  const [publishing, setPublishing] = useState(false);
+  useEffect(() => {
+    api<{ url: string }[]>(`/me/sites/${id}/deployments`).then((d) => d[0] && setPublished(d[0].url)).catch(() => {});
+  }, [id]);
+  async function publish() {
+    setPublishing(true); setError("");
+    try {
+      const r = await api<{ url: string; revision: number }>(`/me/sites/${id}/publish`, { method: "POST" });
+      setPublished(r.url); setStatus(`Published revision ${r.revision}`);
+    } catch (e) { setError((e as Error).message); } finally { setPublishing(false); }
+  }
+
   const currentPage = site?.spec.pages.find((p) => p.slug === page);
   const section = currentPage?.sections.find((s) => s.id === selected) ?? null;
   const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }));
@@ -67,6 +80,8 @@ export default function Editor() {
         <h1 className="font-display text-2xl">{site.spec.meta.business_name}</h1>
         <span className="text-xs text-white/40">{site.sku} · revision {site.revision}</span>
         <span className="ml-auto text-sm text-white/60" role="status">{status}</span>
+        {published && <a href={published} target="_blank" rel="noreferrer" className="text-sm text-gold underline">View live site</a>}
+        <button className="btn-primary" disabled={publishing} onClick={publish}>{publishing ? "Publishing…" : "Publish"}</button>
       </div>
       {error && <p className="mb-3 rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300" role="alert">{error}</p>}
 

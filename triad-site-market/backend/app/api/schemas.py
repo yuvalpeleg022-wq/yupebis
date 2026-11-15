@@ -81,6 +81,7 @@ class OrderOut(ORM):
     currency: str
     created_at: datetime
     paid_at: datetime | None
+    invoice_url: str | None = None
 
 
 class CustomerSiteOut(ORM):

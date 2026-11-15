@@ -181,6 +181,9 @@ class Order(Base):
     currency: Mapped[str] = mapped_column(String(3))
     provider: Mapped[str] = mapped_column(String(32))
     provider_ref: Mapped[str | None] = mapped_column(String(200), index=True)
+    provider_txn_ref: Mapped[str | None] = mapped_column(String(200))
+    invoice_url: Mapped[str | None] = mapped_column(String(1000))
+    checkout_url: Mapped[str | None] = mapped_column(String(1000))
     idempotency_key: Mapped[str] = mapped_column(String(100), unique=True)
     license_terms_version: Mapped[str] = mapped_column(String(32), default="2026-11")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
@@ -226,6 +229,21 @@ class SiteRevision(Base):
     source: Mapped[str] = mapped_column(String(16))  # initial | visual | ai | restore
     operations: Mapped[list] = mapped_column(JSONType, default=list)
     spec: Mapped[dict] = mapped_column(JSONType)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class SiteDeployment(Base):
+    """A published version of a customer's site on its own isolated hosting project."""
+
+    __tablename__ = "site_deployments"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    customer_site_id: Mapped[str] = mapped_column(ForeignKey("customer_sites.id"), index=True)
+    provider: Mapped[str] = mapped_column(String(32))
+    project: Mapped[str] = mapped_column(String(80), index=True)
+    url: Mapped[str] = mapped_column(String(500))
+    deployment_ref: Mapped[str | None] = mapped_column(String(200))
+    revision: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 

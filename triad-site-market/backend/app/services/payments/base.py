@@ -43,6 +43,9 @@ class NormalizedEvent:
     amount_cents: int | None = None
     currency: str | None = None
     raw: dict[str, Any] = field(default_factory=dict)
+    transaction_ref: str | None = None  # provider transaction id (needed for refunds)
+    replacement_ref: str | None = None  # long-lived id that replaces provider_ref (e.g. recurring uid)
+    invoice_url: str | None = None
 
 
 class WebhookVerificationError(Exception):

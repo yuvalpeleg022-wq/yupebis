@@ -3,6 +3,13 @@
 ## M1 - Vertical slice (done)
 Backend, generation engine, purchase flow, editors, admin, frontend, tests. See README.
 
+## M1.5 - Real integrations (code done, live verification pending)
+- PayPlus adapter (checkout, recurring, refunds, invoices, callback verification)
+- Cloudflare Pages publishing, one isolated project per customer site
+- Gemini provider; `python -m app.cli check-live` to verify every integration
+- Still to verify with real accounts: a full PayPlus sandbox purchase/refund/renewal, a
+  full Cloudflare deployment, and live generation on Claude and Gemini
+
 ## M2 - Live AI and production data layer
 - Run the pipeline against real Claude / LM Studio / Gemini and tune prompts and QC
 - Alembic migrations, Docker Compose (API, worker, Postgres, Redis)

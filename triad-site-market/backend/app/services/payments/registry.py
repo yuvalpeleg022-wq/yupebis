@@ -13,6 +13,10 @@ def get_provider(name: str | None = None) -> PaymentProvider:
         if s.env == "production":
             raise RuntimeError("mock payment provider is not allowed in production")
         return MockPaymentProvider(s.payment_webhook_secret, s.public_base_url)
-    # Real adapters (e.g. an Israeli recurring-billing processor) are registered here once
+    if name == "payplus":
+        from app.services.payments.payplus import PayPlusProvider
+
+        return PayPlusProvider(s)
+    # Other adapters (e.g. an Israeli recurring-billing processor) are registered here once
     # the business selects a provider and credentials are provisioned.
     raise RuntimeError(f"payment provider '{name}' is not configured")

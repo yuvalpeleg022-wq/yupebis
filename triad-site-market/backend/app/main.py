@@ -42,6 +42,14 @@ def create_app() -> FastAPI:
     if s.env != "production":
         app.include_router(dev.router)
 
+    if s.hosting_provider == "local":
+        import os
+
+        from fastapi.staticfiles import StaticFiles
+
+        os.makedirs(s.local_hosting_dir, exist_ok=True)
+        app.mount("/hosted", StaticFiles(directory=s.local_hosting_dir, html=True), name="hosted")
+
     @app.get("/healthz")
     def health():
         return {"ok": True}

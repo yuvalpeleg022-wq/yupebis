@@ -1,4 +1,9 @@
-"""Admin CLI.  python -m app.cli create-admin EMAIL PASSWORD | seed N"""
+"""Admin CLI.
+
+python -m app.cli create-admin EMAIL PASSWORD
+python -m app.cli seed N [--approve]
+python -m app.cli check-live      # verify the real AI, payment and hosting integrations
+"""
 
 import sys
 
@@ -8,6 +13,54 @@ from app.bootstrap import init_db
 from app.db import SessionLocal, engine
 from app.models import User, UserRole
 from app.security import hash_password
+
+
+def check_live() -> None:
+    """Calls each configured external service once and reports what works."""
+    from pydantic import BaseModel
+
+    from app.config import get_settings
+
+    s = get_settings()
+
+    class Ping(BaseModel):
+        answer: str
+
+    def run(label: str, fn) -> None:
+        try:
+            print(f"[ OK ] {label}: {fn()}")
+        except Exception as e:  # noqa: BLE001 - diagnostic tool
+            print(f"[FAIL] {label}: {type(e).__name__}: {str(e)[:300]}")
+
+    def ai(provider_cls):
+        c = provider_cls(s).complete_json(system="Return JSON only.", prompt='Answer with the word "ok".',
+                                          schema=Ping, context={}, max_tokens=2000)
+        return f"{c.model} replied {c.data} in {c.latency_ms} ms"
+
+    from app.ai.providers import ClaudeProvider, GeminiProvider, LMStudioProvider
+
+    run("Claude", lambda: ai(ClaudeProvider))
+    run("Gemini", lambda: ai(GeminiProvider))
+    run("LM Studio", lambda: ai(LMStudioProvider))
+
+    def payplus():
+        from app.services.payments.payplus import PayPlusProvider
+
+        c = PayPlusProvider(s).create_checkout(
+            order_id="live-check", amount_cents=100, currency="ILS", description="TRIAD connectivity check",
+            customer_email="check@example.com", success_url=s.public_base_url, cancel_url=s.public_base_url)
+        return f"payment page created ({'sandbox' if s.payplus_sandbox else 'PRODUCTION'}): {c.redirect_url}"
+
+    run("PayPlus", payplus)
+
+    def cloudflare():
+        from app.services.hosting.cloudflare import CloudflarePagesHosting
+
+        d = CloudflarePagesHosting(s.cloudflare_api_token or "", s.cloudflare_account_id or "").publish(
+            "triad-live-check", {"index.html": b"<!doctype html><title>TRIAD</title><h1>TRIAD hosting works</h1>"})
+        return f"deployed {d.url} (delete the 'triad-live-check' project when done)"
+
+    run("Cloudflare Pages", cloudflare)
 
 
 def main(argv: list[str]) -> None:
@@ -34,6 +87,8 @@ def main(argv: list[str]) -> None:
                 if site and admin and site.status.value == "in_review" and "--approve" in argv:
                     decide(db, admin, site.id, True, "seed approval")
             print(f"generated {n} websites")
+        elif cmd == "check-live":
+            check_live()
         else:
             print(__doc__)
 

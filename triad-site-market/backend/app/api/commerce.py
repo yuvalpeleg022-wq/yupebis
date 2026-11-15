@@ -31,12 +31,15 @@ from app.models import (
     Order,
     Ownership,
     PaymentEvent,
+    SiteDeployment,
     SiteRevision,
     User,
     Website,
 )
 from app.security import current_user
 from app.services import marketplace, subscriptions
+from app.services.hosting.base import HostingError
+from app.services.hosting.registry import get_hosting
 from app.services.payments.base import WebhookVerificationError
 from app.services.payments.registry import get_provider
 
@@ -96,14 +99,23 @@ async def payment_webhook(provider_name: str, request: Request, db: Session = De
         if order is None:
             return {"status": "unknown_order"}
         if ev.type == "payment.succeeded":
+            if ev.transaction_ref or ev.invoice_url:
+                order.provider_txn_ref = ev.transaction_ref or order.provider_txn_ref
+                order.invoice_url = ev.invoice_url or order.invoice_url
+                db.commit()
             o = marketplace.complete_purchase(db, provider, order.id, ev.amount_cents)
         else:
             o = marketplace.fail_payment(db, order.id)
         return {"status": o.status.value if o else "ignored"}
     if ev.type in ("subscription.activated", "subscription.renewed"):
-        subscriptions.activate_or_renew(db, ev.provider_ref)
+        sub = subscriptions.activate_or_renew(db, ev.provider_ref)
+        if sub is None and ev.replacement_ref:
+            sub = subscriptions.activate_or_renew(db, ev.replacement_ref)
+        if sub is not None and ev.replacement_ref and sub.provider_ref != ev.replacement_ref:
+            sub.provider_ref = ev.replacement_ref  # later renewals and cancellation use the recurring id
+            db.commit()
     elif ev.type == "subscription.payment_failed":
-        subscriptions.mark_past_due(db, ev.provider_ref)
+        subscriptions.mark_past_due(db, ev.replacement_ref or ev.provider_ref)
     return {"status": "ok"}
 
 
@@ -226,6 +238,36 @@ def export_site(site_id: str, user: User = Depends(current_user), db: Session = 
     db.commit()
     return Response(buf.getvalue(), media_type="application/zip",
                     headers={"Content-Disposition": f'attachment; filename="site-{cs.id[:8]}.zip"'})
+
+
+# ---------------------------------------------------------------- publishing
+
+
+@router.post("/me/sites/{site_id}/publish")
+def publish_site(site_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Deploy the owner's current revision to its own isolated hosting project."""
+    cs = _owned(db, user, site_id)
+    sku = db.get(Website, cs.website_id).sku
+    files = {name: html.encode() for name, html in render_site(SiteSpec.model_validate(cs.spec)).items()}
+    try:
+        dep = get_hosting().publish(f"triad-{sku.lower()}", files)
+    except HostingError as e:
+        raise HTTPException(502, f"publishing failed: {e}") from e
+    row = SiteDeployment(customer_site_id=cs.id, provider=dep.provider, project=dep.project, url=dep.url,
+                         deployment_ref=dep.deployment_ref, revision=cs.revision)
+    db.add(row)
+    db.add(AuditLog(actor_id=user.id, action="site.published", entity="customer_site", entity_id=cs.id,
+                    data={"url": dep.url, "revision": cs.revision, "provider": dep.provider}))
+    db.commit()
+    return {"url": dep.url, "revision": cs.revision, "provider": dep.provider, "published_at": row.created_at}
+
+
+@router.get("/me/sites/{site_id}/deployments")
+def site_deployments(site_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    cs = _owned(db, user, site_id)
+    rows = db.scalars(select(SiteDeployment).where(SiteDeployment.customer_site_id == cs.id)
+                      .order_by(SiteDeployment.created_at.desc()).limit(20)).all()
+    return [{"url": r.url, "revision": r.revision, "provider": r.provider, "published_at": r.created_at} for r in rows]
 
 
 # ---------------------------------------------------------------- subscription
