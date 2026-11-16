@@ -139,14 +139,22 @@ def finish(ob, thick, mat):
     add_collider(ob, 0.004, 3.0)
 
 
-def cape_points(NU=58, NV=100):
+def cape_points(NU=66, NV=118, span=106.0, train=0.70):
+    """Long, wide cloak (back-view poster): pinned across the upper back, falls
+    to the floor and continues as a train fanning out behind and to the sides."""
     P = np.zeros((NV, NU, 3))
+    drop_v = 0.70                       # fraction of the length spent falling to the floor
     for j in range(NV):
         v = j / (NV - 1)
-        rx, ry, cy = 0.245 + 0.50 * v ** 0.9, 0.17 + 0.34 * v ** 0.9, 0.04
+        f = min(v / drop_v, 1.0)
+        t = max(0.0, (v - drop_v) / (1 - drop_v))
+        rx = 0.25 + 0.62 * f ** 0.85 + train * 0.55 * t
+        ry = 0.17 + 0.42 * f ** 0.85 + train * t
+        cy = 0.04
         for i in range(NU):
-            phi = math.radians(-100 + 200 * i / (NU - 1))
-            z = 1.545 - 0.025 * abs(phi) / math.radians(100) - v * 1.50
+            phi = math.radians(-span + 2 * span * i / (NU - 1))
+            z = 1.545 - 0.025 * abs(phi) / math.radians(span) - 1.50 * f
+            z = max(z, 0.035) if t > 0 else z
             P[j, i] = (rx * math.sin(phi), cy + ry * math.cos(phi), z)
     return P
 

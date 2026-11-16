@@ -232,20 +232,27 @@ for s, S_ in (("l", "L"), ("r", "R")):
             if f.normal.dot(nd) < dot_min: continue
             keep.append(f.index)
         if len(keep) < 2: return None
-        b2 = bmesh.new(); b2.from_mesh(gloves.data); b2.transform(gloves.matrix_world); b2.faces.ensure_lookup_table()
+        # copy the glove itself (same skin weights + armature) so the plate deforms exactly with it
+        ob2 = gloves.copy(); ob2.data = gloves.data.copy()
+        ob2.name = "DOOM_gauntlet_" + bone_name.replace("DEF-", ""); ob2.data.name = ob2.name
+        ARMOR.objects.link(ob2)
+        for md in list(ob2.modifiers):
+            if md.type != "ARMATURE": ob2.modifiers.remove(md)
         ks = set(keep)
+        b2 = bmesh.new(); b2.from_mesh(ob2.data); b2.faces.ensure_lookup_table()
         bmesh.ops.delete(b2, geom=[f for f in b2.faces if f.index not in ks], context="FACES")
         bmesh.ops.delete(b2, geom=[v for v in b2.verts if not v.link_faces], context="VERTS")
+        for _ in range(2):
+            bnd = [v for v in b2.verts if v.is_boundary]
+            bmesh.ops.smooth_vert(b2, verts=bnd, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
         b2.normal_update()
         for v in b2.verts: v.co += v.normal * push
-        me2 = bpy.data.meshes.new("plate"); b2.to_mesh(me2); b2.free()
-        ob2 = bpy.data.objects.new("DOOM_gauntlet_" + bone_name.replace("DEF-", ""), me2); ARMOR.objects.link(ob2)
-        me2.materials.append(STEEL)
-        for p in me2.polygons: p.use_smooth = True
+        b2.to_mesh(ob2.data); b2.free()
+        ob2.data.materials.clear(); ob2.data.materials.append(STEEL)
+        for p in ob2.data.polygons: p.use_smooth = True
         sol = ob2.modifiers.new("Solidify", "SOLIDIFY"); sol.thickness = thick; sol.offset = 1.0
         bv = ob2.modifiers.new("Bevel", "BEVEL"); bv.width = 0.0004; bv.segments = 2
         sub = ob2.modifiers.new("Subdivision", "SUBSURF"); sub.levels, sub.render_levels = 0, 2
-        bone_parent(ob2, bone_name)
         return ob2
     n_plates = 0
     for f in ("f_index", "f_middle", "f_ring", "f_pinky", "thumb"):

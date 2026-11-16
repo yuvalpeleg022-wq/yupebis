@@ -75,17 +75,25 @@ print("SKIRT prepass", C.prepass(skirt, body_layers + armor, clear=0.010))
 C.simulate(skirt, lambda v: 1.0 if v.co.z > 1.005 else 0.0, 50, mass=0.6, bend=6.0, wind=0.25)
 C.finish(skirt, 0.005, C.wool("MAT_tunic_skirt_wool", (0.004, 0.009, 0.005), (0.009, 0.018, 0.010), sheen=0.35))
 
-# ------------------------------------------------------------ cape
-cape = C.build("DOOM_cape", C.cape_points(), (3.0, 4.0), CLOTH)
+# ------------------------------------------------------------ floor (shadow catcher) + cape
+bpy.ops.mesh.primitive_plane_add(size=8.0, location=(0, 0.8, 0.0))
+floor = bpy.context.object; floor.name = "FLOOR_shadow_catcher"
+floor.is_shadow_catcher = True
+C.add_collider(floor, 0.004, 6.0)
+VELVET = C.wool("MAT_cloak_velvet", (0.0055, 0.013, 0.0075), (0.011, 0.024, 0.014), sheen=0.85)
+vb = VELVET.node_tree.nodes["Principled BSDF"]
+vb.inputs["Sheen Tint"].default_value = (0.22, 0.42, 0.26, 1); vb.inputs["Sheen Roughness"].default_value = 0.3
+vb.inputs["Roughness"].default_value = 0.78
+cape = C.build("DOOM_cape", C.cape_points(), (4.0, 6.0), CLOTH)
 print("CAPE prepass", C.prepass(cape, body_layers + armor + [skirt]))
-C.simulate(cape, lambda v: 1.0 if v.co.z > 1.505 else 0.0, 70, mass=1.1, bend=10.0, wind=1.0)
-C.finish(cape, 0.006, C.wool())
+C.simulate(cape, lambda v: 1.0 if v.co.z > 1.505 else 0.0, 80, mass=1.2, bend=12.0, wind=0.6)
+C.finish(cape, 0.006, VELVET)
 
 # ------------------------------------------------------------ hood + mantle
 hood = C.build("DOOM_hood", C.hood_points(), (2.4, 2.0), CLOTH, cap_top_z=1.985)
 print("HOOD prepass", C.prepass(hood, body_layers + armor + [cape], clear=0.012))
 C.simulate(hood, C.hood_pin, 55, mass=0.5, bend=3.0, wind=0.15)
-C.finish(hood, 0.005, C.wool())
+C.finish(hood, 0.005, VELVET)
 
 # ------------------------------------------------------------ medallions as clasps over the mantle
 ht = C.trees([hood])[0]
@@ -114,8 +122,14 @@ for ob in (skirt, cape, hood):
                 pen += 1; break
     print("CHECK", ob.name, json.dumps(L.mesh_report(ob)), "penetrating=%d" % pen)
 for o in bpy.data.collections["REF"].objects: o.hide_render = True
-paths = [L.render_view(c, "s10_full_%s.png" % c[4:], res=(460, 700), samples=48) for c in ("CAM_front", "CAM_34", "CAM_side", "CAM_back")]
-L.contact_sheet(paths, ["front", "3/4", "side", "back"], "s10_full_sheet.jpg")
+for c in ("CAM_front", "CAM_side", "CAM_back"):
+    O[c].data.ortho_scale = 2.9; O[c].location.z = 1.0
+cd0 = bpy.data.cameras.new("CAM_back_low"); cd0.lens = 35
+cbl = bpy.data.objects.new("CAM_back_low", cd0); bpy.data.collections["CAMERAS"].objects.link(cbl)
+cbl.location = (0.25, 4.2, 0.55); tb = bpy.data.objects.new("TGT_back_low", None); tb.location = (0, 0.4, 1.05)
+bpy.data.collections["CAMERAS"].objects.link(tb); L.track_to(cbl, tb)
+paths = [L.render_view(c, "s10_full_%s.png" % c[4:], res=(460, 700), samples=48) for c in ("CAM_front", "CAM_34", "CAM_side", "CAM_back", "CAM_back_low")]
+L.contact_sheet(paths, ["front", "3/4", "side", "back", "back low (stair poster)"], "s10_full_sheet.jpg")
 cd = O["CAM_detail"]; td = O["TGT_detail"]
 shots = []
 for name, tgt, off, lens in (("chest", Vector((0, -0.12, 1.38)), (0.3, -1.05, 0.05), 45),
