@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<title>Marvel Gikim — lesson 1</title>
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/400.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/500.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/700.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/800.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/900.css">
+<style>
+  :root { --c0: #2a63e8; --c1: #123a9e; --c2: #071a52; --c3: #020716; --acc: #ff8a4c; --beam: 207,224,255; --ok: #22c55e; --face: #f3f5f9; --side: 150,160,182; }
+  .brand { --c0: #0f4a2a; --c1: #072414; --c2: #020a06; --c3: #000000; --acc: #2FE870; --beam: 210,255,228; --ok: #2FE870; --side: 120,150,135; }
+  .emerald { --c0: #1aa566; --c1: #0b5e3c; --c2: #042a1b; --c3: #010806; --acc: #ffd27a; --beam: 214,255,232; --side: 140,170,155; }
+  .gold { --c0: #6e5523; --c1: #3a2c10; --c2: #160f05; --c3: #030201; --acc: #e9c97a; --beam: 255,238,205; --face: #f8f1e1; --side: 176,152,104; }
+  .crimson { --c0: #c4222a; --c1: #6e0d13; --c2: #250407; --c3: #060102; --acc: #ffd27a; --beam: 255,222,222; --side: 170,150,155; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+  body { font-family: 'Heebo', sans-serif; color: #fff; direction: rtl; }
+  .full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+  #world { position: absolute; inset: 0; transform-origin: 50% 45%; }
+  #stage { position: absolute; inset: 0; perspective: 1800px; }
+  .scene { position: absolute; inset: 0; display: none; transform-style: preserve-3d; }
+  .abs { position: absolute; left: 0; top: 0; transform-origin: 50% 50%; will-change: transform, opacity; white-space: nowrap; }
+  #grain { mix-blend-mode: overlay; opacity: .06; image-rendering: pixelated; }
+  #flash { background: #fff; opacity: 0; }
+
+  /* 3D extruded clay type (like the reference's numbers) */
+  .x3d { font-family: 'Heebo'; font-weight: 900; color: var(--face); line-height: .9; letter-spacing: -.01em;
+    text-shadow: 0 1px 0 rgb(var(--side)), 0 2px 0 rgb(var(--side)), 0 3px 0 rgb(var(--side)), 0 4px 0 rgb(var(--side)), 0 5px 0 rgb(var(--side)), 0 6px 0 rgb(var(--side)),
+      0 7px 0 rgb(var(--side)), 0 8px 0 rgb(var(--side)), 0 9px 0 rgb(var(--side)), 0 10px 0 rgb(var(--side)), 0 11px 0 rgb(var(--side)), 0 12px 0 rgb(var(--side)),
+      0 13px 0 rgba(var(--side),.9), 0 14px 0 rgba(var(--side),.85), 0 20px 30px rgba(0,0,0,.55), 0 40px 70px rgba(0,0,0,.45); }
+  .x3d.big { font-size: 380px; } .x3d.mid { font-size: 170px; } .x3d.sm { font-size: 110px; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+
+  /* objects */
+  .card { position: absolute; left: 0; top: 0; border-radius: 34px; background: linear-gradient(180deg, #ffffff, #e9eef6); color: #0d1424;
+    box-shadow: 0 40px 70px rgba(0,0,0,.5), 0 10px 22px rgba(0,0,0,.35), inset 0 2px 0 #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+  .card .ic { width: 120px; height: 120px; color: var(--acc); }
+  .card .tx { font: 800 54px 'Heebo'; color: #0d1424; }
+  .glass { position: absolute; left: 0; top: 0; border-radius: 30px; background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.05)); border: 2px solid rgba(255,255,255,.28);
+    box-shadow: 0 30px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.35); backdrop-filter: blur(6px); }
+  .thumb { position: absolute; left: 0; top: 0; width: 150px; height: 220px; border-radius: 16px; overflow: hidden; background: #111; border: 4px solid #0d0f14;
+    box-shadow: 0 18px 30px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.1); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .ok { position: absolute; right: -14px; bottom: -14px; width: 56px; height: 56px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; box-shadow: 0 6px 14px rgba(0,0,0,.4); border: 4px solid #fff; }
+  .ok svg { width: 32px; height: 32px; }
+  .pill { position: absolute; left: 0; top: 0; padding: 16px 40px; border-radius: 999px; background: var(--acc); color: #10131a; font: 800 48px 'Heebo'; box-shadow: 0 16px 30px rgba(0,0,0,.4); }
+  .pill.dark { background: rgba(10,14,24,.85); color: #fff; border: 2px solid rgba(255,255,255,.25); }
+  .row { position: absolute; left: 0; top: 0; width: 820px; height: 150px; border-radius: 30px; background: linear-gradient(180deg, #ffffff, #e9eef6); color: #0d1424;
+    display: flex; align-items: center; gap: 30px; padding: 0 34px; box-shadow: 0 26px 50px rgba(0,0,0,.45), inset 0 2px 0 #fff; direction: rtl; }
+  .row .ic { width: 90px; height: 90px; color: var(--acc); flex: none; } .row .tx { font: 800 64px 'Heebo'; flex: 1; }
+  .row .ck { width: 74px; height: 74px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; flex: none; } .row .ck svg { width: 44px; height: 44px; }
+  .tile { position: absolute; left: 0; top: 0; width: 150px; height: 150px; border-radius: 36px; background: linear-gradient(180deg, #ffffff, #e6ebf3); color: var(--acc); display: grid; place-items: center;
+    box-shadow: 0 22px 40px rgba(0,0,0,.5), inset 0 2px 0 #fff; }
+  .tile svg { width: 84px; height: 84px; }
+  .tile.on { background: var(--acc); color: #fff; box-shadow: 0 0 60px rgba(var(--beam),.7), 0 22px 40px rgba(0,0,0,.5); }
+  .phone { position: absolute; left: 0; top: 0; width: 470px; height: 940px; border-radius: 64px; background: #0b0d12; border: 12px solid #1b1f29; box-shadow: 0 0 0 3px #3a4150, 0 50px 90px rgba(0,0,0,.65); overflow: hidden; direction: rtl; }
+  .phone .hd { display: flex; align-items: center; gap: 22px; padding: 70px 28px 18px; }
+  .phone .av { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--acc); object-fit: cover; }
+  .phone .st { display: flex; gap: 26px; text-align: center; } .phone .st b { display: block; font: 800 38px 'Heebo'; } .phone .st span { font: 500 22px 'Heebo'; color: #aab; }
+  .phone .nm { font: 800 30px 'Heebo'; padding: 4px 30px 16px; }
+  .phone .gr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; } .phone .gr img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .btn { position: absolute; left: 0; top: 0; width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(180deg, #ffffff, #e6ebf3); color: var(--acc); display: grid; place-items: center; box-shadow: 0 24px 44px rgba(0,0,0,.5), inset 0 2px 0 #fff; }
+  .btn svg { width: 90px; height: 90px; } .btn .n { position: absolute; bottom: -64px; font: 800 40px 'Heebo'; color: #fff; white-space: nowrap; }
+  .coin { position: absolute; left: 0; top: 0; border-radius: 50%; }
+  .coin img { width: 100%; height: 100%; border-radius: 50%; display: block; }
+  .coin::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 10px rgba(255,255,255,.9), 0 0 0 16px rgba(0,0,0,.25), 0 40px 80px rgba(0,0,0,.6), 0 0 80px rgba(var(--beam),.35);
+     background: linear-gradient(130deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 38%); }
+  .lbl { font: 800 60px 'Heebo'; color: #fff; text-shadow: 0 4px 16px rgba(0,0,0,.6); }
+
+  /* captions (reference: plain heavy white, soft shadow) */
+  #caps { position: absolute; left: 160px; right: 160px; top: 868px; height: 120px; display: flex; justify-content: center; align-items: center; direction: rtl; }
+  #caps span { font: 900 66px 'Heebo'; color: #fff; text-align: center; line-height: 1.1; text-shadow: 0 4px 18px rgba(0,0,0,.6), 0 2px 3px rgba(0,0,0,.5); }
+  svg { overflow: visible; }
+  /* brand components from the Marvel Gikim posts */
+  .tblock { position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: flex-end; direction: rtl; }
+  .tblock .tag { background: var(--acc); color: #0a0a0a; font: 900 40px 'Heebo'; padding: 6px 26px; }
+  .tblock .box { background: #fff; color: #0a0a0a; font: 900 118px 'Heebo'; line-height: 1.12; padding: 6px 44px 14px; box-shadow: 0 30px 60px rgba(0,0,0,.55); border-left: 14px solid var(--acc); }
+  #ticker { position: absolute; left: 0; top: 1018px; width: 1920px; height: 62px; display: flex; direction: rtl; background: rgba(8,10,12,.82); border-top: 3px solid var(--acc); overflow: hidden; }
+  #ticker .tb { flex: none; background: var(--acc); color: #0a0a0a; font: 900 36px 'Heebo'; padding: 8px 28px; line-height: 50px; }
+  #ticker .tt { position: relative; flex: 1; overflow: hidden; } #ticker .tt span { position: absolute; top: 8px; right: 0; font: 600 34px 'Heebo'; color: #e8ecef; white-space: nowrap; }
+  .post { position: absolute; left: 0; top: 0; width: 520px; border-radius: 24px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,.65), 0 0 0 3px rgba(255,255,255,.12); }
+  .post img { width: 100%; display: block; }
+</style>
+</head>
+<body>
+<div id="world">
+  <canvas id="bg" class="full" width="1920" height="1080"></canvas>
+  <div id="stage"></div>
+  <canvas id="fx" class="full" width="1920" height="1080"></canvas>
+  <div id="caps"></div>
+  <div id="ticker"><div class="tb">מארוול גיקים</div><div class="tt"><span></span></div></div>
+</div>
+<canvas id="grain" class="full" width="960" height="540"></canvas>
+<div id="flash" class="full"></div>
+<script src="../episodes/ep01/captions.js"></script>
+<script src="assets.js"></script>
+<script src="ep01.js"></script>
+</body>
+</html>

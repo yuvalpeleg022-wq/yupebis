@@ -1,0 +1,35 @@
+{
+ "version": "ep01",
+ "music": "634",
+ "music_start": 5.659999999999922,
+ "tempo": 119.68085106382979,
+ "key_hit_beat_error_ms": {
+  "54.9": 0,
+  "82.2": 199,
+  "101.94": 32,
+  "139.66": 243,
+  "146.9": 0,
+  "150.14": 232
+ },
+ "cues": 146,
+ "sfx_used": {
+  "click/kenney-interface-toggle-001.ogg": 3,
+  "impact/fs-222517-dramatic-hit.ogg": 15,
+  "pop/fs202230.ogg": 10,
+  "pop/kenney-interface-pluck-001.ogg": 8,
+  "whoosh/fs-683101-quick-woosh.ogg": 9,
+  "pop/fs527522.ogg": 8,
+  "ding/kenney-interface-confirmation-001.ogg": 19,
+  "transition/fs-816262-broomstick-whoosh-3-quiet-okm1.ogg": 9,
+  "whoosh/fs393811.ogg": 14,
+  "transition/fs-786514-swoosh-v2.ogg": 6,
+  "whoosh/fs-127197-fast-simple-chop-5-aif.ogg": 10,
+  "ui-blip/kenney-digital-twotone2.ogg": 7,
+  "pop/fs-824189-pop-in-sfx.ogg": 5,
+  "pop/kenney-interface-drop-001.ogg": 4,
+  "tick/fs721514.ogg": 5,
+  "impact/fs-347561-micheal-bay-hit.ogg": 6,
+  "impact/kenney-sci-lowfrequency-explosion-000.ogg": 6,
+  "riser/fs867126.ogg": 2
+ }
+}
