@@ -49,7 +49,7 @@ world = bpy.data.worlds.new("WORLD_studio")
 sc.world = world
 bg = world.node_tree.nodes.get("Background")
 bg.inputs["Color"].default_value = (0.02, 0.022, 0.025, 1)
-bg.inputs["Strength"].default_value = 0.3
+bg.inputs["Strength"].default_value = 0.15
 
 # camera targets
 cams = bpy.data.collections["CAMERAS"]
@@ -96,10 +96,10 @@ def area(name, loc, energy, size, color, target):
     lights.objects.link(ob)
     L.track_to(ob, target)
     return ob
-area("LGT_key", (-2.2, -2.6, 2.9), 900, 1.6, (1.0, 0.96, 0.9), tgt_body)
-area("LGT_fill", (2.6, -2.0, 1.4), 260, 2.5, (0.85, 0.9, 1.0), tgt_body)
-area("LGT_rim_L", (-1.8, 2.4, 2.4), 700, 1.0, (0.9, 0.95, 1.0), tgt_head)
-area("LGT_rim_R", (2.0, 2.2, 2.0), 600, 1.0, (1.0, 0.92, 0.85), tgt_body)
+area("LGT_key", (-2.2, -2.6, 2.9), 150, 1.6, (1.0, 0.96, 0.9), tgt_body)
+area("LGT_fill", (2.6, -2.0, 1.4), 45, 2.5, (0.85, 0.9, 1.0), tgt_body)
+area("LGT_rim_L", (-1.8, 2.4, 2.4), 120, 1.0, (0.9, 0.95, 1.0), tgt_head)
+area("LGT_rim_R", (2.0, 2.2, 2.0), 100, 1.0, (1.0, 0.92, 0.85), tgt_body)
 
 # reference images (packed into the .blend so they travel with it)
 ref = bpy.data.collections["REF"]
