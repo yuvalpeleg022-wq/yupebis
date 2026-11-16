@@ -99,7 +99,7 @@ def prepass(ob, collider_objs, clear=0.014, iters=3):
     return pushed
 
 
-def simulate(ob, pin_fn, frames, mass, bend, tension=35, wind=0.0, friction_note=""):
+def simulate(ob, pin_fn, frames, mass, bend, tension=35, wind=0.0, friction_note="", collide_with=None):
     sc = bpy.context.scene
     pin = ob.vertex_groups.new(name="pin")
     for v in ob.data.vertices:
@@ -114,6 +114,8 @@ def simulate(ob, pin_fn, frames, mass, bend, tension=35, wind=0.0, friction_note
     cs = cl.collision_settings
     cs.distance_min = 0.006; cs.collision_quality = 4
     cs.use_self_collision = True; cs.self_distance_min = 0.004
+    if collide_with is not None:
+        cs.collection = collide_with
     cl.point_cache.frame_start, cl.point_cache.frame_end = 1, frames
     sc.frame_start, sc.frame_end = 1, frames
     t0 = time.time()
