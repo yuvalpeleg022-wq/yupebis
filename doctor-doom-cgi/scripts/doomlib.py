@@ -120,6 +120,67 @@ def mesh_report(obj):
             "nonmanifold_edges": nonmanifold, "dims_m": dims}
 
 
+def _sock(sockets, name, typ):
+    return next(x for x in sockets if x.name == name and x.type == typ)
+
+
+def aged_steel(name="MAT_armor_aged_steel", base=(0.030, 0.031, 0.034), edge=(0.30, 0.25, 0.19),
+               rough=(0.38, 0.62), scratch_scale=55.0):
+    """Procedural aged dark steel (Cycles): base gunmetal, worn brighter edges
+    (Bevel-node curvature), dirt in cavities (local AO), scratches + micro noise
+    bump, roughness breakup. Shared by all armour pieces."""
+    m = bpy.data.materials.get(name)
+    if m:
+        return m
+    m = bpy.data.materials.new(name)
+    n, l = m.node_tree.nodes, m.node_tree.links
+    b = n["Principled BSDF"]
+    b.inputs["Metallic"].default_value = 1.0
+    geo = n.new("ShaderNodeNewGeometry")
+    bev = n.new("ShaderNodeBevel"); bev.samples = 6; bev.inputs["Radius"].default_value = 0.0015
+    dot = n.new("ShaderNodeVectorMath"); dot.operation = "DOT_PRODUCT"
+    l.new(geo.outputs["Normal"], dot.inputs[0]); l.new(bev.outputs["Normal"], dot.inputs[1])
+    edge_m = n.new("ShaderNodeMapRange"); edge_m.inputs["From Min"].default_value = 0.995
+    edge_m.inputs["From Max"].default_value = 0.93
+    l.new(dot.outputs["Value"], edge_m.inputs["Value"])
+    tc = n.new("ShaderNodeTexCoord")
+    nz = n.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 90; nz.inputs["Detail"].default_value = 12
+    l.new(tc.outputs["Object"], nz.inputs["Vector"])
+    wear = n.new("ShaderNodeMath"); wear.operation = "MULTIPLY"
+    l.new(edge_m.outputs["Result"], wear.inputs[0]); l.new(nz.outputs["Fac"], wear.inputs[1])
+    wear2 = n.new("ShaderNodeMapRange"); wear2.inputs["From Min"].default_value = 0.15; wear2.inputs["From Max"].default_value = 0.45
+    l.new(wear.outputs["Value"], wear2.inputs["Value"])
+    ao = n.new("ShaderNodeAmbientOcclusion"); ao.only_local = True; ao.inputs["Distance"].default_value = 0.006
+    col = n.new("ShaderNodeMix"); col.data_type = "RGBA"
+    _sock(col.inputs, "A", "RGBA").default_value = base + (1,)
+    _sock(col.inputs, "B", "RGBA").default_value = edge + (1,)
+    l.new(wear2.outputs["Result"], col.inputs["Factor"])
+    dirt = n.new("ShaderNodeMix"); dirt.data_type = "RGBA"
+    _sock(dirt.inputs, "A", "RGBA").default_value = (0.006, 0.006, 0.006, 1)
+    l.new(_sock(col.outputs, "Result", "RGBA"), _sock(dirt.inputs, "B", "RGBA"))
+    l.new(ao.outputs["AO"], dirt.inputs["Factor"])
+    l.new(_sock(dirt.outputs, "Result", "RGBA"), b.inputs["Base Color"])
+    r = n.new("ShaderNodeMapRange")
+    r.inputs["To Min"].default_value, r.inputs["To Max"].default_value = rough
+    l.new(nz.outputs["Fac"], r.inputs["Value"])
+    r2 = n.new("ShaderNodeMath"); r2.operation = "SUBTRACT"; r2.use_clamp = True
+    l.new(r.outputs["Result"], r2.inputs[0]); l.new(wear2.outputs["Result"], r2.inputs[1])
+    r3 = n.new("ShaderNodeMath"); r3.operation = "MAXIMUM"; r3.inputs[1].default_value = 0.22
+    l.new(r2.outputs["Value"], r3.inputs[0]); l.new(r3.outputs["Value"], b.inputs["Roughness"])
+    mp = n.new("ShaderNodeMapping"); mp.inputs["Scale"].default_value = (scratch_scale,) * 3
+    l.new(tc.outputs["Object"], mp.inputs["Vector"])
+    wv = n.new("ShaderNodeTexWave"); wv.inputs["Scale"].default_value = 3.0; wv.inputs["Distortion"].default_value = 16
+    wv.inputs["Detail"].default_value = 6; l.new(mp.outputs["Vector"], wv.inputs["Vector"])
+    cr = n.new("ShaderNodeMapRange"); cr.inputs["From Min"].default_value = 0.93; cr.inputs["From Max"].default_value = 0.98
+    l.new(wv.outputs["Fac"], cr.inputs["Value"])
+    bump1 = n.new("ShaderNodeBump"); bump1.inputs["Strength"].default_value = 0.25; bump1.inputs["Distance"].default_value = 0.0003
+    l.new(cr.outputs["Result"], bump1.inputs["Height"])
+    bump2 = n.new("ShaderNodeBump"); bump2.inputs["Strength"].default_value = 0.08; bump2.inputs["Distance"].default_value = 0.0002
+    l.new(nz.outputs["Fac"], bump2.inputs["Height"]); l.new(bump1.outputs["Normal"], bump2.inputs["Normal"])
+    l.new(bump2.outputs["Normal"], b.inputs["Normal"])
+    return m
+
+
 def track_to(obj, target):
     c = obj.constraints.get("TRACK") or obj.constraints.new("TRACK_TO")
     c.name = "TRACK"
