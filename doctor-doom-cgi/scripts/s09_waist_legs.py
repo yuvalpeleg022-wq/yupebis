@@ -37,6 +37,26 @@ def bvh(objs):
         t = bmesh.new(); t.from_mesh(m); t.transform(o.matrix_world)
         tm = bpy.data.meshes.new("_tmp"); t.to_mesh(tm); t.free(); b.from_mesh(tm); bpy.data.meshes.remove(tm); e.to_mesh_clear()
     tr = BVHTree.FromBMesh(b); b.free(); return tr
+# ---- boot toe box: remove the individual toe shapes (smooth, then clearance over the foot skin)
+body = bpy.data.objects["DOOM_body"]
+fb = bmesh.new(); fb.from_mesh(body.data); fb.faces.ensure_lookup_table()
+bmesh.ops.delete(fb, geom=[f for f in fb.faces if f.calc_center_median().z > 0.16], context="FACES")
+foot_tree = BVHTree.FromBMesh(fb); fb.free()
+bb = bmesh.new(); bb.from_mesh(boots.data)
+for s_, sx in (("l", 1), ("r", -1)):
+    ball = Vector(J[s_ + "-foot-1"])
+    toe = [v for v in bb.verts if v.co.x * sx > 0 and v.co.y < ball.y + 0.03 and v.co.z < 0.075]
+    for _ in range(30):
+        bmesh.ops.smooth_vert(bb, verts=toe, factor=0.6, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    for v in toe:
+        loc, nrm, idx, d = foot_tree.find_nearest(v.co, 0.05)
+        if loc is not None and (v.co - loc).dot(nrm) < 0.006:
+            v.co = loc + nrm * 0.006
+    for _ in range(3):
+        bmesh.ops.smooth_vert(bb, verts=toe, factor=0.3, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+bb.to_mesh(boots.data); bb.free(); boots.data.update()
+print("BOOT toe boxes smoothed")
+dg = bpy.context.evaluated_depsgraph_get()
 TREE = bvh([suit, boots])
 def rad(origin, d, fb=0.07):
     h = TREE.ray_cast(origin, d, 0.5)
@@ -172,12 +192,17 @@ for s, S_ in (("l", "L"), ("r", "R")):
     for k, (t0, t1, off) in enumerate(((0.18, 0.40, 0.016), (0.34, 0.56, 0.013), (0.50, 0.72, 0.010), (0.66, 0.90, 0.007))):
         NT, NP = 10, 24
         ts = np.linspace(t0, t1, NT); ps = np.radians(np.linspace(-78, 78, NP))
-        R = np.zeros((NT, NP)); D = {}
+        R = np.full((NT, NP), np.nan); D = {}
         for jj, t in enumerate(ts):
-            c0 = Vector((A.x, A.y, 0.035)) + ft * (t * Lf)
+            c0 = Vector((A.x, A.y, 0.028)) + ft * (t * Lf)
             for ii, ph in enumerate(ps):
                 d = (up * math.cos(ph) + side * math.sin(ph)).normalized()
-                R[jj, ii] = rad(c0, d, 0.05); D[jj, ii] = (c0, d)
+                h = TREE.ray_cast(c0, d, 0.12)
+                if h[0] is not None: R[jj, ii] = h[3]
+                D[jj, ii] = (c0, d)
+            row = R[jj]
+            if np.isnan(row).all(): R[jj] = np.nanmean(R[:jj]) if jj else 0.03
+            else: R[jj, np.isnan(row)] = np.nanmin(row)
         R = gaussian_filter(R, 1.2) + off
         P = np.zeros((NT, NP, 3))
         for jj in range(NT):
@@ -188,6 +213,34 @@ for s, S_ in (("l", "L"), ("r", "R")):
         orient_out(sb, Vector((A.x, A.y, 0.035)), Vector((A.x, A.y, 0.035)) + ft)
         hard_surface(sb, 0.0028)
         bone_parent(sb, ("DEF-foot." if k < 3 else "DEF-toe.") + S_); built.append(sb)
+
+# toe caps (front dome over the boot toe box)
+for s, S_ in (("l", "L"), ("r", "R")):
+    A, T2 = Vector(J[s + "-ankle"]), Vector(J[s + "-foot-2"])
+    ft = (T2 - A); ft.z = 0; ft.normalize()
+    c0 = Vector((T2.x, T2.y + 0.035, 0.028))
+    NT, NP = 12, 26
+    R = np.full((NT, NP), np.nan); D = {}
+    for jj, el in enumerate(np.radians(np.linspace(0, 80, NT))):
+        for ii, az in enumerate(np.radians(np.linspace(-80, 80, NP))):
+            side = ft.cross(Vector((0, 0, 1))).normalized()
+            d = (ft * math.cos(el) * math.cos(az) + side * math.cos(el) * math.sin(az) + Vector((0, 0, 1)) * math.sin(el)).normalized()
+            h = TREE.ray_cast(c0, d, 0.12)
+            if h[0] is not None: R[jj, ii] = h[3]
+            D[jj, ii] = d
+    R[np.isnan(R)] = np.nanmin(R)
+    R = gaussian_filter(R, 1.0) + 0.006
+    P = np.zeros((NT, NP, 3))
+    for jj in range(NT):
+        for ii in range(NP):
+            P[jj, ii] = c0 + D[jj, ii] * R[jj, ii]
+    tc = grid_object("DOOM_toecap_" + S_, P); orient_out(tc, c0 - ft * 0.1, c0)
+    bm_ = bmesh.new(); bm_.from_mesh(tc.data); bm_.normal_update()
+    ctr = c0 - ft * 0.02
+    if sum((f.calc_center_median() - ctr).dot(f.normal) for f in bm_.faces) < 0:
+        bmesh.ops.reverse_faces(bm_, faces=bm_.faces[:])
+    bm_.to_mesh(tc.data); bm_.free()
+    hard_surface(tc, 0.0028); bone_parent(tc, "DEF-toe." + S_); built.append(tc)
 
 for ob in built:
     r = L.mesh_report(ob); print("PIECE %-26s verts=%6d dims=%s" % (ob.name, r["verts"], r["dims_m"]))
