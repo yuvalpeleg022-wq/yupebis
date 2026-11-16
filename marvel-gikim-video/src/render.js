@@ -28,7 +28,8 @@ const browser = await chromium.launch({ args: ['--allow-file-access-from-files',
 const t0 = Date.now();
 let done = 0;
 async function worker(w) {
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: scale });
+  const [VW, VH] = (process.env.VIEW || '1080x1920').split('x').map(Number);
+  const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: scale });
   page.on('pageerror', e => console.error('pageerror', e.message));
   page.on('console', m => { if (m.type() === 'error') console.error('console', m.text()); });
   await page.goto(url);
