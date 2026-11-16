@@ -1,0 +1,43 @@
+{
+ "version": "cinema",
+ "music": "676",
+ "music_start": 13.075,
+ "tempo": 144.23076923076923,
+ "key_hit_beat_error_ms": {
+  "1.03": 14,
+  "16.33": 3,
+  "22.47": 71,
+  "28.75": 1,
+  "42.95": 132,
+  "62.31": 46,
+  "65.21": 45,
+  "71.5": 138,
+  "77.57": 0
+ },
+ "cues": 94,
+ "sfx_used": {
+  "tick/fs721514.ogg": 7,
+  "transition/fs-683096-woosh.ogg": 10,
+  "whoosh/fs830856.ogg": 11,
+  "impact/kenney-impact-impactsoft-heavy-000.ogg": 8,
+  "whoosh/fs-683101-quick-woosh.ogg": 2,
+  "transition/fs-786514-swoosh-v2.ogg": 1,
+  "whoosh/fs393811.ogg": 1,
+  "impact/kenney-impact-impactsoft-heavy-001.ogg": 1,
+  "riser/fs867126.ogg": 1,
+  "impact/fs-347561-micheal-bay-hit.ogg": 4,
+  "impact/kenney-sci-lowfrequency-explosion-000.ogg": 4,
+  "impact/kenney-impact-impactpunch-heavy-000.ogg": 3,
+  "impact/fs-222517-dramatic-hit.ogg": 4,
+  "tick/fs384187.ogg": 20,
+  "impact/fs-177242-cinematic-impact.ogg": 2,
+  "riser/fs-464250-echo-chromatic-riser-wav.ogg": 1,
+  "ding/kenney-interface-confirmation-002.ogg": 1,
+  "impact/kenney-impact-impactpunch-heavy-001.ogg": 6,
+  "impact/fs524817.ogg": 1,
+  "riser/fs-396160-scary-hits-risers-002.ogg": 1,
+  "riser/fs-685256-riser-sound-effect-short-wav.ogg": 1,
+  "pop/kenney-interface-drop-001.ogg": 3,
+  "ding/fs-349504-triangle-open-04.ogg": 1
+ }
+}
