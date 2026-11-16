@@ -4,7 +4,7 @@ frames, out = sys.argv[1], sys.argv[2]
 TARGET_I, TARGET_TP = -14.0, -1.5
 run = lambda c: subprocess.run(c, capture_output=True, text=True)
 silent = out.replace(".mp4", "_silent.mp4")
-r = run(["ffmpeg", "-y", "-v", "error", "-framerate", "30", "-i", f"{frames}/%05d.jpg", "-c:v", "libx264", "-preset", "slow", "-crf", "17",
+r = run(["ffmpeg", "-y", "-v", "error", "-framerate", "30", "-i", f"{frames}/%05d.jpg", "-c:v", "libx264", "-preset", "slow", "-crf", "19", "-maxrate", "7M", "-bufsize", "14M", "-tune", "grain",
          "-pix_fmt", "yuv420p", "-profile:v", "high", "-movflags", "+faststart", silent])
 assert r.returncode == 0, r.stderr
 def measure(p, mono=False):
