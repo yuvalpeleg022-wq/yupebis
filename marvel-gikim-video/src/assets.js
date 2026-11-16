@@ -118,5 +118,39 @@ window.A = {
   "thor_0": "../assets/images/cut/thor_0.png",
   "thor_1": "../assets/images/cut/thor_1.png",
   "wanda_0": "../assets/images/cut/wanda_0.png"
- }
+ },
+ "stock": {
+  "analytics_41278": "../assets/images/stock/analytics_41278.jpg",
+  "analytics_47006": "../assets/images/stock/analytics_47006.jpg",
+  "analytics_47796": "../assets/images/stock/analytics_47796.jpg",
+  "celebration_4064": "../assets/images/stock/celebration_4064.jpg",
+  "chess_49723": "../assets/images/stock/chess_49723.jpg",
+  "cinema_25478": "../assets/images/stock/cinema_25478.jpg",
+  "cinema_2860": "../assets/images/stock/cinema_2860.jpg",
+  "cinema_49326": "../assets/images/stock/cinema_49326.jpg",
+  "clock_28886": "../assets/images/stock/clock_28886.jpg",
+  "concert_14084": "../assets/images/stock/concert_14084.jpg",
+  "concert_48507": "../assets/images/stock/concert_48507.jpg",
+  "crowd_4401": "../assets/images/stock/crowd_4401.jpg",
+  "filming_46353": "../assets/images/stock/filming_46353.jpg",
+  "gold_19215": "../assets/images/stock/gold_19215.jpg",
+  "handshake_24047": "../assets/images/stock/handshake_24047.jpg",
+  "laptop_242": "../assets/images/stock/laptop_242.jpg",
+  "laptop_308": "../assets/images/stock/laptop_308.jpg",
+  "rocket_45229": "../assets/images/stock/rocket_45229.jpg",
+  "rocket_45232": "../assets/images/stock/rocket_45232.jpg",
+  "smartphone_41638": "../assets/images/stock/smartphone_41638.jpg",
+  "smartphone_4915": "../assets/images/stock/smartphone_4915.jpg",
+  "social-media_4915": "../assets/images/stock/social-media_4915.jpg",
+  "social-media_4919": "../assets/images/stock/social-media_4919.jpg",
+  "spotlight_1038": "../assets/images/stock/spotlight_1038.jpg",
+  "success_33546": "../assets/images/stock/success_33546.jpg",
+  "superhero_47120": "../assets/images/stock/superhero_47120.jpg"
+ },
+ "posts": [
+  "../assets/images/posts/post1.jpg",
+  "../assets/images/posts/post2.jpg",
+  "../assets/images/posts/post3.jpg",
+  "../assets/images/posts/post4.jpg"
+ ]
 };

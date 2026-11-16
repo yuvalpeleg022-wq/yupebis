@@ -34,5 +34,7 @@ if os.path.exists("cache/heroes/manifest.jsonl"):
         if os.path.exists(m["file"]): shutil.copyfile(m["file"], dst); heroes.setdefault(m["tag"], []).append("../" + dst)
 A["heroes"] = heroes
 A["cuts"] = {os.path.splitext(f)[0]: "../assets/images/cut/" + f for f in sorted(os.listdir("assets/images/cut"))} if os.path.isdir("assets/images/cut") else {}
+A["stock"] = {f[:-4]: "../assets/images/stock/" + f for f in sorted(os.listdir("assets/images/stock")) if f.endswith(".jpg")} if os.path.isdir("assets/images/stock") else {}
+A["posts"] = ["../assets/images/posts/" + f for f in sorted(os.listdir("assets/images/posts")) if f.endswith(".jpg")] if os.path.isdir("assets/images/posts") else []
 open("src/assets.js", "w").write("window.A = " + json.dumps(A, indent=1) + ";\n")
 print("have", len(have), "of", len(roles), "-> fallbacks for:", [r for r in roles if r not in have])

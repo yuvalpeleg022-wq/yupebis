@@ -44,6 +44,37 @@ Music (Mixkit Stock Music Free License — checked 16 Nov 2026: social media vid
 - Hype version: "Epical Drums 05" — Mixkit #680
 - Documentary version: "The Journey" — Mixkit #79
 - Green version: "Cyberpunk City" by Alejandro Magaña (A. M.) — Mixkit #140
+Spotlight-stage versions: brand green — "Coffee or Tea" (Mixkit #1168); blue — "Pop Track 06" (Mixkit #732); black & gold — "Silent Descent" (Mixkit #614); Marvel red — "Epical Drums 01" (Mixkit #676).
+
+Stock footage frames (Mixkit Stock Video Free License — checked 16 Nov 2026: social media and commercial use allowed, no attribution required; https://mixkit.co/license/#videoFree):
+- Analyzing the graphics of a video on YouTube — https://mixkit.co/free-stock-video/analyzing-the-graphics-of-a-video-on-youtube-41278/
+- Stock market exchange and forex prices background — https://mixkit.co/free-stock-video/stock-market-exchange-and-forex-prices-background-47006/
+- Stock subscription data in a real time screen  — https://mixkit.co/free-stock-video/stock-subscription-data-in-a-real-time-screen-47796/
+- Fireworks at night sky — https://mixkit.co/free-stock-video/fireworks-at-night-sky-4064/
+- Wooden chess arranged in side by side shot — https://mixkit.co/free-stock-video/wooden-chess-arranged-in-side-by-side-shot-49723/
+- Crowd watching a movie — https://mixkit.co/free-stock-video/crowd-watching-a-movie-25478/
+- Movie tape — https://mixkit.co/free-stock-video/movie-tape-2860/
+- Clapperboard entering a frame to set a scene — https://mixkit.co/free-stock-video/clapperboard-entering-a-frame-to-set-a-scene-49326/
+- Analog wall clock on a black background in a closed socket — https://mixkit.co/free-stock-video/analog-wall-clock-on-a-black-background-in-a-closed-28886/
+- Crowd jumping at the concert — https://mixkit.co/free-stock-video/crowd-jumping-at-the-concert-14084/
+- Slow motion moshing crowd at live music show — https://mixkit.co/free-stock-video/slow-motion-moshing-crowd-at-live-music-show-48507/
+- Crowds of people cross a street junction — https://mixkit.co/free-stock-video/crowds-of-people-cross-a-street-junction-4401/
+- Using a clapperboard to start filming a shot — https://mixkit.co/free-stock-video/using-a-clapperboard-to-start-filming-a-shot-46353/
+- Lines of particles waving in space — https://mixkit.co/free-stock-video/lines-of-particles-waving-in-space-19215/
+- Shaking hands and signing contract — https://mixkit.co/free-stock-video/shaking-hands-and-signing-contract-24047/
+- Typing on a laptop — https://mixkit.co/free-stock-video/typing-on-a-laptop-242/
+- Man working on his laptop — https://mixkit.co/free-stock-video/man-working-on-his-laptop-308/
+- Space shuttle taking off from Earth as it launches into the Atmosphere — https://mixkit.co/free-stock-video/space-shuttle-taking-off-from-earth-as-it-launches-into-45229/
+- Space shuttle launching into the sky in slow motion  — https://mixkit.co/free-stock-video/space-shuttle-launching-into-the-sky-in-slow-motion-45232/
+- Programmer using his cell phone while working at his desk — https://mixkit.co/free-stock-video/programmer-using-his-cell-phone-while-working-at-his-desk-41638/
+- Hands of a person typing on a cell phone — https://mixkit.co/free-stock-video/hands-of-a-person-typing-on-a-cell-phone-4915/
+- Hands of a person typing on a cell phone — https://mixkit.co/free-stock-video/hands-of-a-person-typing-on-a-cell-phone-4915/
+- Person on social media while serving coffee — https://mixkit.co/free-stock-video/person-on-social-media-while-serving-coffee-4919/
+- Dancer in the dark back view — https://mixkit.co/free-stock-video/dancer-in-the-dark-back-view-1038/
+- Man looking at the horizon raises his hands — https://mixkit.co/free-stock-video/man-looking-at-the-horizon-raises-his-hands-33546/
+- Child runs through a wheat field dreaming of flying — https://mixkit.co/free-stock-video/child-runs-through-a-wheat-field-dreaming-of-flying-47120/
+
+Example posts shown in the video: Marvel Gikim's own posts (supplied by the page owner).
 Sound effects: Freesound (CC0) and Kenney (CC0) sounds bundled with the sound-effects skill — no attribution required.
 Fonts: Karantina, Heebo, Bebas Neue — SIL Open Font License 1.1 (via Fontsource).
 Transcription: ivrit-ai/whisper-large-v3-turbo-ct2 (run locally).

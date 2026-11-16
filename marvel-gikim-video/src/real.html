@@ -12,6 +12,9 @@
 <link rel="stylesheet" href="../node_modules/@fontsource/heebo/800.css">
 <link rel="stylesheet" href="../node_modules/@fontsource/heebo/900.css">
 <link rel="stylesheet" href="../node_modules/@fontsource/bebas-neue/400.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/bellefair/400.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/frank-ruhl-libre/300.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/frank-ruhl-libre/500.css">
 <style>
   :root { --g: #2BE38A; --g-hi: #B6FFD6; --gold: #FFC35C;
     --metal: linear-gradient(180deg, #ffffff 0%, #eef6f2 34%, #a9bab2 49%, #5d6d66 55%, #cfdcd6 76%, #ffffff 100%); }
@@ -72,6 +75,21 @@
   .green .acc { color: #9DFFC9; }
   .green #caps .w { font: 800 66px 'Heebo'; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 22px rgba(0,0,0,.85); display: inline-block; }
   .green #caps .w.on { color: #9DFFC9; text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 16px rgba(43,227,138,.95); }
+
+  /* ---------- luxury (gold / emerald / noir / platinum) ---------- */
+  .lux { --m: linear-gradient(100deg, #7a5a1c 0%, #f3dc9a 18%, #c9a24a 32%, #fff6d8 46%, #b8892c 60%, #f7e7b4 76%, #8a6a22 100%); --acc: #e9c97a; }
+  .lux.emerald { --m: linear-gradient(100deg, #6d5418 0%, #f3dc9a 18%, #c9a24a 32%, #fff6d8 46%, #b8892c 60%, #f7e7b4 76%, #6d5418 100%); --acc: #8fe8bb; }
+  .lux.noir { --m: linear-gradient(100deg, #6b6b6b 0%, #f2f2f2 18%, #a8a8a8 32%, #ffffff 46%, #8c8c8c 60%, #e6e6e6 76%, #5e5e5e 100%); --acc: #d9c38f; }
+  .lux.platinum { --m: linear-gradient(100deg, #4e5d70 0%, #e9f1fa 18%, #9fb3c8 32%, #ffffff 46%, #7f93a8 60%, #dbe7f3 76%, #44536a 100%); --acc: #bcd6f2; }
+  .lux .md, .lux .lg, .lux .xl, .lux .num { background: var(--m); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lux .sm { font: 400 40px 'Bellefair', serif; letter-spacing: .5em; color: var(--acc); text-shadow: 0 2px 16px rgba(0,0,0,.9); }
+  .lux .sm::before, .lux .sm::after { content: ''; display: inline-block; width: 90px; height: 1px; vertical-align: middle; margin: 0 26px; background: linear-gradient(90deg, rgba(233,201,122,0), var(--acc), rgba(233,201,122,0)); }
+  .lux .md { font: 500 98px 'Frank Ruhl Libre', serif; line-height: 1.12; }
+  .lux .lg { font: 500 140px 'Frank Ruhl Libre', serif; line-height: 1.1; }
+  .lux .xl { font: 500 186px 'Frank Ruhl Libre', serif; line-height: 1.08; }
+  .lux .num { font: 400 330px 'Bellefair', serif; line-height: 1; }
+  .lux .acc:not(.sm) { background: var(--m); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lux #caps .w { font: 400 52px 'Frank Ruhl Libre', serif; letter-spacing: .02em; color: #f4efe6; text-shadow: 0 2px 4px rgba(0,0,0,.9), 0 0 26px rgba(0,0,0,.85); }
 </style>
 </head>
 <body>
