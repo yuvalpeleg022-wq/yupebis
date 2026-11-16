@@ -14,6 +14,8 @@ import bpy, bmesh
 from mathutils import Vector, Matrix
 import doomlib as L
 import clothlib as C
+QUICK = bool(os.environ.get("DOOM_QUICK"))
+def F(n): return 2 if QUICK else n
 
 L.open_version(9)
 sc = bpy.context.scene
@@ -32,13 +34,10 @@ for o in body_layers + armor:
     C.add_collider(o, 0.005, 4.0)
 print("COLLIDERS", len(body_layers + armor))
 
-wind = O.new("FX_wind", None) if False else bpy.data.objects.new("FX_wind", None)
-sc.collection.objects.link(wind)
-wind.empty_display_type = "SINGLE_ARROW"
-wind.location = (0.3, -2.0, 1.0)
+bpy.ops.object.effector_add(type="WIND", location=(0.3, -2.0, 1.0))
+wind = bpy.context.object; wind.name = "FX_wind"
 wind.rotation_euler = Vector((-0.5, 0.85, 0.12)).to_track_quat("Z", "Y").to_euler()
-bpy.context.view_layer.objects.active = wind
-wind.field.type = "WIND"; wind.field.strength = 2.5; wind.field.noise = 0.4; wind.field.flow = 0.0
+wind.field.strength = 2.5; wind.field.noise = 0.4; wind.field.flow = 0.0
 
 # ------------------------------------------------------------ tunic skirt
 dg = bpy.context.evaluated_depsgraph_get()
@@ -72,7 +71,7 @@ bpy.context.view_layer.objects.active = skirt_obs[0]
 bpy.ops.object.join()
 skirt = bpy.context.view_layer.objects.active; skirt.name = "DOOM_skirt"; skirt.data.name = "DOOM_skirt"
 print("SKIRT prepass", C.prepass(skirt, body_layers + armor, clear=0.010))
-C.simulate(skirt, lambda v: 1.0 if v.co.z > 1.005 else 0.0, 50, mass=0.6, bend=6.0, wind=0.25)
+C.simulate(skirt, lambda v: 1.0 if v.co.z > 1.005 else 0.0, F(50), mass=0.6, bend=6.0, wind=0.25)
 C.finish(skirt, 0.005, C.wool("MAT_tunic_skirt_wool", (0.004, 0.009, 0.005), (0.009, 0.018, 0.010), sheen=0.35))
 
 # ------------------------------------------------------------ floor (shadow catcher) + cape
@@ -86,13 +85,13 @@ vb.inputs["Sheen Tint"].default_value = (0.22, 0.42, 0.26, 1); vb.inputs["Sheen 
 vb.inputs["Roughness"].default_value = 0.78
 cape = C.build("DOOM_cape", C.cape_points(), (4.0, 6.0), CLOTH)
 print("CAPE prepass", C.prepass(cape, body_layers + armor + [skirt]))
-C.simulate(cape, lambda v: 1.0 if v.co.z > 1.505 else 0.0, 80, mass=1.2, bend=12.0, wind=0.6)
+C.simulate(cape, lambda v: 1.0 if v.co.z > 1.505 else 0.0, F(80), mass=1.2, bend=12.0, wind=0.6)
 C.finish(cape, 0.006, VELVET)
 
 # ------------------------------------------------------------ hood + mantle
 hood = C.build("DOOM_hood", C.hood_points(), (2.4, 2.0), CLOTH, cap_top_z=1.985)
 print("HOOD prepass", C.prepass(hood, body_layers + armor + [cape], clear=0.012))
-C.simulate(hood, C.hood_pin, 55, mass=0.5, bend=3.0, wind=0.15)
+C.simulate(hood, C.hood_pin, F(55), mass=0.5, bend=3.0, wind=0.15)
 C.finish(hood, 0.005, VELVET)
 
 # ------------------------------------------------------------ medallions as clasps over the mantle
@@ -137,4 +136,4 @@ for name, tgt, off, lens in (("chest", Vector((0, -0.12, 1.38)), (0.3, -1.05, 0.
     td.location = tgt; cd.location = tgt + Vector(off); cd.data.lens = lens
     shots.append(L.render_view("CAM_detail", "s10_%s.png" % name, res=(600, 600), samples=64))
 L.contact_sheet(shots, ["chest + clasps", "hood"], "s10_detail_sheet.jpg")
-L.save_version(10, "Stage 10 final cloth in HERO pose over armour: skirt, cape (wind), hood/mantle, medallion clasps")
+None if QUICK else L.save_version(10, "Stage 10 final cloth in HERO pose over armour: skirt, cape (wind), hood/mantle, medallion clasps")
