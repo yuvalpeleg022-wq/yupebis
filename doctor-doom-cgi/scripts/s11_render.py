@@ -1,0 +1,69 @@
+"""Stage 11 - cinematic lighting + final renders (Cycles, 1920x1080, transparent
+background as requested, floor = invisible shadow catcher).
+
+Lighting after the posters: dark green ambience, strong green-tinted rim lights
+carving the hood/cloak silhouette, soft warm key from above-front, a top spot on
+hood and shoulders, low cool fill.
+Frames: hero low-angle front 3/4, low back view (stair poster), mask close-up.
+Output: renders/final_*.png + work/doom_v012.blend
+"""
+import sys, os, math
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import bpy
+from mathutils import Vector
+import doomlib as L
+
+QUICK = bool(os.environ.get("DOOM_QUICK"))
+L.open_version(11)
+sc = bpy.context.scene
+O = bpy.data.objects
+for o in bpy.data.collections["LIGHTS"].objects:
+    o.hide_render = True
+for o in bpy.data.collections["REF"].objects:
+    o.hide_render = True
+lights = L.collection("LIGHTS_FINAL")
+tgt = bpy.data.objects.new("TGT_final", None); tgt.location = (0, 0.05, 1.25); lights.objects.link(tgt)
+tgt_head = bpy.data.objects.new("TGT_final_head", None); tgt_head.location = (0, -0.06, 1.72); lights.objects.link(tgt_head)
+
+def light(name, kind, loc, energy, color, size=1.0, target=tgt, spot=None):
+    ld = bpy.data.lights.new(name, kind); ld.energy = energy; ld.color = color
+    if kind == "AREA": ld.size = size
+    if kind == "SPOT": ld.spot_size = math.radians(spot or 35); ld.spot_blend = 0.6; ld.shadow_soft_size = 0.15
+    ob = bpy.data.objects.new(name, ld); ob.location = loc; lights.objects.link(ob); L.track_to(ob, target)
+    return ob
+light("LGT_key_warm", "AREA", (1.9, -2.6, 3.3), 220, (1.0, 0.9, 0.78), 1.6)
+light("LGT_rim_green_L", "AREA", (-2.3, 1.9, 2.7), 650, (0.55, 1.0, 0.62), 1.0, tgt_head)
+light("LGT_rim_green_R", "AREA", (2.4, 1.7, 2.1), 480, (0.72, 1.0, 0.78), 1.0)
+light("LGT_top_spot", "SPOT", (0.2, -0.6, 4.2), 900, (0.9, 1.0, 0.92), target=tgt_head, spot=30)
+light("LGT_fill_cool", "AREA", (0.0, -3.2, 0.7), 35, (0.7, 0.85, 1.0), 2.5)
+world = sc.world
+bg = world.node_tree.nodes["Background"]
+bg.inputs["Color"].default_value = (0.004, 0.009, 0.005, 1); bg.inputs["Strength"].default_value = 0.6
+
+sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"
+sc.cycles.samples = 16 if QUICK else 192
+sc.cycles.use_adaptive_sampling = True; sc.cycles.adaptive_threshold = 0.02
+sc.cycles.use_denoising = True
+sc.render.film_transparent = True
+sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Medium High Contrast"
+sc.render.image_settings.file_format = "PNG"; sc.render.image_settings.color_mode = "RGBA"
+
+cams = bpy.data.collections["CAMERAS"]
+def cam(name, loc, lens, target):
+    cd = bpy.data.cameras.new(name); cd.lens = lens
+    cd.dof.use_dof = True; cd.dof.focus_object = target; cd.dof.aperture_fstop = 4.0
+    ob = bpy.data.objects.new(name, cd); ob.location = loc; cams.objects.link(ob); L.track_to(ob, target)
+    return ob
+hero_tgt = bpy.data.objects.new("TGT_hero", None); hero_tgt.location = (0, 0.1, 1.05); cams.objects.link(hero_tgt)
+back_tgt = bpy.data.objects.new("TGT_back", None); back_tgt.location = (0, 0.5, 0.95); cams.objects.link(back_tgt)
+cam("CAM_final_hero", (1.25, -3.6, 0.55), 32, hero_tgt)
+cam("CAM_final_back", (0.35, 4.6, 0.45), 30, back_tgt)
+cam("CAM_final_mask", (0.32, -1.15, 1.62), 85, tgt_head)
+
+res = (960, 540) if QUICK else (1920, 1080)
+out = []
+for c, name in (("CAM_final_hero", "final_hero"), ("CAM_final_back", "final_back"), ("CAM_final_mask", "final_mask")):
+    out.append(L.render_view(c, ("quick_" if QUICK else "") + name + ".png", res=res, samples=sc.cycles.samples))
+print("FINAL", out)
+if not QUICK:
+    L.save_version(12, "Stage 11 cinematic lighting + final 1920x1080 renders (hero, back, mask)")
