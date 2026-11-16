@@ -268,7 +268,7 @@ scene(56.0, 66.4, r => {
   const base = el('div', 'abs', r); base.style.cssText += `width:420px;height:525px;border-radius:24px;border:4px dashed rgba(255,255,255,.35);background:rgba(0,0,0,.35)`; at(base, 1370, 450); tf(base, { o: 0 });
   const src = POSTS[1] || POSTS[0];
   const layers = [62, 85, 100].map(h => { const d = el('div', 'post', r); d.style.width = '420px'; d.style.boxShadow = 'none'; d.innerHTML = `<img src="${src}">`; d.style.clipPath = `inset(0 0 ${100 - h}% 0)`; at(d, 1370, 450); tf(d, { o: 0 }); return d; });
-  const rows = [['doc', 'פוסט בסיסי', 60.94], ['camera', 'לבחור תמונות', 61.92], ['layout', 'לעבוד עם טקסטים', 63.84], ['star', 'עיצוב שנראה טוב', 64.6]].map(([ic, tx, t0], i) => ({ e: row(r, ic, tx, 640, 220 + i * 165, 700), t0 }));
+  const rows = [['doc', 'פוסט בסיסי', 60.94], ['camera', 'לבחור תמונות', 61.92], ['layout', 'לעבוד עם טקסטים', 63.84], ['star', 'עיצוב שנראה טוב', 64.6]].map(([ic, tx, t0], i) => ({ e: row(r, ic, tx, 640, 220 + i * 160, 780, 52), t0 }));
   return t => {
     IN(pro, t, 56.9, 59.2, { from: 'pop' }); px.style.transform = `scale(${popScale(t, 57.5)})`;
     IN(base, t, 59.4, null, { from: 'depth' });

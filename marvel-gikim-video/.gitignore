@@ -14,3 +14,4 @@ source/
 .env
 *.env
 __pycache__/
+renders/final/marvel-gikim_lesson*.mp4
