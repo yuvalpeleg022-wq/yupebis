@@ -1,6 +1,6 @@
 CREDITS – Marvel Gikim course trailer
 
-Photos (Wikimedia Commons; cosplay and Comic-Con photography, used under their licences; modified: cropped, colour-graded):
+Photos (Wikimedia Commons; cosplay and Comic-Con photography, used under their licences; modified: cropped, colour-graded, subject cut-outs for parallax):
 - Cosplay of Loki at the 2021 New York Comic Con (51572392102) — Romer Jed Medina from Newark, NJ, United States — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Loki_at_the_2021_New_York_Comic_Con_(51572392102).jpg
 - Cosplay of Loki at the 2021 New York Comic Con (51573130986) — Romer Jed Medina from Newark, NJ, United States — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Loki_at_the_2021_New_York_Comic_Con_(51573130986).jpg
 - Cosplay of Loki at the 2021 New York Comic Con (51573131146) — Romer Jed Medina from Newark, NJ, United States — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Loki_at_the_2021_New_York_Comic_Con_(51573131146).jpg
@@ -25,12 +25,25 @@ Photos (Wikimedia Commons; cosplay and Comic-Con photography, used under their l
 - Cosplay of Captain America at GalaxyCon Richmond 2020 (49666814497) — Super Festivals from Ft. Lauderdale, USA — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Captain_America_at_GalaxyCon_Richmond_2020_(49666814497).jpg
 - Cosplay of Thor at Brussels Comic Con 2019 (47424176102) — Miguel Discart — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Thor_at_Brussels_Comic_Con_2019_(47424176102).jpg
 - Cosplay of Thor at Brussels Comic Con 2019 (32535143797) — Miguel Discart — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Thor_at_Brussels_Comic_Con_2019_(32535143797).jpg
+- Cosplay of the Black Panther ComicCon 2009 — danifesto — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_the_Black_Panther_ComicCon_2009.jpg
+- Black Panther cosplay — tinyfroglet — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:Black_Panther_cosplay.jpg
+- Cosplay of Thanos at GalaxyCon Richmond 2020 (49666517961) — Super Festivals from Ft. Lauderdale, USA — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Thanos_at_GalaxyCon_Richmond_2020_(49666517961).jpg
+- Cosplay of Thanos at GalaxyCon Richmond 2020 (49666476501) — Super Festivals from Ft. Lauderdale, USA — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Thanos_at_GalaxyCon_Richmond_2020_(49666476501).jpg
+- Cosplay of She-Hulk at Florida Supercon 2013 (9361243264) — Super Festivals from Ft. Lauderdale, USA — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_She-Hulk_at_Florida_Supercon_2013_(9361243264).jpg
+- Cosplay of Scarlet Witch at the 2021 New York Comic Con (51573810854) — Romer Jed Medina from Newark, NJ, United States — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Scarlet_Witch_at_the_2021_New_York_Comic_Con_(51573810854).jpg
+- C2E2 2013 - Avengers (8684301574) — Pat Loika — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:C2E2_2013_-_Avengers_(8684301574).jpg
+- SDCC 2012 - Avengers (7573674386) — Pat Loika — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:SDCC_2012_-_Avengers_(7573674386).jpg
+- Cosplay of Doctor Strange at Brussels Comic Con 2019 (47248018322) — Miguel Discart — CC BY-SA 2.0 — https://commons.wikimedia.org/wiki/File:Cosplay_of_Doctor_Strange_at_Brussels_Comic_Con_2019_(47248018322).jpg
 
 Footage (modified: cropped, colour-graded, slowed):
 - "The Aurora Named STEVE" — NASA Goddard Space Flight Center; the aurora shot inside it is credited 'courtesy of Notanee Bourassa' (third-party footage: NASA media guidelines note such material may carry its own rights) — https://images.nasa.gov/details/GSFC_20180314_Aurora_m12865_Steve
 - "Dust and Drama in the Orion Nebula" — NASA/JPL-Caltech, ESA (Herschel/Spitzer/WISE data) — NASA media guidelines — https://images.nasa.gov/details/JPL-20221122-SOLSYSf-0001-Orion Dust and Death
 
-Music: "Epical Drums 01" — Mixkit #676 — Mixkit Stock Music Free License (checked 16 Nov 2026: social media video posts and educational use allowed) — https://mixkit.co/free-stock-music/
+Music (Mixkit Stock Music Free License — checked 16 Nov 2026: social media video posts and educational use allowed; https://mixkit.co/license/#musicFree):
+- Cinema version: "Epical Drums 01" — Mixkit #676
+- Hype version: "Epical Drums 05" — Mixkit #680
+- Documentary version: "The Journey" — Mixkit #79
+- Green version: "Cyberpunk City" by Alejandro Magaña (A. M.) — Mixkit #140
 Sound effects: Freesound (CC0) and Kenney (CC0) sounds bundled with the sound-effects skill — no attribution required.
 Fonts: Karantina, Heebo, Bebas Neue — SIL Open Font License 1.1 (via Fontsource).
 Transcription: ivrit-ai/whisper-large-v3-turbo-ct2 (run locally).

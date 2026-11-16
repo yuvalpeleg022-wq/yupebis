@@ -20,7 +20,8 @@ const workers = +opt('workers', Math.min(3, Math.max(1, Math.ceil((to - from) * 
 mkdirSync(out, { recursive: true });
 
 const here = dirname(fileURLToPath(import.meta.url));
-const url = pathToFileURL(join(here, 'index.html')).href;
+const [pageFile, pageQuery] = (process.env.PAGE || 'index.html').split('?');
+const url = pathToFileURL(join(here, pageFile)).href + (pageQuery ? '?' + pageQuery : '');
 const n = Math.max(1, Math.round((to - from) * fps));
 
 const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--disable-web-security', '--font-render-hinting=none'] });
@@ -32,6 +33,7 @@ async function worker(w) {
   page.on('console', m => { if (m.type() === 'error') console.error('console', m.text()); });
   await page.goto(url);
   await page.evaluate(() => window.READY);
+  if (w === 0 && process.env.EDL_OUT) { const { writeFileSync } = await import('node:fs'); writeFileSync(process.env.EDL_OUT, JSON.stringify(await page.evaluate(() => window.EDL), null, 1)); }
   for (let i = w; i < n; i += workers) {
     const t = from + i / fps;
     await page.evaluate(t => window.renderFrame(t), t);

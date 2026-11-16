@@ -13,7 +13,7 @@ def measure(p, mono=False):
 gain = 0.0; hist = []
 for it in range(4):
     af = f"volume={gain:.2f}dB,alimiter=limit={10 ** ((TARGET_TP - .6) / 20):.4f}:attack=3:release=60:level=false,aresample=48000"
-    r = run(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", "audio/mix_raw.wav", "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-af", af,
+    r = run(["ffmpeg", "-y", "-v", "error", "-i", silent, "-i", sys.argv[3] if len(sys.argv) > 3 else "audio/mix_raw.wav", "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-af", af,
              "-c:a", "aac", "-b:a", "256k", "-ar", "48000", "-shortest", "-movflags", "+faststart", out])
     assert r.returncode == 0, r.stderr
     I, tp = measure(out); hist.append({"gain_db": round(gain, 2), "I": I, "TP": tp})
