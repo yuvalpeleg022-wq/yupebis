@@ -26,6 +26,8 @@ import doomlib as L
 L.open_version(6)
 sc = bpy.context.scene
 rig = bpy.data.objects["DOOM_rig"]
+rig.data.pose_position = "REST"   # armour is built and bound in the rest pose
+bpy.context.view_layer.update()
 suit = bpy.data.objects["DOOM_undersuit"]
 ARMOR = bpy.data.collections["ARMOR"]
 STEEL = L.aged_steel()
@@ -286,7 +288,9 @@ for ob in (plate, straps):
     ob.modifiers.move(ob.modifiers.find("Armature"), 0)
     ob.parent = rig
 
-# ------------------------------------------------------------ renders
+# ------------------------------------------------------------ renders (presentation pose)
+rig.data.pose_position = "POSE"
+bpy.context.view_layer.update()
 for o in bpy.data.collections["REF"].objects: o.hide_render = True
 cd = bpy.data.objects["CAM_detail"]; td = bpy.data.objects["TGT_detail"]
 td.location = (0, -0.12, 1.30)

@@ -181,6 +181,45 @@ def aged_steel(name="MAT_armor_aged_steel", base=(0.030, 0.031, 0.034), edge=(0.
     return m
 
 
+def hero_pose(rig):
+    """Presentation pose from the poster: arms hanging near the sides with a
+    slight elbow bend, fists, chin slightly down. Cloth is simulated in this pose."""
+    from mathutils import Matrix, Vector
+    pb = rig.pose.bones
+    rig.data.pose_position = "POSE"
+    for p in pb:
+        p.location = (0, 0, 0); p.rotation_quaternion = (1, 0, 0, 0); p.rotation_euler = (0, 0, 0); p.scale = (1, 1, 1)
+        if "IK_FK" in p.keys():
+            p["IK_FK"] = 1.0
+    def upd(): bpy.context.view_layer.update()
+    upd()
+    def rot_world(name, axis, deg):
+        upd()
+        M = rig.matrix_world @ pb[name].matrix
+        h = M.translation.copy()
+        R = Matrix.Translation(h) @ Matrix.Rotation(math.radians(deg), 4, Vector(axis).normalized()) @ Matrix.Translation(-h)
+        pb[name].matrix = rig.matrix_world.inverted() @ R @ M
+        upd()
+    def bend_toward(name, direction, deg):
+        upd()
+        M = rig.matrix_world @ pb[name].matrix
+        ydir = (M.to_3x3() @ Vector((0, 1, 0))).normalized()
+        rot_world(name, ydir.cross(Vector(direction)).normalized(), deg)
+    rot_world("upper_arm_fk.L", (0, 1, 0), 30); rot_world("upper_arm_fk.R", (0, 1, 0), -30)
+    bend_toward("forearm_fk.L", (0, -1, 0), 14); bend_toward("forearm_fk.R", (0, -1, 0), 14)
+    for side in ("L", "R"):
+        for f in ("f_index", "f_middle", "f_ring", "f_pinky"):
+            for i in ("01", "02", "03"):
+                n = "%s.%s.%s" % (f, i, side)
+                if n in pb:
+                    pb[n].rotation_mode = "XYZ"; pb[n].rotation_euler.x = math.radians(62)
+        for i in ("02", "03"):
+            n = "thumb.%s.%s" % (i, side)
+            if n in pb:
+                pb[n].rotation_mode = "XYZ"; pb[n].rotation_euler.x = math.radians(35)
+    upd()
+
+
 def track_to(obj, target):
     c = obj.constraints.get("TRACK") or obj.constraints.new("TRACK_TO")
     c.name = "TRACK"
