@@ -1,0 +1,5 @@
+work/
+refs/
+assets/*
+!assets/LICENSES.md
+__pycache__/
