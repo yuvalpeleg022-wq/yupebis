@@ -1,0 +1,16 @@
+# regenerable / heavy
+node_modules/
+.venv/
+cache/
+work/
+out/
+renders/previews/
+renders/final/*_silent.mp4
+audio/*.wav
+assets/footage/
+assets/music/
+# private: the user's raw voice recording
+source/
+.env
+*.env
+__pycache__/

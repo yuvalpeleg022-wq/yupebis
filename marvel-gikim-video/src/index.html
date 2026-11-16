@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<title>Marvel Gikim course trailer</title>
+<link rel="stylesheet" href="../node_modules/@fontsource/karantina/700.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/300.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/500.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/800.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/heebo/900.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/bebas-neue/400.css">
+<style>
+  :root {
+    --bg: #020604; --g: #2BE38A; --g-deep: #0E7A45; --g-hi: #B6FFD6; --g-dark: #05261A;
+    --metal: linear-gradient(180deg, #ffffff 0%, #eef6f2 34%, #a9bab2 49%, #5d6d66 55%, #cfdcd6 76%, #ffffff 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+  body { font-family: 'Heebo', sans-serif; color: #fff; direction: rtl; }
+  #stage { position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 50%; }
+  .scene { position: absolute; inset: 0; display: none; overflow: hidden; transform-origin: 50% 50%; }
+  .abs { position: absolute; left: 0; top: 0; transform-origin: 50% 50%; will-change: transform, opacity; }
+  .bg { position: absolute; inset: -60px; overflow: hidden; }
+  .bg img { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }
+  .tint { position: absolute; inset: 0; mix-blend-mode: color; background: #12a35d; }
+  .shade { position: absolute; inset: 0; background:
+      radial-gradient(ellipse 70% 55% at 50% 45%, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 100%),
+      linear-gradient(180deg, rgba(2,6,4,.75) 0%, rgba(2,6,4,0) 22%, rgba(2,6,4,0) 62%, rgba(2,6,4,.92) 100%); }
+  canvas.full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; }
+  #fx { mix-blend-mode: screen; }
+  #grain { mix-blend-mode: overlay; opacity: .09; image-rendering: pixelated; }
+  #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,.6) 100%); }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+  #dip { position: absolute; inset: 0; background: #000; opacity: 0; }
+  #bars { position: absolute; inset: 0; }
+
+  /* type */
+  .metal { background: var(--metal); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 14px rgba(43,227,138,.55)) drop-shadow(0 5px 0 rgba(0,0,0,.65)); }
+  .neon { color: #F2FFF8; text-shadow: 0 0 6px #2BE38A, 0 0 18px #2BE38A, 0 0 44px rgba(43,227,138,.7); }
+  .kar { font-family: 'Karantina', 'Heebo', sans-serif; font-weight: 700; line-height: .86; white-space: nowrap; }
+  .heb9 { font-family: 'Heebo', sans-serif; font-weight: 900; white-space: nowrap; }
+  .heb8 { font-family: 'Heebo', sans-serif; font-weight: 800; white-space: nowrap; }
+  .heb3 { font-family: 'Heebo', sans-serif; font-weight: 300; white-space: nowrap; }
+  .bebas { font-family: 'Bebas Neue', sans-serif; line-height: .85; white-space: nowrap; direction: ltr; unicode-bidi: isolate; }
+  .label { font-family: 'Heebo', sans-serif; font-weight: 500; letter-spacing: .32em; font-size: 30px; color: var(--g-hi); white-space: nowrap; }
+
+  /* captions */
+  #caps { position: absolute; left: 60px; right: 60px; top: 1330px; height: 200px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0 22px; direction: rtl; }
+  #caps .w { font-family: 'Heebo', sans-serif; font-weight: 800; font-size: 68px; line-height: 1.12; color: #fff; display: inline-block;
+     text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 22px rgba(0,0,0,.85); }
+  #caps .w.on { color: #9DFFC9; text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 16px rgba(43,227,138,.95), 0 0 36px rgba(43,227,138,.6); }
+
+  /* brand bug */
+  #bug { position: absolute; left: 50%; top: 240px; transform: translateX(-50%); display: flex; align-items: center; gap: 18px; direction: rtl; }
+  #bug img { width: 74px; height: 74px; border-radius: 50%; box-shadow: 0 0 18px rgba(43,227,138,.6); }
+  #bug .t { font-family: 'Heebo'; font-weight: 800; font-size: 30px; letter-spacing: .04em; }
+  #bug .s { font-family: 'Heebo'; font-weight: 300; font-size: 26px; color: var(--g-hi); }
+  #bug .sep { width: 2px; height: 34px; background: var(--g); box-shadow: 0 0 10px var(--g); }
+
+  /* components */
+  .card { position: absolute; width: 860px; height: 230px; border-radius: 30px; overflow: hidden; direction: rtl;
+    background: linear-gradient(90deg, rgba(5,38,26,.92), rgba(3,14,9,.92)); border: 2px solid rgba(43,227,138,.75);
+    box-shadow: 0 0 30px rgba(43,227,138,.35), inset 0 0 40px rgba(43,227,138,.12), 0 30px 60px rgba(0,0,0,.6); }
+  .card .ph { position: absolute; left: 0; top: 0; width: 330px; height: 100%; object-fit: cover; filter: grayscale(.2) contrast(1.1);
+     -webkit-mask-image: linear-gradient(90deg, #000 60%, transparent); }
+  .card .num { position: absolute; right: 36px; top: 30px; font-family: 'Bebas Neue'; font-size: 56px; color: var(--g); text-shadow: 0 0 14px var(--g); direction: ltr; }
+  .card .ttl { position: absolute; right: 36px; top: 88px; font-family: 'Karantina'; font-weight: 700; font-size: 130px; line-height: .9; }
+  .card .ic { position: absolute; left: 350px; top: 60px; width: 110px; height: 110px; color: var(--g); filter: drop-shadow(0 0 10px var(--g)); }
+  .row { position: absolute; height: 150px; display: flex; align-items: center; gap: 34px; direction: rtl; }
+  .chk { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--g); display: grid; place-items: center;
+     box-shadow: 0 0 24px rgba(43,227,138,.7), inset 0 0 20px rgba(43,227,138,.35); background: rgba(5,38,26,.85); }
+  .chk svg { width: 68px; height: 68px; color: #E9FFF3; }
+  .pill { position: absolute; padding: 18px 46px; border-radius: 999px; border: 3px solid var(--g); background: rgba(3,20,12,.88);
+     box-shadow: 0 0 26px rgba(43,227,138,.55), inset 0 0 18px rgba(43,227,138,.25); font-family: 'Heebo'; font-weight: 800; font-size: 54px; white-space: nowrap; direction: rtl; }
+  .btn { position: absolute; width: 200px; height: 200px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 50% 35%, #134d33, #04170e 70%);
+     border: 4px solid var(--g); box-shadow: 0 0 30px rgba(43,227,138,.6); color: #fff; }
+  .btn svg { width: 92px !important; height: 92px !important; }
+  .btn .cap { position: absolute; bottom: -78px; left: 50%; transform: translateX(-50%); font-family: 'Heebo'; font-weight: 800; font-size: 44px; white-space: nowrap; }
+  .chip { position: absolute; padding: 14px 34px; border-radius: 999px; background: rgba(5,38,26,.92); border: 2px solid rgba(43,227,138,.8);
+     font-family: 'Heebo'; font-weight: 800; font-size: 42px; white-space: nowrap; box-shadow: 0 0 18px rgba(43,227,138,.45); direction: rtl; }
+  .phone { position: absolute; width: 600px; height: 1180px; border-radius: 74px; background: #050a07; border: 10px solid #1d2a24;
+     box-shadow: 0 0 0 3px #3c4c44, 0 0 60px rgba(43,227,138,.45), 0 50px 90px rgba(0,0,0,.7); overflow: hidden; }
+  .feed { position: absolute; left: 0; top: 0; width: 100%; }
+  .post { width: 100%; padding: 0 0 26px; direction: rtl; }
+  .post .hd { height: 92px; display: flex; align-items: center; gap: 16px; padding: 0 22px; }
+  .post .hd img { width: 58px; height: 58px; border-radius: 50%; border: 2px solid var(--g); }
+  .post .hd span { font-weight: 800; font-size: 28px; }
+  .post .im { width: 100%; height: 640px; object-fit: cover; display: block; }
+  .post .ac { display: flex; gap: 26px; padding: 18px 24px 0; color: #fff; }
+  .post .ac svg { width: 50px !important; height: 50px !important; flex: none; }
+  .post .lk { font-weight: 800; font-size: 26px; padding: 10px 26px 0; color: #dfe; }
+  .tile { position: absolute; width: 300px; height: 300px; border-radius: 22px; overflow: hidden; border: 3px solid rgba(43,227,138,.85);
+     box-shadow: 0 0 24px rgba(43,227,138,.4), 0 20px 40px rgba(0,0,0,.6); background: #04130c; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.08) saturate(.9); }
+  .tile .wm { position: absolute; right: 12px; bottom: 12px; width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--g); object-fit: cover; }
+  .badge { position: absolute; width: 900px; height: 190px; border-radius: 34px; display: flex; align-items: center; gap: 36px; padding: 0 44px; direction: rtl;
+     background: linear-gradient(90deg, rgba(8,52,33,.95), rgba(3,16,10,.95)); border: 3px solid var(--g);
+     box-shadow: 0 0 34px rgba(43,227,138,.5), inset 0 0 30px rgba(43,227,138,.15); }
+  .badge .ic { width: 116px; height: 116px; flex: none; color: var(--g); filter: drop-shadow(0 0 10px var(--g)); }
+  .badge .tx { font-family: 'Heebo'; font-weight: 900; font-size: 72px; white-space: nowrap; }
+  .pillar { position: absolute; width: 860px; height: 150px; display: flex; align-items: center; gap: 30px; direction: rtl; padding: 0 36px;
+     border-right: 10px solid var(--g); background: linear-gradient(270deg, rgba(8,52,33,.92), rgba(3,16,10,.35)); box-shadow: 0 0 30px rgba(43,227,138,.25); }
+  .pillar .ic { width: 96px; height: 96px; color: var(--g); filter: drop-shadow(0 0 8px var(--g)); flex: none; }
+  .pillar .tx { font-family: 'Heebo'; font-weight: 900; font-size: 78px; white-space: nowrap; }
+  svg { overflow: visible; }
+  /* absolute components must anchor at the top-left (RTL would otherwise pin them to the right edge) */
+  .flip { position: absolute; inset: -40px; overflow: hidden; }
+  .flip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bub { position: absolute; left: 0; top: 0; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #7DFFB8; box-shadow: 0 0 20px rgba(43,227,138,.8); }
+  .card, .pill, .row, .btn, .chip, .phone, .badge, .pillar { left: 0; top: 0; transform-origin: 50% 50%; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<canvas id="fx" class="full" width="1080" height="1920"></canvas>
+<div id="bug"><img src="../assets/images/logo_circle.png"><span class="t metal">מארוול גיקים</span><span class="sep"></span><span class="s">הקורס</span></div>
+<div id="caps"></div>
+<canvas id="bars" class="full" width="1080" height="1920"></canvas>
+<div id="vignette"></div>
+<canvas id="grain" class="full" width="540" height="960"></canvas>
+<div id="flash"></div>
+<div id="dip"></div>
+<script src="captions.js"></script>
+<script src="assets.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
