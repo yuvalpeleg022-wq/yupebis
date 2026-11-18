@@ -1,0 +1,16 @@
+{
+  "name": "photopea-tools",
+  "owner": { "name": "yupebis" },
+  "plugins": [
+    {
+      "name": "photopea-as-code",
+      "description": "Design images programmatically with Photopea via MCP.",
+      "source": { "source": "github", "repo": "mohamed-amine-ben-mallessa/photopea-as-code" }
+    },
+    {
+      "name": "social-post-factory",
+      "description": "Generate branded social posts (square, story, banner) with Photopea.",
+      "source": { "source": "github", "repo": "mohamed-amine-ben-mallessa/social-post-factory" }
+    }
+  ]
+}
