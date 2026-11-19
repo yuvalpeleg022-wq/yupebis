@@ -3,8 +3,9 @@
 > **Beyond the ordinary.** A portfolio-grade, interactive 3D website for **AERONIX AIRWAYS**, a *fictional* premium airline.
 > No real flights, services, schedules, prices or payments exist. All aircraft and route data is illustrative.
 
-Real-time WebGL throughout: a cinematic hero, a scroll-directed flight sequence, a dedicated aircraft viewer and an
-interactive globe — all rendered live with Three.js / React Three Fiber. Nothing is a pre-rendered video.
+Real-time WebGL on every page: a cinematic hero and scroll-directed flight (Home), an interactive globe (Destinations),
+a 3D turntable plus full aircraft viewer (Fleet), a procedural 3D cabin interior that follows the scroll (Experience) and
+ambient 3D flight scenes (About, Booking) — all rendered live with Three.js / React Three Fiber. Nothing is a pre-rendered video.
 
 ---
 
@@ -38,6 +39,7 @@ npm run dev          # http://localhost:5173
 npm run typecheck    # tsc -b (strict)
 npm run build        # type-check + production build → dist/
 npm run preview      # serve dist/ on http://localhost:4173
+npm run build:portable  # relative paths + hash routing → dist-portable/ (for hosts without SPA rewrites)
 ```
 
 Useful URL flags for testing: `?quality=low|medium|high` forces a quality tier, `?nowebgl` forces the no-WebGL fallback.
@@ -77,6 +79,9 @@ src/
     CloudEnvironment.tsx       instanced clouds, shader cloud-sea, light rays
     SkyDome.tsx, SceneLighting.tsx, environmentConfig.ts, shaders.ts
     EarthGlobe.tsx, FlightRoutes.tsx
+    CabinScene.tsx             procedural cabin (First suites, Business pods, instanced Economy rows)
+    FleetShowcase.tsx          3D turntable for the fleet page
+    AmbientFlightScene.tsx     lazily-loaded ambient flight for About / Booking (pauses off-screen)
   components/
     navigation/ layout/ ui/ booking/ destinations/ fleet/ viewer/ fallback/
   pages/        Home, Destinations, Fleet, Experience, Booking, About, NotFound
@@ -119,8 +124,8 @@ See **ASSET_REQUIREMENTS.md** for full specifications. In short:
 - The aircraft is **procedural** today (honestly labelled as such in the viewer). To use a production model, drop a GLB
   into `public/models/` and set `AIRCRAFT_MODEL.url` in `src/three/aircraft/aircraftConfig.ts`. Draco and KTX2/Basis
   decoders are self-hosted in `public/decoders/` and wired into the loader.
-- Destination and cabin imagery is procedural placeholder artwork, clearly labelled. Add licensed photos to
-  `public/images/…` and set `image` in `src/data/destinations.ts` (cards switch automatically).
+- Destination, cabin and About imagery is AI-generated (labelled on screen) and lives in `public/images/`. Replace a file
+  with licensed photography at the same path, or change `image` in `src/data/destinations.ts` / `src/pages/Experience.tsx`.
 - Earth textures live in `public/textures/earth/` (see licensing note).
 
 ## Deployment

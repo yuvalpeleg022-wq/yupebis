@@ -8,6 +8,7 @@ import { ButtonLink } from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
 import { CabinArtwork } from '../ui/CabinArtwork';
 import { AircraftProfile } from '../fleet/AircraftProfile';
+import { asset } from '../../utils/asset';
 
 export function HomeTeasers() {
   const navigate = useNavigate();
@@ -74,7 +75,11 @@ export function HomeTeasers() {
       <section className="relative overflow-hidden" aria-labelledby="home-exp">
         <div className="mx-auto grid grid-cols-1 max-w-[1600px] gap-10 px-5 pb-32 md:px-10 lg:grid-cols-2">
           <Reveal className="aspect-[4/3] overflow-hidden rounded-2xl border border-silver/10">
-            <CabinArtwork variant="first" alt="Placeholder illustration of the AERONIX First cabin with private suites and warm light" />
+            <CabinArtwork
+              variant="first"
+              image={asset('images/cabins/first.jpg')}
+              alt="A First Class private suite with a fully flat bed, navy leather and warm indirect light"
+            />
           </Reveal>
           <div className="flex flex-col justify-center">
             <SectionHeading eyebrow="The experience" title={<span id="home-exp">Your private sky.</span>}>

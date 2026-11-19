@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { ButtonLink } from '../components/ui/Button';
@@ -6,6 +7,10 @@ import { Reveal } from '../components/ui/Reveal';
 import { CityArtwork } from '../components/ui/CityArtwork';
 import { StaticAircraft } from '../components/fallback/StaticAircraft';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useWebGL } from '../hooks/useWebGL';
+import { asset } from '../utils/asset';
+
+const AmbientFlightScene = lazy(() => import('../three/AmbientFlightScene'));
 
 const PILLARS = [
   { title: 'Philosophy', body: 'Travel should restore, not exhaust. We design every moment — from booking to arrival — around calm, clarity and quiet confidence.' },
@@ -26,6 +31,7 @@ export default function About() {
     'The story, philosophy, mission and vision of AERONIX AIRWAYS — a fictional premium airline created as a digital portfolio project.',
     '/about',
   );
+  const webgl = useWebGL();
   return (
     <>
       <section className="relative overflow-hidden pb-20 pt-32 md:pt-40" aria-labelledby="about-title">
@@ -44,9 +50,16 @@ export default function About() {
       </section>
 
       <section className="mx-auto max-w-[1600px] px-5 md:px-10" aria-label="Brand imagery">
-        <Reveal className="overflow-hidden rounded-3xl border border-silver/10">
-          <StaticAircraft slice className="aspect-[21/9] h-auto w-full" />
-        </Reveal>
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-silver/10 sm:aspect-[21/9]">
+          {webgl ? (
+            <Suspense fallback={<div className="h-full w-full bg-gradient-to-b from-navy-900 to-aviation" />}>
+              <AmbientFlightScene shot="side" label="Real-time 3D view of an AERONIX wide-body cruising above the clouds" />
+            </Suspense>
+          ) : (
+            <StaticAircraft slice className="h-full w-full" />
+          )}
+          <span className="pointer-events-none absolute bottom-4 left-4 demo-badge">Real-time 3D</span>
+        </div>
       </section>
 
       <section className="mx-auto grid grid-cols-1 max-w-[1600px] gap-6 px-5 py-28 md:grid-cols-3 md:px-10" aria-label="Brand pillars">
@@ -66,7 +79,12 @@ export default function About() {
           <div>
             <SectionHeading eyebrow="Fictional history" title={<span id="history-title">The story so far.</span>} />
             <div className="mt-10 aspect-[4/3] overflow-hidden rounded-2xl border border-silver/10">
-              <CityArtwork seed="aeronix-hub" hue={214} alt="Illustrative artwork of a city skyline at dusk, representing the AERONIX home hub" />
+              <CityArtwork
+                seed="aeronix-hub"
+                hue={214}
+                image={asset('images/about/hub.jpg')}
+                alt="Aerial view of an airport at blue hour, runway lights glowing as a wide-body aircraft taxis"
+              />
             </div>
           </div>
           <ol className="relative border-l border-silver/15">

@@ -1,4 +1,5 @@
 import { memo, useId } from 'react';
+import { AiLabel } from './CityArtwork';
 
 type Variant = 'first' | 'business' | 'economy' | 'design';
 
@@ -15,7 +16,13 @@ const palettes: Record<Variant, { wall: string; seat: string; accent: string; li
  */
 export const CabinArtwork = memo(function CabinArtwork({ variant, alt, image }: { variant: Variant; alt: string; image?: string }) {
   const uid = useId().replace(/:/g, '');
-  if (image) return <img src={image} alt={alt} loading="lazy" className="h-full w-full object-cover" />;
+  if (image)
+    return (
+      <div className="relative h-full w-full">
+        <img src={image} alt={alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+        <AiLabel />
+      </div>
+    );
   const p = palettes[variant];
   const vx = 400;
   const vy = 230;

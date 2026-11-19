@@ -10,7 +10,7 @@ Environment: Linux container, headless Chromium (Playwright) with **SwiftShader 
 | 1 | Dependency install / peer compatibility | `npm install` | ✅ 0 peer conflicts, 0 vulnerabilities |
 | 2 | TypeScript (strict + `noUncheckedIndexedAccess`) | `tsc -b` | ✅ 0 errors |
 | 3 | Production build | `vite build` | ✅ succeeds (~1 s) |
-| 4 | Automated suite (`scripts/qa.mjs`) | Playwright, 51 checks | ✅ **51 / 51 passed** (log below) |
+| 4 | Automated suite (`scripts/qa.mjs`) | Playwright, 60 checks | ✅ **60 / 60 passed** (log below) |
 | 5 | Visual review of hero, sequences A–E, viewer views, globe, booking, mobile, fallback | Screenshots inspected manually during development | ✅ issues found were fixed (see §3) |
 | 6 | Netlify build script | `SITE_NAME=aeronix-airways bash netlify-build.sh` and `SITE_NAME=doom-site …` | ✅ aeronix builds & publishes `aeronix/dist`; existing doom/marvel branches unchanged |
 
@@ -20,7 +20,9 @@ wheel zoom/keyboard (arrow, G)/reset/Escape-close with canvas disposal; globe se
 for two cities; booking pre-selection, every validation rule, passenger limits, demo results and no-payment
 confirmation; horizontal-overflow check on all 6 content routes at 1920, 1440, 1024, 768, 390 and 360 px; mobile menu
 `aria-expanded` + Escape; no-WebGL mode (`--disable-webgl`) for home, destinations and booking; reduced motion;
-three mount/unmount cycles of the globe route (canvas removed, no context-loss errors).
+three mount/unmount cycles of the globe route (previous canvas disposed, no context-loss errors); 3D cabin on
+Experience (renders, follows scroll, 4 images load), Fleet 3D showcase (renders, tab switch), ambient 3D on About and
+Booking, and all 8 destination images loading.
 
 ### Automated log (final run)
 
@@ -72,12 +74,21 @@ three mount/unmount cycles of the globe route (canvas removed, no context-loss e
     PASS  no-WebGL: no console errors
     PASS  reduced motion: content visible immediately (no intro wait) — opacity=1
     PASS  reduced motion: no console errors
-    PASS  disposal cycle 1: canvas removed after leaving 3D route
-    PASS  disposal cycle 2: canvas removed after leaving 3D route
-    PASS  disposal cycle 3: canvas removed after leaving 3D route
+    PASS  disposal cycle 1: previous route's canvas disposed
+    PASS  disposal cycle 2: previous route's canvas disposed
+    PASS  disposal cycle 3: previous route's canvas disposed
     PASS  disposal: no context-loss / console errors across remounts
+    PASS  experience: 3D cabin canvas rendered
+    PASS  experience: 4 cabin images loaded — 4 loaded
+    PASS  experience: scrolling switches the 3D zone caption
+    PASS  fleet: 3D showcase canvas rendered
+    PASS  fleet: tab switches showcase aircraft
+    PASS  /about: ambient 3D canvas rendered
+    PASS  /booking: ambient 3D canvas rendered
+    PASS  destinations: 8 city images loaded — 8 loaded
+    PASS  new 3D pages: no console errors
     
-    51/51 checks passed
+    60/60 checks passed
 ```
 
 ## 2. Not executed / not verifiable here
@@ -134,7 +145,9 @@ three mount/unmount cycles of the globe route (canvas removed, no context-loss e
   a photoreal production asset. The GLB pipeline is ready (see ASSET_REQUIREMENTS.md); fan spin / gear / lights are not
   yet hooked up for GLB models.
 - Fleet types other than the AX-950 are shown with the shared wide-body model (AX-1000 gets four engines) and labelled as representative.
-- Destination and cabin images are procedural placeholder artwork (labelled).
+- Destination, cabin and About images are AI-generated (labelled on screen); confirm commercial-use terms or replace.
+- The 3D cabin is a stylised procedural concept (simple rounded forms), not a detailed interior model.
+- Fleet showcase and viewer use the shared wide-body model for every type (scaled; four engines for the AX-1000).
 - Earth texture provenance must be verified before commercial use.
 - Demo flight times are displayed without time-zone conversion (stated in the UI).
 - Canonical / OG URLs use the placeholder domain `aeronix.example`.

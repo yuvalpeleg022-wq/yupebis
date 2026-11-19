@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { ButtonLink } from '../components/ui/Button';
 import { DemoNotice } from '../components/ui/DemoNotice';
 import { CabinArtwork } from '../components/ui/CabinArtwork';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useWebGL } from '../hooks/useWebGL';
+import { asset } from '../utils/asset';
+
+const CabinScene = lazy(() => import('../three/CabinScene'));
 
 const CABINS = [
   {
@@ -15,7 +19,8 @@ const CABINS = [
     lead: 'Premium private seating experience.',
     body: 'Floor-to-ceiling privacy doors, a fully flat bed dressed in fine linen and a dining menu composed around the hour of your body clock — not the time zone below.',
     features: ['Private suite with sliding doors', 'Fully flat 2 m bed', 'Dine on demand', 'Arrival spa concept'],
-    alt: 'Placeholder illustration of a First Class suite with warm ambient light',
+    alt: 'A First Class private suite with a fully flat bed, navy leather and warm indirect light',
+    image: asset('images/cabins/first.jpg'),
   },
   {
     id: 'business',
@@ -25,7 +30,8 @@ const CABINS = [
     lead: 'Sophisticated business travel.',
     body: 'Direct aisle access from every studio, a generous work surface and lighting that shifts with the journey so you arrive focused and rested.',
     features: ['Direct aisle access', 'Lie-flat studio seat', 'Wireless charging', 'Circadian cabin lighting'],
-    alt: 'Placeholder illustration of a Business Class cabin with lie-flat studios',
+    alt: 'A Business Class cabin with lie-flat studio seats in a herringbone layout',
+    image: asset('images/cabins/business.jpg'),
   },
   {
     id: 'economy',
@@ -35,7 +41,8 @@ const CABINS = [
     lead: 'Comfort-focused travel.',
     body: 'Sculpted seats with more recline, adjustable headrests and a large personal screen — proof that good design belongs in every row.',
     features: ['Sculpted ergonomic seats', 'Adjustable headrests', '13" personal screen', 'Chef-designed menus'],
-    alt: 'Placeholder illustration of an Economy cabin with rows of ergonomic seats',
+    alt: 'An Economy cabin with rows of sculpted navy seats and personal screens',
+    image: asset('images/cabins/economy.jpg'),
   },
   {
     id: 'design',
@@ -45,7 +52,8 @@ const CABINS = [
     lead: 'An interior language of calm.',
     body: 'Brushed silver, deep navy textiles and champagne-gold details. Indirect light washes the ceiling while acoustic panels soften every sound.',
     features: ['Indirect ambient light', 'Acoustic damping concept', 'Natural, tactile materials', 'Champagne-gold detailing'],
-    alt: 'Placeholder illustration of the AERONIX cabin design with indirect lighting',
+    alt: 'Cabin detail: brushed silver armrest, navy textile with gold stitching and an oval window',
+    image: asset('images/cabins/design.jpg'),
   },
 ] as const;
 
@@ -55,6 +63,7 @@ export default function Experience() {
     'Discover the fictional AERONIX AIRWAYS cabin experience — First, Business and Economy Class concepts and the design language behind them.',
     '/experience',
   );
+  const webgl = useWebGL();
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLElement | null)[]>([]);
 
@@ -84,7 +93,7 @@ export default function Experience() {
           <div className="max-w-md lg:justify-self-end">
             <DemoNotice>
               Cabin products described here are design concepts for a fictional portfolio brand. No real services or
-              facilities are offered. Imagery shown is placeholder illustration pending photography.
+              facilities are offered. Interior images are AI-generated and the 3D cabin is a real-time concept model.
             </DemoNotice>
           </div>
         </div>
@@ -92,23 +101,24 @@ export default function Experience() {
 
       <section className="mx-auto max-w-[1600px] px-5 pb-32 md:px-10" aria-label="Cabins">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
-          {/* Sticky cinematic image stage (desktop) */}
-          <div className="sticky top-28 hidden h-[calc(100vh-9rem)] overflow-hidden rounded-3xl border border-silver/10 lg:block">
-            {CABINS.map((c, i) => (
-              <div
-                key={c.id}
-                aria-hidden={i !== active}
-                className={`absolute inset-0 transition-[opacity,transform] duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  i === active ? 'scale-100 opacity-100' : 'scale-[1.06] opacity-0'
-                }`}
-              >
-                <CabinArtwork variant={c.variant} alt={c.alt} />
+          {/* Sticky real-time 3D cabin (camera follows the section in view) */}
+          <div className="sticky top-[4.5rem] z-10 -mx-5 h-[38vh] md:-mx-10 overflow-hidden border-y border-silver/10 bg-navy-900 md:top-20 lg:top-28 lg:mx-0 lg:h-[calc(100vh-9rem)] lg:rounded-3xl lg:border">
+            {webgl ? (
+              <Suspense fallback={<div className="h-full w-full bg-gradient-to-b from-navy-900 to-aviation" />}>
+                <CabinScene zone={CABINS[active]?.id ?? 'first'} />
+              </Suspense>
+            ) : (
+              <CabinArtwork variant={CABINS[active]?.variant ?? 'first'} alt={CABINS[active]?.alt ?? ''} image={CABINS[active]?.image} />
+            )}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-navy-950/80 to-transparent p-5 pt-16">
+              <p className="eyebrow !text-[0.6rem]">
+                <span className="text-gold">3D concept</span> · {CABINS[active]?.eyebrow}
+              </p>
+              <div className="flex gap-2" aria-hidden="true">
+                {CABINS.map((c, i) => (
+                  <span key={c.id} className={`h-px transition-all duration-700 ${i === active ? 'w-10 bg-gold' : 'w-5 bg-silver/40'}`} />
+                ))}
               </div>
-            ))}
-            <div className="absolute bottom-6 left-6 flex gap-2" aria-hidden="true">
-              {CABINS.map((c, i) => (
-                <span key={c.id} className={`h-px transition-all duration-700 ${i === active ? 'w-10 bg-gold' : 'w-5 bg-silver/40'}`} />
-              ))}
             </div>
           </div>
 
@@ -121,11 +131,11 @@ export default function Experience() {
                 ref={(el) => {
                   refs.current[i] = el;
                 }}
-                className="flex min-h-[80vh] flex-col justify-center border-b border-silver/10 py-16 last:border-0"
+                className="flex min-h-[70vh] flex-col justify-center border-b border-silver/10 py-16 last:border-0"
                 aria-labelledby={`${c.id}-title`}
               >
-                <div className="mb-8 aspect-[4/3] overflow-hidden rounded-2xl border border-silver/10 lg:hidden">
-                  <CabinArtwork variant={c.variant} alt={c.alt} />
+                <div className="mb-8 aspect-[16/10] overflow-hidden rounded-2xl border border-silver/10">
+                  <CabinArtwork variant={c.variant} alt={c.alt} image={c.image} />
                 </div>
                 <p className="eyebrow flex items-center gap-3">
                   <span className="font-mono text-gold">0{i + 1}</span> {c.eyebrow}

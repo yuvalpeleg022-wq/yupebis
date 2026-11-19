@@ -12,8 +12,8 @@ What ships today, what is a placeholder, and the specification for production as
 | Sky, clouds, cloud-sea | Procedural shaders / instanced sprites | No downloads. Optional HDRI upgrade below. |
 | Reflections (environment) | Procedural `Lightformer` environment | Baked once at runtime; no HDR file. |
 | Earth textures | **Third-party files** in `public/textures/earth/` | See Earth section — licence must be verified before commercial use. |
-| Destination photography | **Placeholder** procedural SVG artwork | Labelled "Illustrative artwork" on every card. |
-| Cabin photography | **Placeholder** SVG illustrations | Labelled "Placeholder illustration". |
+| Destination imagery | **AI-generated** (3D AI Studio, Nano Banana 2.1), 1200×896 JPEG in `public/images/destinations/` | Labelled "AI-generated image" on every card. Procedural SVG artwork remains as fallback. |
+| Cabin imagery | **AI-generated** (same tool), `public/images/cabins/` + `public/images/about/hub.jpg` | Labelled "AI-generated image". Complemented by a real-time procedural 3D cabin (`three/CabinScene.tsx`). |
 | Fleet type models (AX-780, AX-1000, AX-320) | **Not created** | Viewer shows the shared wide-body (four-engine variant for AX-1000) and states that it is representative. |
 
 ## 1. Aircraft model (highest priority)
@@ -61,9 +61,14 @@ Integration: `public/images/destinations/<id>.avif` → set `image` in `src/data
 
 First suite, Business studio, Economy cabin, cabin-design detail. Must be **original renders or licensed imagery that does not depict a real airline's product**. Integration: pass `image` to `<CabinArtwork>` in `src/pages/Experience.tsx`.
 
+## AI-generated images
+
+The 13 images were generated for this project with 3D AI Studio (Nano Banana 2.1) from text prompts (no source photos). They depict real cities but are synthetic — they must not be presented as photographs of real places or of a real airline cabin. Before commercial use, confirm 3D AI Studio's current terms for commercial use of generated output, or replace them with licensed photography to the spec below.
+
 ## Licensing checklist
 
 - [ ] Every file has a recorded source, author, licence and date.
 - [ ] No trademarks, logos or liveries of real airlines or manufacturers.
 - [ ] Attribution added to the About page / footer where the licence requires it.
 - [ ] Earth textures verified or replaced.
+- [ ] Commercial-use terms for the AI-generated images confirmed (or images replaced).

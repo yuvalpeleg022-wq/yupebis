@@ -12,6 +12,7 @@ import { useWebGL } from '../hooks/useWebGL';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 const AircraftViewer = lazy(() => import('../components/viewer/AircraftViewer'));
+const FleetShowcase = lazy(() => import('../three/FleetShowcase'));
 
 export default function Fleet() {
   useDocumentMeta(
@@ -21,6 +22,7 @@ export default function Fleet() {
   );
   const webgl = useWebGL();
   const [viewing, setViewing] = useState<FleetAircraft | null>(null);
+  const [showcase, setShowcase] = useState<FleetAircraft>(fleet[0]!);
 
   return (
     <>
@@ -37,6 +39,40 @@ export default function Fleet() {
               demonstration data and do not describe real aircraft.
             </DemoNotice>
           </div>
+        </div>
+      </section>
+
+      {/* Real-time 3D showcase */}
+      <section className="mx-auto max-w-[1600px] px-5 pb-16 md:px-10" aria-label="3D fleet showcase">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-silver/10 bg-navy-900 sm:aspect-[21/9]">
+          {webgl ? (
+            <Suspense fallback={<div className="h-full w-full bg-gradient-to-b from-navy-900 to-aviation" />}>
+              <FleetShowcase aircraft={showcase} />
+            </Suspense>
+          ) : (
+            <StaticAircraft engines={showcase.profile.engines} className="h-full w-full" />
+          )}
+          <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-navy-950/80 to-transparent p-5 pb-16 md:p-8">
+            <p className="eyebrow">{showcase.category}</p>
+            <p className="display mt-2 text-2xl md:text-4xl">{showcase.name}</p>
+          </div>
+          <span className="pointer-events-none absolute bottom-4 right-4 demo-badge">Real-time 3D · representative model</span>
+        </div>
+        <div role="tablist" aria-label="Choose an aircraft" className="scrollbar-none mt-4 flex gap-2 overflow-x-auto">
+          {fleet.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              role="tab"
+              aria-selected={a.id === showcase.id}
+              onClick={() => setShowcase(a)}
+              className={`shrink-0 rounded-full border px-4 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.2em] transition ${
+                a.id === showcase.id ? 'border-gold bg-gold text-navy-950' : 'border-silver/25 text-silver hover:border-silver/60 hover:text-cloud'
+              }`}
+            >
+              {a.name.replace('Aeronix ', '')}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -84,11 +120,6 @@ export default function Fleet() {
             </Reveal>
           ))}
         </div>
-        {!webgl ? (
-          <div className="mt-12 overflow-hidden rounded-3xl border border-silver/10">
-            <StaticAircraft className="h-auto w-full" />
-          </div>
-        ) : null}
       </section>
 
       <Suspense fallback={null}>

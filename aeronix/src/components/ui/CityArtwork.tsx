@@ -68,7 +68,12 @@ export const CityArtwork = memo(function CityArtwork({ seed, hue, alt, image, cl
   }, [seed]);
 
   if (image) {
-    return <img src={image} alt={alt} loading="lazy" decoding="async" className={`h-full w-full object-cover ${className}`} />;
+    return (
+      <div className={`relative h-full w-full ${className}`}>
+        <img src={image} alt={alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+        {showLabel ? <AiLabel /> : null}
+      </div>
+    );
   }
 
   const sky1 = `hsl(${hue} 55% 9%)`;
@@ -141,3 +146,12 @@ export const CityArtwork = memo(function CityArtwork({ seed, hue, alt, image, cl
     </div>
   );
 });
+
+/** Small, honest provenance label for generated imagery. */
+export function AiLabel() {
+  return (
+    <span className="absolute right-3 top-3 rounded-full bg-navy-950/60 px-2 py-0.5 text-[0.5rem] uppercase tracking-[0.2em] text-silver/80 backdrop-blur">
+      AI-generated image
+    </span>
+  );
+}

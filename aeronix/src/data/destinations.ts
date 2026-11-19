@@ -1,4 +1,5 @@
 import type { Destination } from '../types';
+import { asset } from '../utils/asset';
 
 /**
  * Demonstration destinations for the fictional AERONIX AIRWAYS network.
@@ -18,7 +19,8 @@ export const destinations: Destination[] = [
       'Our home port. Royal parks at dawn, a skyline written in centuries, and an evening that always ends somewhere unexpected.',
     highlight: 'Fictional network hub',
     hue: 212,
-    imageAlt: 'Illustrative artwork of the London skyline at blue hour',
+    image: asset('images/destinations/london.jpg'),
+    imageAlt: 'London at blue hour: Tower Bridge and the City skyline reflected in the Thames',
     illustrativeHours: 0,
   },
   {
@@ -32,7 +34,8 @@ export const destinations: Destination[] = [
       'Wide boulevards, stone the colour of champagne and a quiet confidence that turns an afternoon into an occasion.',
     highlight: 'Art, cuisine, couture',
     hue: 32,
-    imageAlt: 'Illustrative artwork of Paris rooftops in warm evening light',
+    image: asset('images/destinations/paris.jpg'),
+    imageAlt: 'Paris rooftops at blue hour with the illuminated Eiffel Tower',
     illustrativeHours: 1.3,
   },
   {
@@ -46,7 +49,8 @@ export const destinations: Destination[] = [
       'A vertical city of light. Arrive in the morning, and by nightfall Manhattan will have rewritten your itinerary.',
     highlight: 'Skyline, culture, energy',
     hue: 222,
-    imageAlt: 'Illustrative artwork of the Manhattan skyline at night',
+    image: asset('images/destinations/new-york.jpg'),
+    imageAlt: 'The Manhattan skyline at night reflected across the water',
     illustrativeHours: 8,
   },
   {
@@ -60,7 +64,8 @@ export const destinations: Destination[] = [
       'Precision and poetry in equal measure — neon avenues, silent gardens and the most considered hospitality on earth.',
     highlight: 'Design, gastronomy, calm',
     hue: 338,
-    imageAlt: 'Illustrative artwork of Tokyo towers under a violet dusk',
+    image: asset('images/destinations/tokyo.jpg'),
+    imageAlt: 'Tokyo at dusk with Tokyo Tower and the silhouette of Mount Fuji',
     illustrativeHours: 13.5,
   },
   {
@@ -74,7 +79,8 @@ export const destinations: Destination[] = [
       'Two thousand years of ambition, softened by espresso, terracotta light and long Roman evenings.',
     highlight: 'History, piazzas, light',
     hue: 18,
-    imageAlt: 'Illustrative artwork of Roman domes at golden hour',
+    image: asset('images/destinations/rome.jpg'),
+    imageAlt: 'Roman rooftops at golden hour leading to the dome of St. Peter’s Basilica',
     illustrativeHours: 2.6,
   },
   {
@@ -88,7 +94,8 @@ export const destinations: Destination[] = [
       'A garden city of the future, where tropical greenery climbs glass towers and every hawker stall is a masterclass.',
     highlight: 'Gardens, skyline, flavour',
     hue: 168,
-    imageAlt: 'Illustrative artwork of the Singapore waterfront skyline',
+    image: asset('images/destinations/singapore.jpg'),
+    imageAlt: 'Singapore’s Marina Bay waterfront skyline at blue hour',
     illustrativeHours: 13,
   },
   {
@@ -102,7 +109,8 @@ export const destinations: Destination[] = [
       'Desert horizons meet record-breaking architecture. Effortless luxury, golden dunes and nights that shimmer.',
     highlight: 'Desert, architecture, luxury',
     hue: 40,
-    imageAlt: 'Illustrative artwork of the Dubai skyline rising from the desert',
+    image: asset('images/destinations/dubai.jpg'),
+    imageAlt: 'The Dubai skyline rising beyond desert dunes at dusk',
     illustrativeHours: 7,
   },
   {
@@ -116,7 +124,8 @@ export const destinations: Destination[] = [
       'Gilded temples, river light and an unforgettable street-food symphony in the city of angels.',
     highlight: 'Temples, river, street food',
     hue: 268,
-    imageAlt: 'Illustrative artwork of Bangkok temples along the river at dusk',
+    image: asset('images/destinations/bangkok.jpg'),
+    imageAlt: 'The spires of Wat Arun beside the Chao Phraya river at dusk',
     illustrativeHours: 11.5,
   },
 ];
