@@ -17,6 +17,11 @@ export function Layout({ children }: { children: ReactNode }) {
     <>
       <a
         href="#main"
+        onClick={(e) => {
+          // Move focus without touching the URL hash (safe with hash-based routing).
+          e.preventDefault();
+          document.getElementById('main')?.focus();
+        }}
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-cloud focus:px-4 focus:py-2 focus:text-navy-950"
       >
         Skip to content

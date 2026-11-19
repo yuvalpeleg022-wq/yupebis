@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import { QualityProvider } from './hooks/useQuality';
 import { Layout } from './components/layout/Layout';
 import { PageLoader } from './components/ui/PageLoader';
@@ -13,10 +13,13 @@ const Booking = lazy(() => import('./pages/Booking'));
 const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+// Hash routing for hosts without SPA rewrites (e.g. the portable preview build: VITE_ROUTER=hash).
+const Router = import.meta.env.VITE_ROUTER === 'hash' ? HashRouter : BrowserRouter;
+
 export default function App() {
   return (
     <QualityProvider>
-      <BrowserRouter>
+      <Router>
         <Layout>
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -30,7 +33,7 @@ export default function App() {
             </Routes>
           </Suspense>
         </Layout>
-      </BrowserRouter>
+      </Router>
     </QualityProvider>
   );
 }

@@ -81,7 +81,7 @@ interface Props {
   reducedMotion: boolean;
 }
 
-const BASE = '/textures/earth/';
+const BASE = `${import.meta.env.BASE_URL}textures/earth/`;
 
 /**
  * Interactive Earth: textured sphere (NASA-derived imagery, see ASSET_REQUIREMENTS.md),

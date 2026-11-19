@@ -15,6 +15,6 @@ export const AIRCRAFT_MODEL = {
   scale: 1,
   rotation: [0, -Math.PI / 2, 0] as [number, number, number],
   position: [0, 0, 0] as [number, number, number],
-  dracoPath: '/decoders/draco/',
-  ktx2Path: '/decoders/',
+  dracoPath: `${import.meta.env.BASE_URL}decoders/draco/`,
+  ktx2Path: `${import.meta.env.BASE_URL}decoders/`,
 };

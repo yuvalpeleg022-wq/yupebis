@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty",
     "preview": "vite preview",
+    "build:portable": "tsc -b && VITE_ROUTER=hash vite build --base ./ --outDir dist-portable",
     "qa": "node scripts/qa.mjs"
   },
   "dependencies": {
