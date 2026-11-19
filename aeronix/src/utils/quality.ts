@@ -20,7 +20,20 @@ export function detectTier(): DeviceTier {
   return 'high';
 }
 
+/** Optional `?dpr=1` override (e.g. for video capture or testing). */
+function dprOverride(): number | null {
+  if (typeof window === 'undefined') return null;
+  const v = Number(new URLSearchParams(window.location.search).get('dpr'));
+  return v > 0 && v <= 3 ? v : null;
+}
+
 export function qualityFor(tier: DeviceTier, reducedMotion: boolean): QualitySettings {
+  const q = baseQuality(tier, reducedMotion);
+  const forced = dprOverride();
+  return forced ? { ...q, dpr: [forced, forced] } : q;
+}
+
+function baseQuality(tier: DeviceTier, reducedMotion: boolean): QualitySettings {
   switch (tier) {
     case 'high':
       return {
