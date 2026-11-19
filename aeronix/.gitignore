@@ -1,0 +1,5 @@
+node_modules
+dist
+*.local
+.qa-screens
+dist-portable

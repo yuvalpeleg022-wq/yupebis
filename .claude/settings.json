@@ -1,0 +1,14 @@
+{
+  "enabledPlugins": {
+    "photopea-as-code@photopea-tools": true,
+    "social-post-factory@photopea-tools": true
+  },
+  "extraKnownMarketplaces": {
+    "photopea-tools": {
+      "source": {
+        "source": "directory",
+        "path": "./.claude/marketplace"
+      }
+    }
+  }
+}
