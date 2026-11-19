@@ -1,0 +1,61 @@
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import type { FlightOffer, FlightSearchQuery } from '../types';
+import { FlightSearchForm } from '../components/booking/FlightSearchForm';
+import { FlightResults } from '../components/booking/FlightResults';
+import { SectionHeading } from '../components/ui/SectionHeading';
+import { getFlightProvider } from '../services/bookingService';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
+
+export default function Booking() {
+  useDocumentMeta(
+    'Book a flight',
+    'Search fictional AERONIX AIRWAYS demonstration flights. Portfolio booking interface — no live availability or payments.',
+    '/booking',
+  );
+  const [params] = useSearchParams();
+  const [query, setQuery] = useState<FlightSearchQuery | null>(null);
+  const [results, setResults] = useState<FlightOffer[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const abort = useRef<AbortController | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => () => abort.current?.abort(), []);
+
+  const search = async (q: FlightSearchQuery) => {
+    abort.current?.abort();
+    const ctrl = new AbortController();
+    abort.current = ctrl;
+    setQuery(q);
+    setLoading(true);
+    setError(null);
+    setResults(null);
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try {
+      const r = await getFlightProvider().search(q, ctrl.signal);
+      setResults(r);
+    } catch (e) {
+      if ((e as Error).name !== 'AbortError') setError('The demonstration search could not be completed. Please try again.');
+    } finally {
+      if (abort.current === ctrl) setLoading(false);
+    }
+  };
+
+  return (
+    <section className="relative min-h-screen pb-32 pt-32 md:pt-40" aria-labelledby="booking-title">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(ellipse_at_30%_0%,#183A5A_0%,transparent_60%)]" aria-hidden="true" />
+      <div className="relative mx-auto max-w-[1200px] px-5 md:px-10">
+        <SectionHeading as="h1" eyebrow="Book a flight" title={<span id="booking-title">Your journey starts here.</span>}>
+          A fully interactive booking interface built on fictional data — designed to plug into a real airline booking API.
+        </SectionHeading>
+        <div className="mt-12">
+          <FlightSearchForm initialDestination={params.get('to') ?? undefined} loading={loading} onSearch={search} />
+        </div>
+        <div ref={resultsRef} className="scroll-mt-28">
+          <FlightResults query={query} results={results} loading={loading} error={error} />
+        </div>
+      </div>
+    </section>
+  );
+}
