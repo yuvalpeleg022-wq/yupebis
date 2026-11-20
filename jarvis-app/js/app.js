@@ -77,7 +77,10 @@ function card(kind, title, sub = '') {
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 600); }, 6000);
 }
 // links: a new tab/app when the browser allows it, otherwise navigate (in the installed app this opens the target app)
+// only web and dialer links: a javascript: or data: URL would run inside this page, where the API key lives
+const safeUrl = url => { try { return ['https:', 'http:', 'tel:'].includes(new URL(url).protocol); } catch { return false; } };
 function open(url, c) {
+  if (!safeUrl(url)) { toast('קישור לא בטוח נחסם', 'error'); return; }
   if (c) card(...c);
   setTimeout(() => {
     if (url.startsWith('tel:')) { location.href = url; return; }
