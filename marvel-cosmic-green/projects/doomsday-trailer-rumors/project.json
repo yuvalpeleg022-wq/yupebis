@@ -1,0 +1,163 @@
+{
+  "title": "Avengers: Doomsday — trailer rumors",
+  "preset": "preset.json",
+  "source_video": "/root/.claude/uploads/c42b35d8-45c2-51a6-93f7-a2c6b90e45c8/18e0f1b2-147012_under30mb.mp4",
+  "mask_dir": "/tmp/claude-0/work/masks",
+  "work_dir": "work",
+  "output": "output/marvel_cosmic_doomsday_trailer.mp4",
+
+  "assets": {
+    "doom": "assets/doom_cut.png",
+    "deadpool": "assets/deadpool_cut.png",
+    "spiderman": "assets/spiderman_cut.png"
+  },
+
+  "keep": [[0.75, 17.45], [18.80, 32.75], [33.95, 45.40], [46.85, 72.60]],
+
+  "captions": [
+    {"start": 0.95, "end": 1.75, "text": "חברים,"},
+    {"start": 1.80, "end": 2.50, "text": "אנחנו מתקרבים"},
+    {"start": 2.50, "end": 3.10, "text": "לאחד הרגעים"},
+    {"start": 3.10, "end": 4.10, "text": "הגדולים ביותר"},
+    {"start": 4.10, "end": 4.80, "text": "של מארוול", "hl": true},
+    {"start": 5.35, "end": 6.10, "text": "הטריילר הבא", "review": "ASR heard 'הטריילה רבה' — read as 'הטריילר הבא'"},
+    {"start": 6.10, "end": 6.90, "text": "של הנוקמים:"},
+    {"start": 6.90, "end": 7.50, "text": "דומסדיי", "hl": true},
+    {"start": 7.50, "end": 8.70, "text": "נמצא במרכז"},
+    {"start": 8.70, "end": 9.60, "text": "השמועות"},
+    {"start": 9.70, "end": 10.70, "text": "ויש כמה דיווחים"},
+    {"start": 10.70, "end": 11.85, "text": "מעניינים במיוחד"},
+    {"start": 12.30, "end": 13.10, "text": "היום נעבור"},
+    {"start": 13.10, "end": 14.20, "text": "על כל מה שידוע,"},
+    {"start": 14.20, "end": 15.30, "text": "מה מאומת,"},
+    {"start": 15.30, "end": 16.10, "text": "ומה עדיין", "review": "ASR unclear ('בידיים'/'בלדיים') — 'עדיין' is a best guess"},
+    {"start": 16.10, "end": 17.10, "text": "בגדר שמועה"},
+    {"start": 19.05, "end": 20.00, "text": "לפי המדליף"},
+    {"start": 20.00, "end": 21.80, "text": "קריפטיק HD קוואליטי,", "review": "leaker name spelled as heard — please confirm"},
+    {"start": 21.80, "end": 22.50, "text": "הטריילר הבא"},
+    {"start": 22.50, "end": 23.70, "text": "של אוונג'רס: דומסדיי", "hl": true},
+    {"start": 23.70, "end": 24.90, "text": "כבר הושלם"},
+    {"start": 25.20, "end": 26.40, "text": "אך מארוול עדיין"},
+    {"start": 26.40, "end": 27.30, "text": "עובדת על הדיבוב שלו"},
+    {"start": 27.30, "end": 28.60, "text": "לשווקים הבינלאומיים"},
+    {"start": 28.60, "end": 29.60, "text": "חשוב לציין"},
+    {"start": 29.60, "end": 31.00, "text": "שמדובר בשמועות בלבד"},
+    {"start": 31.00, "end": 31.90, "text": "ולא בהודעה רשמית", "review": "ASR heard 'בעודר'/'בהודע' — 'בהודעה' is a best guess"},
+    {"start": 31.90, "end": 32.60, "text": "של מארוול"},
+    {"start": 34.20, "end": 35.50, "text": "לפי שמועות"},
+    {"start": 35.50, "end": 36.45, "text": "שהופצו ברשת,"},
+    {"start": 36.45, "end": 36.80, "text": "דדפול", "hl": true},
+    {"start": 36.80, "end": 37.30, "text": "וספיידרמן", "hl": true},
+    {"start": 37.30, "end": 38.00, "text": "של טובי מגוויר", "hl": true},
+    {"start": 38.00, "end": 39.10, "text": "עשויים שלא להופיע"},
+    {"start": 39.10, "end": 39.80, "text": "בטריילר הבא"},
+    {"start": 40.00, "end": 40.80, "text": "עדיין אין", "review": "ASR heard 'אלה כחשיר' — read as 'אין אישור'"},
+    {"start": 40.80, "end": 41.70, "text": "אישור רשמי,"},
+    {"start": 41.70, "end": 42.30, "text": "אבל ייתכן"},
+    {"start": 42.30, "end": 43.40, "text": "שמארוול שומרת"},
+    {"start": 43.40, "end": 44.10, "text": "את ההפתעות הגדולות"},
+    {"start": 44.10, "end": 45.20, "text": "ביותר לסרט עצמו"},
+    {"start": 47.15, "end": 47.80, "text": "מקור בשם"},
+    {"start": 47.80, "end": 48.60, "text": "ג'יימס מק,", "review": "source name spelled as heard — please confirm"},
+    {"start": 48.60, "end": 49.50, "text": "טען שהטריילר הבא"},
+    {"start": 49.50, "end": 50.60, "text": "של אוונג'רס: דומסדיי", "hl": true},
+    {"start": 50.60, "end": 51.95, "text": "עשוי לשבור"},
+    {"start": 51.95, "end": 52.70, "text": "את הרשת", "hl": true},
+    {"start": 53.05, "end": 53.70, "text": "עדיין לא ידוע"},
+    {"start": 53.70, "end": 54.80, "text": "מה בדיוק נראה בו,"},
+    {"start": 54.80, "end": 55.60, "text": "אבל המעריצים"},
+    {"start": 55.60, "end": 56.35, "text": "כבר מעלים השערות"},
+    {"start": 56.35, "end": 57.70, "text": "על חשיפת דמויות"},
+    {"start": 57.70, "end": 58.30, "text": "מפתיעות,", "hl": true},
+    {"start": 58.30, "end": 58.90, "text": "חזרות", "hl": true},
+    {"start": 58.90, "end": 59.95, "text": "ורגעים מטורפים"},
+    {"start": 62.15, "end": 62.80, "text": "הטריילר הבא"},
+    {"start": 62.80, "end": 64.20, "text": "צפוי לצאת"},
+    {"start": 64.20, "end": 66.40, "text": "ב-25 לנובמבר", "hl": true},
+    {"start": 66.60, "end": 67.40, "text": "או לפני,"},
+    {"start": 67.40, "end": 68.80, "text": "ואנחנו כבר נהיה עדים"},
+    {"start": 68.80, "end": 69.90, "text": "למה שהולך לקרות שם"},
+    {"start": 70.05, "end": 70.70, "text": "עד כאן"},
+    {"start": 70.70, "end": 71.50, "text": "מארוול גיקים,", "hl": true, "review": "channel name as heard — please confirm"},
+    {"start": 71.50, "end": 72.40, "text": "תודה רבה"}
+  ],
+  "uncaptioned_review": [
+    {"start": 60.55, "end": 61.95, "note": "Short phrase the model could not resolve (it kept hallucinating the outro). Left without a caption — tell me what you say here."}
+  ],
+
+  "overlays": [
+    {"asset": "doom", "in": 6.05, "out": 9.60, "x": 250, "bottom": 2010, "h": 1560, "enter": "slide-left"},
+    {"asset": "doom", "in": 22.40, "out": 24.90, "x": 975, "bottom": 2000, "h": 1380, "enter": "rise"},
+    {"asset": "deadpool", "in": 36.40, "out": 39.80, "x": 215, "bottom": 1990, "h": 1420, "enter": "slide-left"},
+    {"asset": "spiderman", "in": 36.75, "out": 39.80, "x": 985, "bottom": 1935, "h": 1180, "enter": "rise"},
+    {"asset": "doom", "in": 49.45, "out": 52.75, "x": 560, "bottom": 2070, "h": 2180, "enter": "zoom", "glow": 1.4},
+    {"asset": "doom", "in": 56.30, "out": 58.95, "x": 230, "bottom": 2010, "h": 1520, "enter": "slide-left"},
+    {"asset": "spiderman", "in": 57.65, "out": 60.05, "x": 985, "bottom": 1935, "h": 1180, "enter": "rise"},
+    {"asset": "deadpool", "in": 58.85, "out": 60.05, "x": 215, "bottom": 1990, "h": 1420, "enter": "slide-left"}
+  ],
+
+  "bg_dim": [
+    {"start": 49.40, "end": 52.75, "amount": 0.62}
+  ],
+
+  "cards": [
+    {"start": 28.60, "end": 32.70, "y": 330, "lines": [
+      {"text": "שמועה  •  לא אושר רשמית", "size": 62, "dy": 0, "color": [255, 255, 255], "glow": [255, 190, 60], "glow_op": 1.1}
+    ]},
+    {"start": 62.15, "end": 66.50, "y": 300, "lines": [
+      {"text": "הטריילר הבא", "size": 66, "dy": -120, "color": [255, 255, 255]},
+      {"text": "25.11", "size": 200, "dy": 20, "color": [190, 255, 210], "stroke": 10, "glow_blur": 26, "glow_op": 2.0}
+    ]}
+  ],
+
+  "punch": [
+    {"t": 4.10, "amount": 0.05},
+    {"t": 6.90, "amount": 0.06},
+    {"t": 23.00, "amount": 0.05},
+    {"t": 36.45, "amount": 0.05},
+    {"t": 44.10, "amount": 0.05},
+    {"t": 58.30, "amount": 0.05},
+    {"t": 64.20, "amount": 0.06}
+  ],
+
+  "fx": [
+    {"type": "flash", "t": 0.75, "dur": 0.45, "strength": 0.8},
+    {"type": "pulse", "t": 0.80, "x": 630, "y": 820, "dur": 0.9},
+    {"type": "flash", "t": 6.90, "dur": 0.25, "strength": 0.35},
+    {"type": "pulse", "t": 6.90, "x": 250, "y": 700, "dur": 0.8},
+    {"type": "burst", "t": 6.90, "x": 250, "y": 650, "n": 70},
+    {"type": "pulse", "t": 22.50, "x": 975, "y": 760, "dur": 0.8},
+    {"type": "flash", "t": 36.45, "dur": 0.2, "strength": 0.3},
+    {"type": "burst", "t": 36.80, "x": 985, "y": 1000, "n": 60},
+    {"type": "flash", "t": 49.50, "dur": 0.35, "strength": 0.7},
+    {"type": "pulse", "t": 49.50, "x": 560, "y": 300, "dur": 1.0},
+    {"type": "shake", "t": 51.95, "dur": 0.65, "amp": 18},
+    {"type": "glitch", "t": 51.95, "dur": 0.28},
+    {"type": "flash", "t": 51.95, "dur": 0.22, "strength": 0.45},
+    {"type": "burst", "t": 51.95, "x": 560, "y": 420, "n": 90},
+    {"type": "pulse", "t": 58.30, "x": 985, "y": 1000, "dur": 0.8},
+    {"type": "flash", "t": 62.15, "dur": 0.3, "strength": 0.35},
+    {"type": "burst", "t": 64.20, "x": 540, "y": 320, "n": 60},
+    {"type": "flash", "t": 70.05, "dur": 0.4, "strength": 0.35},
+    {"type": "pulse", "t": 70.05, "x": 630, "y": 820, "dur": 0.9}
+  ],
+
+  "sfx": [
+    {"type": "energy", "t": 0.75},
+    {"type": "whoosh", "t": 6.05, "offset": -0.12, "pan": -0.4},
+    {"type": "impact", "t": 6.90, "gain_db": -4},
+    {"type": "whoosh", "t": 22.40, "offset": -0.10, "pan": 0.4},
+    {"type": "energy", "t": 28.60, "gain_db": -3},
+    {"type": "whoosh", "t": 36.40, "offset": -0.10, "pan": -0.4},
+    {"type": "whoosh", "t": 36.75, "offset": -0.08, "pan": 0.4, "gain_db": -2},
+    {"type": "riser", "t": 49.45},
+    {"type": "impact", "t": 49.45},
+    {"type": "impact", "t": 51.95, "gain_db": 1},
+    {"type": "whoosh", "t": 56.30, "offset": -0.10, "pan": -0.4},
+    {"type": "whoosh", "t": 57.65, "offset": -0.10, "pan": 0.4},
+    {"type": "whoosh", "t": 58.85, "offset": -0.10, "pan": -0.4},
+    {"type": "energy", "t": 62.15},
+    {"type": "impact", "t": 64.20, "gain_db": -6},
+    {"type": "energy", "t": 70.05, "gain_db": -2}
+  ]
+}

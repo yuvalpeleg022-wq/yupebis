@@ -1,0 +1,5 @@
+__pycache__/
+projects/*/work/
+projects/*/output/
+projects/*/masks/
+projects/*/assets/

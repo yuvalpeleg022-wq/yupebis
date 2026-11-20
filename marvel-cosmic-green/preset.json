@@ -1,0 +1,142 @@
+{
+  "name": "MARVEL COSMIC GREEN — CREATOR STYLE",
+  "version": 1,
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "crf": 17,
+    "x264_preset": "slow",
+    "audio_bitrate": "192k"
+  },
+  "background": {
+    "seed": 7,
+    "base_dark": [
+      0.01,
+      0.03,
+      0.018
+    ],
+    "emerald": [
+      0.025,
+      0.34,
+      0.17
+    ],
+    "forest": [
+      0.012,
+      0.12,
+      0.05
+    ],
+    "highlight": [
+      0.3,
+      0.95,
+      0.56
+    ],
+    "nebula_drift_px_s": [
+      5,
+      -9
+    ],
+    "smoke_rise_px_s": 14,
+    "rays_origin": [
+      920,
+      -260
+    ],
+    "rays_strength": 0.14,
+    "stars": 750,
+    "dust": 160,
+    "bokeh": 14,
+    "vignette": 0.62,
+    "breathing": 0.06
+  },
+  "speaker": {
+    "matte_threshold": 0.35,
+    "fill_erode_px": 15,
+    "temporal_smooth": [
+      0.25,
+      0.5,
+      0.25
+    ],
+    "exposure": 0.93,
+    "contrast": 1.06,
+    "saturation": 1.04,
+    "shadow_tint": [
+      -0.01,
+      0.014,
+      0.004
+    ],
+    "light_wrap": 0.16,
+    "rim_color": [
+      0.3,
+      1.0,
+      0.5
+    ],
+    "rim_strength": 0.13,
+    "face_anchor": [
+      630,
+      820
+    ],
+    "base_zoom_alternation": [
+      1.0,
+      1.07
+    ],
+    "slow_push": 0.025,
+    "choke_px": 7,
+    "edge_ramp": [
+      0.35,
+      0.95
+    ]
+  },
+  "characters": {
+    "glow_color": [
+      0.35,
+      1.0,
+      0.55
+    ],
+    "glow_strength": 0.4,
+    "rim_strength": 0.55,
+    "shadow_opacity": 0.55,
+    "enter_s": 0.42,
+    "exit_s": 0.3,
+    "idle_zoom": 0.035
+  },
+  "captions": {
+    "font": "fonts/Heebo-900.ttf",
+    "size": 90,
+    "max_width": 920,
+    "center_y": 1385,
+    "fill": [
+      255,
+      255,
+      255
+    ],
+    "highlight": [
+      139,
+      255,
+      176
+    ],
+    "stroke": 10,
+    "stroke_color": [
+      0,
+      0,
+      0
+    ],
+    "shadow_offset": [
+      0,
+      7
+    ],
+    "shadow_blur": 9,
+    "shadow_opacity": 0.75,
+    "pop_s": 0.17,
+    "pop_from": 0.72,
+    "max_hold_s": 0.35
+  },
+  "audio": {
+    "voice_chain": "highpass=f=70,acompressor=threshold=-21dB:ratio=3:attack=5:release=90:makeup=2,loudnorm=I=-15:TP=-1.5:LRA=9",
+    "drone_db": -33,
+    "whoosh_db": -19,
+    "impact_db": -15,
+    "riser_db": -24,
+    "energy_db": -24,
+    "cut_tick_db": -32,
+    "final_limit": 0.89
+  }
+}
