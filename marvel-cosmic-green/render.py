@@ -109,23 +109,21 @@ class CosmicBackground:
         self.P, self.W, self.H, self.fps = P, W, H, fps
         rng = np.random.default_rng(P["seed"])
         self.CW, self.CH = W + 320, H + 420
-        dark = np.array(P["base_dark"], np.float32)
-        em = np.array(P["emerald"], np.float32)
-        fo = np.array(P["forest"], np.float32)
-        hi = np.array(P["highlight"], np.float32)
-
-        def colorize(n, k):
-            n = np.clip((n - 0.25) / 0.75, 0, 1)
-            c = dark + (fo - dark) * n[..., None] ** 1.2 + (em - fo) * (n[..., None] ** 2.6) * k
-            c += hi * (n[..., None] ** 7) * 0.55 * k
-            return c.astype(np.float32)
-        n1 = fbm(self.CH, self.CW, rng)
-        n2 = fbm(self.CH, self.CW, rng, scales=(2, 5, 10, 20, 40))
-        self.neb1 = colorize(n1, 1.0)
-        self.neb2 = colorize(n2, 0.8)
+        # palette gradient (hex stops from the preset) -> 1024-entry LUT
+        hexrgb = lambda h: [int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+        stops = P["gradient"]  # [[position, "#rrggbb"], ...]
+        xs = np.linspace(0, 1, 1024)
+        self.lut = np.stack([np.interp(xs, [p for p, _ in stops], [hexrgb(c)[k] for _, c in stops]) for k in range(3)], -1).astype(np.float32)
+        self.n1 = fbm(self.CH, self.CW, rng)
+        self.n2 = fbm(self.CH, self.CW, rng, scales=(2, 5, 10, 20, 40))
         sm = fbm(self.CH, self.CW, rng, scales=(4, 9, 18, 36, 72), gains=(1, .6, .35, .2, .1))
-        self.smoke = np.clip((sm - 0.45) * 2.2, 0, 1).astype(np.float32) ** 1.5
-        self.smoke_col = np.array([0.10, 0.32, 0.20], np.float32)
+        self.smoke = np.clip((sm - 0.42) * 2.0, 0, 1).astype(np.float32) ** 1.4
+        # brighter atmospheric centre (behind the speaker's head)
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        gx, gy = P["center_glow_pos"]
+        g = np.exp(-(((xx - gx) / (W * 0.55)) ** 2 + ((yy - gy) / (H * 0.38)) ** 2))
+        self.center = (g * P["center_glow"]).astype(np.float32)
+        self.lum = np.array(hexrgb(P["luminous"]), np.float32)
 
         # volumetric rays (computed at half res, polar lookup)
         hw, hh = W // 2, H // 2
@@ -170,16 +168,19 @@ class CosmicBackground:
         dx, dy = P["nebula_drift_px_s"]
         cx, cy = cam
         b = 1 + P["breathing"] * math.sin(t * 0.7)
-        a = self.crop(self.neb1, 160 + dx * t + cx * 0.3, 210 + dy * t + cy * 0.3)
-        c = self.crop(self.neb2, 160 - dx * 0.6 * t + cx * 0.2, 210 - dy * 0.5 * t + cy * 0.2)
-        img = a * (0.72 * b) + c * 0.45
+        a = self.crop(self.n1, 160 + dx * t + cx * 0.3, 210 + dy * t + cy * 0.3)
+        c = self.crop(self.n2, 160 - dx * 0.6 * t + cx * 0.2, 210 - dy * 0.5 * t + cy * 0.2)
         sm = self.crop(self.smoke, 160 + 4 * math.sin(t * 0.2) + cx * 0.5, 210 + P["smoke_rise_px_s"] * t + cy * 0.5)
-        img += sm[..., None] * self.smoke_col * (0.8 + 0.2 * math.sin(t * 0.9))
+        lo, hi = P["density_range"]
+        n = (0.62 * a + 0.38 * c - lo) / (hi - lo)
+        n = np.clip(n * (0.55 + 0.45 * self.center / max(P["center_glow"], 1e-3)) * b + self.center
+                    + sm * P["smoke_amount"] * (0.85 + 0.15 * math.sin(t * 0.9)), 0, 1)
+        img = self.lut[(n * 1023).astype(np.int32)]
         # rays
         shift = int(t * 9) % 2048
         rays = self.ray_tab[self.ray_idx + shift] * self.ray_fall
         rays = cv2.resize(rays, (W, H), interpolation=cv2.INTER_LINEAR)
-        img += rays[..., None] * np.array([0.35, 1.0, 0.6], np.float32) * P["rays_strength"] * (0.85 + 0.15 * math.sin(t * 0.5))
+        img += rays[..., None] * self.lum * P["rays_strength"] * (0.85 + 0.15 * math.sin(t * 0.5))
         # stars (parallax drift + twinkle)
         sx = ((self.st_x - 160 - cx * self.st_depth - 3 * t * self.st_depth) % self.CW).astype(np.int32)
         sy = ((self.st_y - 210 - cy * self.st_depth + 2 * t * self.st_depth) % self.CH).astype(np.int32)
@@ -188,7 +189,7 @@ class CosmicBackground:
         tw = self.st_b * (0.65 + 0.35 * np.sin(self.st_ph + t * self.st_sp))
         np.add.at(star, (sy[ok], sx[ok]), tw[ok])
         star = cv2.GaussianBlur(star, (0, 0), 0.9) * 3.2
-        img += star[..., None] * np.array([0.8, 1.0, 0.88], np.float32)
+        img += star[..., None] * np.array([0.75, 0.92, 0.8], np.float32) * P["star_gain"]
         # dust + bokeh (half res)
         hw, hh = W // 2, H // 2
         dl = np.zeros((hh, hw), np.float32)
@@ -202,7 +203,7 @@ class CosmicBackground:
         bl = cv2.resize(cv2.GaussianBlur(bl, (0, 0), 2.2), (hw, hh))
         dl = cv2.GaussianBlur(dl, (0, 0), 0.8) + bl
         dl = cv2.resize(dl, (W, H), interpolation=cv2.INTER_LINEAR)
-        img += dl[..., None] * np.array([0.55, 1.0, 0.7], np.float32) * 0.55
+        img += dl[..., None] * self.lum * P["dust_gain"]
         img *= self.vig
         return img
 
@@ -759,18 +760,25 @@ def compose(of, si, frame, tl, bg, matte, S, C, sprites, ovs, fxs, punches, dims
         if e["type"] == "flash":
             u = (t - e["t"]) / e.get("dur", 0.3)
             if 0 <= u <= 1:
-                img += np.array(e.get("color", [0.55, 1.0, 0.7]), np.float32) * (1 - u) ** 2 * e.get("strength", 0.5)
+                img += np.array(e.get("color", [0.42, 0.72, 0.52]), np.float32) * (1 - u) ** 2 * e.get("strength", 0.5)
     # pulses / bursts in the background layer
     for e in fxs:
         if e["type"] == "pulse" and e.get("layer", "behind") == "behind":
             u = (t - e["t"]) / e.get("dur", 0.7)
             if 0 <= u <= 1:
-                ring(img, e["x"], e["y"], 60 + 1100 * ease_out_cubic(u), 40 * (1 - u) + 6, [0.4, 1, 0.6], 1.2 * (1 - u))
+                ring(img, e["x"], e["y"], 60 + 1100 * ease_out_cubic(u), 40 * (1 - u) + 6, [0.38, 0.78, 0.52], 1.1 * (1 - u))
 
     # ---- speaker
     M = np.float32([[s, 0, fa[0] * (1 - s) + sx], [0, s, fa[1] * (1 - s) + sy]])
     rgb = frame.astype(np.float32) / 255
     alpha = matte.get(si)
+    # remove leftover slivers of the old wall: neutral, bright pixels close to the silhouette edge
+    fg = (alpha > 0.5).astype(np.uint8)
+    dist = cv2.distanceTransform(fg, cv2.DIST_L2, 3)
+    lum = rgb.mean(-1)
+    wall = ((dist < S.get("wall_band_px", 28)) & (lum > S.get("wall_lum", 0.5)) & ((rgb[..., 0] - rgb[..., 2]) < S.get("wall_chroma", 0.07))).astype(np.float32)
+    wall = cv2.GaussianBlur(cv2.dilate(wall, np.ones((3, 3), np.uint8)), (0, 0), 1.5)
+    alpha = alpha * (1 - np.clip(wall * 1.2, 0, 1))
     rgb = cv2.warpAffine(rgb, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
     alpha = cv2.warpAffine(alpha, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
     # choke the matte slightly and decontaminate edge colours (removes old-wall halo)
@@ -803,6 +811,11 @@ def compose(of, si, frame, tl, bg, matte, S, C, sprites, ovs, fxs, punches, dims
     r2 = edge_light(alpha, (-7, 3), 2.0)
     rim = np.array(S["rim_color"], np.float32)
     rgb = rgb + (r1 * S["rim_strength"] + r2 * S["rim_strength"] * 0.55)[..., None] * rim
+    # soft contact shadow of the speaker on the environment (depth + separation)
+    sh = cv2.resize(alpha, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
+    sh = cv2.warpAffine(sh, np.float32([[1, 0, 5], [0, 1, 6]]), (W // 4, H // 4), borderMode=cv2.BORDER_REPLICATE)
+    sh = cv2.resize(cv2.GaussianBlur(sh, (0, 0), 7), (W, H))
+    img = img * (1 - S.get("drop_shadow", 0.35) * sh[..., None])
     img = img * (1 - alpha[..., None]) + rgb * alpha[..., None]
 
     # ---- front layer characters
@@ -817,9 +830,9 @@ def compose(of, si, frame, tl, bg, matte, S, C, sprites, ovs, fxs, punches, dims
             k = (1 - u) ** 2 * e.get("strength", 0.5) * 0.3
             img += np.array([0.9, 1.0, 0.93], np.float32) * k
         elif e["type"] == "pulse" and e.get("layer") == "front" and 0 <= u <= 1:
-            ring(img, e["x"], e["y"], 60 + 1100 * ease_out_cubic(u), 40 * (1 - u) + 6, [0.4, 1, 0.6], 1.2 * (1 - u))
+            ring(img, e["x"], e["y"], 60 + 1100 * ease_out_cubic(u), 40 * (1 - u) + 6, [0.38, 0.78, 0.52], 1.1 * (1 - u))
         elif e["type"] == "burst":
-            e["obj"].draw(img, t - e["t"], e.get("dur", 0.9), [0.5, 1.0, 0.7])
+            e["obj"].draw(img, t - e["t"], e.get("dur", 0.9), [0.5, 0.85, 0.6])
         elif e["type"] == "glitch" and 0 <= u <= 1:
             img = glitch(img, 1 - u, rng)
 

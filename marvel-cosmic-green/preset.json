@@ -11,26 +11,6 @@
   },
   "background": {
     "seed": 7,
-    "base_dark": [
-      0.01,
-      0.03,
-      0.018
-    ],
-    "emerald": [
-      0.025,
-      0.34,
-      0.17
-    ],
-    "forest": [
-      0.012,
-      0.12,
-      0.05
-    ],
-    "highlight": [
-      0.3,
-      0.95,
-      0.56
-    ],
     "nebula_drift_px_s": [
       5,
       -9
@@ -40,12 +20,51 @@
       920,
       -260
     ],
-    "rays_strength": 0.14,
+    "rays_strength": 0.09,
     "stars": 750,
     "dust": 160,
     "bokeh": 14,
-    "vignette": 0.62,
-    "breathing": 0.06
+    "vignette": 0.55,
+    "breathing": 0.06,
+    "gradient": [
+      [
+        0.0,
+        "#030E08"
+      ],
+      [
+        0.22,
+        "#071C12"
+      ],
+      [
+        0.45,
+        "#103B24"
+      ],
+      [
+        0.68,
+        "#176638"
+      ],
+      [
+        0.86,
+        "#2B8A50"
+      ],
+      [
+        1.0,
+        "#55A96B"
+      ]
+    ],
+    "luminous": "#55A96B",
+    "density_range": [
+      0.18,
+      0.95
+    ],
+    "center_glow": 0.22,
+    "center_glow_pos": [
+      560,
+      760
+    ],
+    "smoke_amount": 0.22,
+    "star_gain": 0.7,
+    "dust_gain": 0.45
   },
   "speaker": {
     "matte_threshold": 0.35,
@@ -63,11 +82,11 @@
       0.014,
       0.004
     ],
-    "light_wrap": 0.16,
+    "light_wrap": 0.1,
     "rim_color": [
-      0.3,
-      1.0,
-      0.5
+      0.33,
+      0.66,
+      0.42
     ],
     "rim_strength": 0.13,
     "face_anchor": [
@@ -83,13 +102,17 @@
     "edge_ramp": [
       0.35,
       0.95
-    ]
+    ],
+    "drop_shadow": 0.38,
+    "wall_band_px": 20,
+    "wall_lum": 0.585,
+    "wall_chroma": 0.06
   },
   "characters": {
     "glow_color": [
-      0.35,
-      1.0,
-      0.55
+      0.33,
+      0.66,
+      0.42
     ],
     "glow_strength": 0.4,
     "rim_strength": 0.55,
@@ -109,9 +132,9 @@
       255
     ],
     "highlight": [
-      139,
-      255,
-      176
+      120,
+      220,
+      150
     ],
     "stroke": 10,
     "stroke_color": [
