@@ -1,0 +1,218 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero__stage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg);
+}
+.hero__poster,
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero__poster {
+  object-fit: cover;
+  object-position: 72% 60%;
+  transition: opacity 1.2s var(--ease);
+}
+.hero__poster.is-hidden {
+  opacity: 0;
+}
+.hero__canvas {
+  opacity: 0;
+  transition: opacity 1.4s var(--ease);
+}
+.hero__canvas.is-ready {
+  opacity: 1;
+}
+.hero__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.92) 0%, rgba(10, 10, 11, 0.55) 34%, rgba(10, 10, 11, 0) 60%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(10, 10, 11, 0) 28%),
+    linear-gradient(180deg, rgba(10, 10, 11, 0.7) 0%, rgba(10, 10, 11, 0) 18%);
+}
+
+.hero__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 48px;
+  padding-top: calc(var(--nav-h) + 48px);
+  padding-bottom: clamp(64px, 9vh, 112px);
+}
+.hero__title {
+  font-size: clamp(44px, min(7vw, 11.5vh), 112px);
+  margin-top: 22px;
+}
+.hero__title span {
+  display: block;
+  animation: heroIn 1.1s var(--ease) both;
+}
+.hero__title span:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.hero__title span:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.hero__title-accent {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--silver);
+}
+.hero__eyebrow,
+.hero__lede,
+.hero__actions,
+.hero__spec {
+  animation: heroIn 1.1s var(--ease) both;
+}
+.hero__lede {
+  animation-delay: 0.28s;
+  max-width: 44ch;
+  margin: 28px 0 0;
+  color: var(--text-dim);
+  font-size: clamp(16px, 1.25vw, 18px);
+}
+.hero__actions {
+  animation-delay: 0.36s;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 36px;
+}
+.hero__spec .demo-tag {
+  color: var(--text-dim);
+  background: rgba(10, 10, 11, 0.6);
+}
+.hero__spec {
+  animation-delay: 0.5s;
+  min-width: 260px;
+  padding-left: 24px;
+  border-left: 1px solid var(--line-strong);
+}
+.hero__spec-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-stretch: 115%;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.hero__spec dl {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.hero__spec dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.hero__spec dt {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.hero__spec dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-stretch: 110%;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-faint);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 8px;
+}
+.hero__scroll svg {
+  width: 16px;
+  height: 16px;
+  animation: nudge 2.4s var(--ease) infinite;
+}
+.hero__scroll:hover {
+  color: var(--text);
+}
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes nudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero__spec {
+    display: none;
+  }
+  .hero__content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: bike sits in the upper half, copy anchored at the bottom */
+@media (max-width: 720px), (max-aspect-ratio: 9/10) {
+  .hero__poster {
+    object-position: 62% 30%;
+  }
+  .hero__vignette {
+    background:
+      linear-gradient(0deg, var(--bg) 0%, rgba(10, 10, 11, 0.9) 34%, rgba(10, 10, 11, 0) 62%),
+      linear-gradient(180deg, rgba(10, 10, 11, 0.6) 0%, rgba(10, 10, 11, 0) 16%);
+  }
+  .hero__content {
+    padding-bottom: 76px;
+  }
+  .hero__lede {
+    margin-top: 20px;
+  }
+  .hero__actions {
+    margin-top: 28px;
+  }
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+  .hero__scroll {
+    display: none;
+  }
+}

@@ -1,0 +1,39 @@
+.modal {
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-2);
+  color: var(--text);
+  max-width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  width: 100%;
+}
+.modal::backdrop {
+  background: rgba(5, 5, 6, 0.82);
+  backdrop-filter: blur(4px);
+}
+.modal[open] {
+  animation: modalIn 0.35s var(--ease);
+}
+.modal__inner {
+  position: relative;
+  padding: clamp(28px, 4vw, 48px);
+}
+.modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+}
+.modal--media {
+  max-width: min(1280px, calc(100vw - 32px));
+  background: #050506;
+}
+.modal--media .modal__inner {
+  padding: 0;
+}
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+}
