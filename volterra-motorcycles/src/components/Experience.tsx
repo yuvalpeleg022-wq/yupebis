@@ -183,6 +183,7 @@ export function Experience({ bike, paint, onSelectBike, onSelectPaint, onViewDet
                       nativeZoom={coarse && touchActive}
                       autoRotate={!interacted && !reducedMotion && loaded}
                       lowPower={lowPower}
+                      active={visible}
                       apiRef={apiRef}
                       onReady={onReady}
                       onUserInteract={onUserInteract}

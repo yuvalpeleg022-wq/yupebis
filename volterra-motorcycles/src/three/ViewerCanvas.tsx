@@ -21,6 +21,8 @@ interface Props {
   nativeZoom: boolean;
   autoRotate: boolean;
   lowPower: boolean;
+  /** Pause rendering while the viewer is off-screen */
+  active: boolean;
   apiRef: MutableRefObject<ViewerApi | null>;
   onReady: () => void;
   onUserInteract: () => void;
@@ -123,7 +125,7 @@ function LoadingOverlay({ bikeName }: { bikeName: string }) {
 }
 
 export default function ViewerCanvas(props: Props) {
-  const { bike, paint, lowPower, onReady } = props;
+  const { bike, paint, lowPower, onReady, active } = props;
 
   // Once the first model is in, warm the cache for the others
   const readyOnce = useRef(false);
@@ -146,6 +148,7 @@ export default function ViewerCanvas(props: Props) {
       <Canvas
         shadows={!lowPower}
         dpr={lowPower ? [1, 1.5] : [1, 2]}
+        frameloop={active ? 'always' : 'never'}
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         camera={{ fov: 30, near: 0.1, far: 50, position: [4, 1.2, 4] }}
         className="viewer__canvas"

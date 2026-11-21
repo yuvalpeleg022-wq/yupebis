@@ -40,6 +40,10 @@ function watchConsole(page, label) {
   };
 }
 
+// Playwright's own scroll-into-view races CSS smooth scrolling under software WebGL.
+// The site's nav still smooth-scrolls via JS (behavior: 'smooth'), so that remains tested.
+const noCssSmooth = (page) => page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+
 const revealAll = (page) =>
   page.addStyleTag({ content: '.reveal{opacity:1!important;transform:none!important;transition:none!important}' });
 
@@ -80,6 +84,7 @@ const diff = async (page, locator, fn) => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const done = watchConsole(page, 'desktop');
   await page.goto(base, { waitUntil: 'load' });
+  await noCssSmooth(page);
   await page.waitForSelector('.hero__canvas.is-ready', { timeout: 180000 });
   check('hero 3D scene renders', true);
 
@@ -282,6 +287,7 @@ const diff = async (page, locator, fn) => {
   const page = await ctx.newPage();
   const done = watchConsole(page, 'mobile');
   await page.goto(base, { waitUntil: 'load' });
+  await noCssSmooth(page);
   await page.waitForTimeout(2000);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   check('mobile: no horizontal overflow', overflow <= 0, `${overflow}px`);
