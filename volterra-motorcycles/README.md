@@ -166,6 +166,18 @@ volterra-motorcycles/
    └─ styles/global.css       design tokens + base styles
 ```
 
+## Walkthrough video
+
+```bash
+npm run dev                                   # terminal 1
+npm run record:video -- http://localhost:5173 volterra-walkthrough.mp4   # terminal 2
+```
+
+Records a smooth 40-second, 1920×1080, 25 fps tour of the whole site that ends on an animated logo
+card. It needs ffmpeg. The page clock (render loop, CSS animations and scrolling) is advanced one
+frame at a time, so the result is perfectly smooth even on a machine without a GPU. Edit the shot
+list in `scripts/record-video.mjs` to change the route or timing.
+
 ## Testing
 
 ```bash
