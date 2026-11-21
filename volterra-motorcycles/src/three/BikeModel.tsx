@@ -22,7 +22,7 @@ interface Props {
 export function BikeModel({ model, paint, onReady }: Props) {
   const gltf = useGLTF(model.url);
   const uniformsRef = useRef<PaintUniforms[]>([]);
-  const target = useRef({ mix: 0, tint: new THREE.Color(1, 1, 1), rough: 0.5, roughMix: 0 });
+  const target = useRef({ mix: 0, tint: new THREE.Color(1, 1, 1), rough: 0.5, roughMix: 0, metal: 0.1, metalMix: 0 });
 
   const scene = useMemo(() => {
     const root = gltf.scene.clone(true);
@@ -91,6 +91,8 @@ export function BikeModel({ model, paint, onReady }: Props) {
     }
     t.roughMix = paint?.roughness != null && paint.tint ? 1 : 0;
     if (paint?.roughness != null) t.rough = paint.roughness;
+    t.metalMix = paint?.metalness != null && paint.tint ? 1 : 0;
+    if (paint?.metalness != null) t.metal = paint.metalness;
   }, [paint]);
 
   // Smoothly blend paint changes
@@ -104,6 +106,8 @@ export function BikeModel({ model, paint, onReady }: Props) {
       u.uPaintMix.value += (t.mix - u.uPaintMix.value) * k;
       u.uPaintRough.value = t.rough;
       u.uPaintRoughMix.value += (t.roughMix - u.uPaintRoughMix.value) * k;
+      u.uPaintMetal.value = t.metal;
+      u.uPaintMetalMix.value += (t.metalMix - u.uPaintMetalMix.value) * k;
     }
   });
 

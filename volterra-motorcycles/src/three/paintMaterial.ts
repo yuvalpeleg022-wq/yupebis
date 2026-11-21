@@ -21,6 +21,8 @@ export interface PaintUniforms {
   uPaintSrcV: { value: number };
   uPaintRough: { value: number };
   uPaintRoughMix: { value: number };
+  uPaintMetal: { value: number };
+  uPaintMetalMix: { value: number };
 }
 
 const GLSL_HELPERS = /* glsl */ `
@@ -32,6 +34,8 @@ uniform float uPaintMinSat;
 uniform float uPaintSrcV;
 uniform float uPaintRough;
 uniform float uPaintRoughMix;
+uniform float uPaintMetal;
+uniform float uPaintMetalMix;
 float vtPaintMask = 0.0;
 
 vec3 vt_rgb2hsv(vec3 c) {
@@ -72,6 +76,11 @@ const GLSL_ROUGH = /* glsl */ `
 roughnessFactor = mix(roughnessFactor, uPaintRough, vtPaintMask * uPaintRoughMix);
 `;
 
+const GLSL_METAL = /* glsl */ `
+#include <metalnessmap_fragment>
+metalnessFactor = mix(metalnessFactor, uPaintMetal, vtPaintMask * uPaintMetalMix);
+`;
+
 export function patchPaintMaterial(material: THREE.MeshStandardMaterial, cfg: Model3D): PaintUniforms {
   const uniforms: PaintUniforms = {
     uPaintMix: { value: 0 },
@@ -83,6 +92,8 @@ export function patchPaintMaterial(material: THREE.MeshStandardMaterial, cfg: Mo
     uPaintSrcV: { value: cfg.paintValue },
     uPaintRough: { value: 0.5 },
     uPaintRoughMix: { value: 0 },
+    uPaintMetal: { value: 0.1 },
+    uPaintMetalMix: { value: 0 },
   };
 
   material.onBeforeCompile = (shader) => {
@@ -90,9 +101,10 @@ export function patchPaintMaterial(material: THREE.MeshStandardMaterial, cfg: Mo
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>\n${GLSL_HELPERS}`)
       .replace('#include <map_fragment>', GLSL_RECOLOR)
-      .replace('#include <roughnessmap_fragment>', GLSL_ROUGH);
+      .replace('#include <roughnessmap_fragment>', GLSL_ROUGH)
+      .replace('#include <metalnessmap_fragment>', GLSL_METAL);
   };
-  material.customProgramCacheKey = () => 'volterra-paint-v1';
+  material.customProgramCacheKey = () => 'volterra-paint-v2';
   material.needsUpdate = true;
   return uniforms;
 }

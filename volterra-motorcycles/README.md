@@ -61,7 +61,7 @@ Meshopt decoding is bundled with drei, so no external decoder is fetched.
 **Paint switching.** These models have a single baked texture, so there is no separate paint
 material to swap. Instead, `src/three/paintMaterial.ts` patches the PBR shader: texels near the
 factory paint hue get re-tinted to the chosen colour while keeping their original shading.
-Each paint can also override roughness (for example, Graphite Matte). When you get a manufacturer
+Each paint can also override roughness (for example, Graphite Matte) and metalness (for example, the solid Ivory, so light colours don't just mirror the dark studio). When you get a manufacturer
 model with a dedicated paint material, set that material's `color` instead.
 
 **Every image on the site is rendered from these 3D models**, with the same studio lighting:

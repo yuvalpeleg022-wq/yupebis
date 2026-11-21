@@ -181,8 +181,12 @@ const diff = async (page, locator, fn) => {
   const yBefore = await page.evaluate(() => scrollY);
   await page.mouse.move(cx, cy);
   await page.mouse.wheel(0, 300);
-  await page.waitForTimeout(800);
-  check('viewer: plain wheel still scrolls the page', (await page.evaluate(() => scrollY)) > yBefore);
+  let scrolled = false;
+  for (let i = 0; i < 15 && !scrolled; i++) {
+    await page.waitForTimeout(300);
+    scrolled = (await page.evaluate(() => scrollY)) > yBefore;
+  }
+  check('viewer: plain wheel still scrolls the page', scrolled);
   await page.evaluate(() => document.getElementById('experience').scrollIntoView());
   await page.waitForTimeout(600);
   check(

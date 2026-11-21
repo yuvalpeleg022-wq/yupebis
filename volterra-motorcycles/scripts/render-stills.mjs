@@ -2,7 +2,8 @@
  * Regenerates every motorcycle image used by the site straight from the 3D models.
  *
  *   1. npm run dev            (in another terminal)
- *   2. npm run render:stills  (or: node scripts/render-stills.mjs http://localhost:5173)
+ *   2. npm run render:stills  (or: node scripts/render-stills.mjs http://localhost:5173 [bikeId])
+ *      Pass a bike id to re-render only that motorcycle (skips the hero poster).
  *
  * Outputs WebP files to public/images/:
  *   {bike}-{paint}.webp   three-quarter front, one per paint (cards, details, fallbacks)
@@ -25,6 +26,7 @@ const sharp = require('sharp');
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'public', 'images');
 const base = process.argv[2] ?? 'http://localhost:5173';
+const only = process.argv[3];
 mkdirSync(out, { recursive: true });
 
 // Read bikes + paints from the data file without a TS toolchain
@@ -51,7 +53,7 @@ async function still(bike, paint, angle, file) {
   console.log('✓', file);
 }
 
-for (const bike of bikes) {
+for (const bike of bikes.filter((b) => !only || b === only)) {
   for (const paint of paintsFor(bike)) await still(bike, paint, 'front', `${bike}-${paint}.webp`);
   await still(bike, null, 'side', `${bike}-side.webp`);
   await still(bike, null, 'rear', `${bike}-rear.webp`);
@@ -62,6 +64,7 @@ for (const bike of bikes) {
   }
 }
 
+if (!only) {
 // Hero poster: capture the real hero canvas (reduced motion = the resting camera pose)
 const hero = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 await hero.emulateMedia({ reducedMotion: 'reduce' });
@@ -74,5 +77,6 @@ await hero.waitForTimeout(1500);
 const png = await hero.screenshot({ type: 'png' });
 await sharp(png).webp({ quality: 80 }).toFile(join(out, 'hero-poster.webp'));
 console.log('✓ hero-poster.webp');
+}
 
 await browser.close();

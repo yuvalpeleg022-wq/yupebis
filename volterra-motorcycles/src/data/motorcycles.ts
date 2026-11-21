@@ -32,6 +32,8 @@ export interface PaintOption {
   tint: string | null;
   /** Optional roughness override for the paint (0 = mirror, 1 = matte) */
   roughness?: number;
+  /** Optional metalness override for the paint (0 = solid colour, 1 = metallic) */
+  metalness?: number;
   /** Rendered still for this paint, used in cards / fallbacks */
   image: string;
 }
@@ -200,15 +202,15 @@ export const motorcycles: Motorcycle[] = [
     model3d: {
       url: glb('classica-900.glb'),
       paintHue: 0.38,
-      hueRange: 0.08,
-      minSaturation: 0.3,
+      hueRange: 0.12,
+      minSaturation: 0.16,
       paintValue: 0.27,
       yaw: -Math.PI / 2,
     },
     paints: [
       { id: 'racing-green', name: 'Racing Green', swatch: '#14512c', tint: null, image: img('classica-900-racing-green.webp') },
       { id: 'oxblood', name: 'Oxblood', swatch: '#5b1a1c', tint: '#5b1a1c', image: img('classica-900-oxblood.webp') },
-      { id: 'ivory', name: 'Ivory', swatch: '#d9d1bd', tint: '#d9d1bd', image: img('classica-900-ivory.webp') },
+      { id: 'ivory', name: 'Ivory', swatch: '#d9d1bd', tint: '#e2dac6', metalness: 0.05, roughness: 0.3, image: img('classica-900-ivory.webp') },
     ],
     performance: [
       { label: 'Engine', value: 'Parallel twin, air/oil-cooled, SOHC 8v' },
